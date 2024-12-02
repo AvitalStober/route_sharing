@@ -9,3 +9,4 @@ export default interface IUser{
     googleUser:boolean;
     historyRoutes:[Types.ObjectId];
 }
+
