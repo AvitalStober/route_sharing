@@ -61,9 +61,9 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import connect from "@/app/lib/DB/connectDB";
 import User from "@/app/lib/models/userModel"; 
-import jwt from "jsonwebtoken"; 
+// import jwt from "jsonwebtoken"; 
 
-const SECRET_KEY = process.env.NEXTAUTH_SECRET || ""; 
+// const SECRET_KEY = process.env.NEXTAUTH_SECRET || ""; 
 
 const handler = NextAuth({
   providers: [

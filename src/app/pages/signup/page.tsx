@@ -8,7 +8,7 @@ import SomeDatails from '@/app/components/SomeDatails';
 import { useRouter } from "next/navigation";
 
 
-const signup = () => {
+const Signup = () => {
 
     const router = useRouter();
 
@@ -59,4 +59,4 @@ const signup = () => {
     );
 }
 
-export default signup
+export default Signup;
