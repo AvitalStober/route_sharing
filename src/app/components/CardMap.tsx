@@ -1,4 +1,4 @@
-
+"use client"
 // כל כרטיס מכיל מפה של המסלול שלו
 // עמוד זה משרטט מסלול על מפה אחת
 // קלט: מערך של נקודות ציון
@@ -12,7 +12,7 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 
-const MapComponent: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
+const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
   points,
 }) => {
   const [directions, setDirections] =
@@ -22,7 +22,7 @@ const MapComponent: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
 
-  const mapContainerStyle = { width: "100%", height: "250px" };
+  const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
   const calculateRoute = () => {
@@ -104,4 +104,4 @@ const MapComponent: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
   );
 };
 
-export default MapComponent;
+export default CardMap;

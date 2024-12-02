@@ -5,8 +5,8 @@
 // כל כרטיס נשלח לקטמפוננטה MapComponent לשרטוט המסלול
 
 import React from "react";
-import MapComponent from "./CardMap";
-import RouteCardProps from "../types/‎RouteCardProps";
+import CardMap from "./CardMap";
+import RouteCardProps from "../types/‎RouteCardProps"
 
 const RouteCard: React.FC<RouteCardProps> = ({ ownerRoutes }) => {
   return (
@@ -18,7 +18,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ ownerRoutes }) => {
             key={index}
             className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
-            <MapComponent points={route.pointsArray} />
+            <CardMap points={route.pointsArray} />
             <a
               href="#"
               className="inline-flex font-medium items-center text-blue-600 hover:underline mt-4"

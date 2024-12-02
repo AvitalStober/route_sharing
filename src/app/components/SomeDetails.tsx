@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { z } from "zod";
-import LogIn from "./LogIn"; 
+import LogIn from "@/app/components/LogIn"; 
 
 const formSchema = z.object({
   age: z
