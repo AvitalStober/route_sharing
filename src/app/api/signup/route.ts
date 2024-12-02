@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       if (!fullName || !email || !password || !address || !age) {
         return NextResponse.json(
           { error: "All fields are required" },
-          { status: 400 }
+          { status: 400 } 
         );
       }
   
