@@ -5,8 +5,12 @@ import React, { useState } from 'react';
 import { signupFunction } from '@/app/services/userService';
 import GoogleSignInButton from '@/app/components/GoogleButton';
 import SomeDatails from '@/app/components/SomeDatails';
+import { useRouter } from "next/navigation";
+
 
 const signup = () => {
+
+    const router = useRouter();
 
     const [userData, setUserData] = useState<{ fullName: string; email: string; password: string; } | null>(null);
 
@@ -14,11 +18,20 @@ const signup = () => {
         setUserData({ fullName, email, password }); // מעדכן את ה-state
     };
 
-    const handleCompleteDetails = (age: number, address: string) => {
+    const handleCompleteDetails = async (age: number, address: string) => {
         if (userData?.fullName && userData.email && userData.password) {
             console.log(userData, age, address);
-            
-            const token = signupFunction(userData?.fullName, userData?.email, userData?.password, age, address, false);
+
+            try {
+                const token = await signupFunction(userData?.fullName, userData?.email, userData?.password, age, address, false);
+                console.log(token);
+                if (token) {
+                    router.push("/");
+                }
+            } catch {
+                console.error("Failed to connect");
+            }
+
         }
     }
 
