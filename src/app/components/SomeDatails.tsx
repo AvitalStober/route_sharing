@@ -25,7 +25,6 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
         address: "",
     });
     const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
-    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: `${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`,
