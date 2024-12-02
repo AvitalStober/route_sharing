@@ -1,4 +1,4 @@
-import Route from "@/app/types/routes";
+import IRoute from "@/app/types/routes";
 import mongoose, { Model, Schema } from "mongoose";
 
 const LatLngLiteralSchema: Schema = new Schema({
@@ -6,7 +6,7 @@ const LatLngLiteralSchema: Schema = new Schema({
   lng: { type: Number, required: true },
 });
 
-const RoutesSchema: Schema<Route> = new Schema({
+const RoutesSchema: Schema<IRoute> = new Schema({
   ownerId: { type: Schema.Types.ObjectId, required: true },
   pointsArray: { type: [LatLngLiteralSchema], required: true },
   description: { type: String, required: true },
@@ -15,7 +15,7 @@ const RoutesSchema: Schema<Route> = new Schema({
   gallery: { type: [String], required: true },
 });
 
-const Routes: Model<Route> =
+const Routes: Model<IRoute> =
   mongoose.models.routes || mongoose.model("routes", RoutesSchema);
 
 export default Routes;
