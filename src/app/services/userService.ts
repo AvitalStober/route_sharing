@@ -1,8 +1,8 @@
 import axios from "axios";
 import IUser from "../types/users";
 
-const url = "http://localhost:3000";
-// const url = "https://route-sharing-bsd7.vercel.app";
+// const url = "http://localhost:3000";
+const url = "https://route-sharing-bsd7.vercel.app";
 
 export const signupFunction = (fullName: string, email: string, password: string, age: number, address: string, googleUser:boolean): Promise<IUser | null> => {
     
