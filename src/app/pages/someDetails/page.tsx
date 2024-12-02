@@ -1,5 +1,5 @@
 import CardMap from "@/app/components/CardMap";
-// import SomeDetails from "@/app/components/SomeDetails";
+import SomeDetails from "@/app/components/SomeDetails";
 import React from "react";
 
 const page = () => {
@@ -9,7 +9,7 @@ const page = () => {
   ];
   return (
     <>
-      {/* <SomeDetails /> */}
+      <SomeDetails />
       <CardMap points={points} />
     </>
   );
