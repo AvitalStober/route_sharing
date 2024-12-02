@@ -4,9 +4,9 @@ import jwt from 'jsonwebtoken';
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
 //יצירת טוקן
-export const generateToken = (id: string, email: string, name:string, age: number, address: string, isGoogleUser:boolean) => {
+export const generateToken = (id: string, email: string, name:string, address: string, googleUser: boolean) => {
     return jwt.sign(
-      {id: id, email: email, name: name, age: age, address: address, isGoogleUser: isGoogleUser },
+      {id: id, email: email, name: name, address: address, isGoogleUser: googleUser },
       SECRET_KEY, 
       { expiresIn: '2h' } 
     );

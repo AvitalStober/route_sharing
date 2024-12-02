@@ -1,18 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import SignUpFormProps from "@/app/types/props/SignUpFormProps";
+import SignUpFormProps from "../types/props/SignUpFormProps";
 
-const SignUpForm: React.FC<SignUpFormProps> = ({ onSubmit }) => {
+const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [age, setAge] = useState("");
-  const [address, setAddress] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(fullName, email, password, age, address);
+    onContinue(fullName, email, password); // מעביר את הנתונים לקומפוננטת ההשלמה
   };
 
   return (
@@ -56,37 +54,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onSubmit }) => {
           className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div>
-        <label htmlFor="age" className="block text-sm font-medium text-gray-700">
-          Age
-        </label>
-        <input
-          id="age"
-          type="number"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
-          required
-          className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div>
-        <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-          Address
-        </label>
-        <input
-          id="address"
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
-          className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
       <button
         type="submit"
         className="w-full px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       >
-        Sign Up
+        Continue
       </button>
     </form>
   );

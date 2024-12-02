@@ -2,16 +2,18 @@ import axios from "axios";
 import IUser from "../types/users";
 
 // const url = "http://localhost:3000";
-const url = "https://users-bay.vercel.app";
+const url = "https://route-sharing-bsd7.vercel.app";
 
-export const signup = (username: string, email: string, password: string, age: number, address: string): Promise<IUser | null> => {
+export const signupFunction = (fullName: string, email: string, password: string, age: number, address: string, googleUser:boolean): Promise<IUser | null> => {
+    
     return axios
         .post(`${url}/api/signup`, {
-            username,
+            fullName,
             email,
             password,
             age,
-            address
+            address,
+            googleUser
         })
         .then(response => response.data) // במקרה של הצלחה, החזרת הנתונים מהשרת
         .catch(error => {
@@ -21,15 +23,14 @@ export const signup = (username: string, email: string, password: string, age: n
 };
 
 
-export const login = (email: string, password: string): Promise<IUser | null> => {
+export const loginFunction = (email: string, password: string): Promise<IUser | null> => {
     return axios
         .post(`${url}/api/login`, { email, password })
-        .then(response => response.data.user) 
+        .then(response => response.data) 
         .catch(error => {
             console.error('Login error:', error.response?.data || error.message);
             return null; 
         });
 };
 
-export default login;
 

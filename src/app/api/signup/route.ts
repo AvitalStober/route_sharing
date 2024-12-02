@@ -10,7 +10,8 @@ export async function POST(request: Request) {
       console.log('Receiving signup request...');
       // קבלת הנתונים מהבקשה
       const { fullName, email, password , address, age} = await request.json();
-  
+     console.log(fullName, email, password , address, age);
+     
       // בדיקה אם כל השדות הוזנו
       if (!fullName || !email || !password || !address || !age) {
         return NextResponse.json(
@@ -40,11 +41,11 @@ export async function POST(request: Request) {
         password: hashedPassword,
         age,
         address,
-        isGoogleUser: false,
+        googleUser: false,
       });
   
       //יצירת טוקן
-      const token = generateToken(newUser._id.toString(), newUser.email, newUser.fullName, newUser.age, newUser.address, newUser.isGoogleUser);
+      const token = generateToken(newUser._id.toString(), newUser.email, newUser.fullName, newUser.address, newUser.googleUser);
   
       return NextResponse.json(
         { message: "User created successfully", token },

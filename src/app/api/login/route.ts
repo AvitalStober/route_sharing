@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connect from "@/app/lib/DB/connectDB"; // עדכן את הנתיב בהתאם למבנה הפרויקט שלך
 import User from "@/app/lib/models/userModel"; // עדכן את הנתיב בהתאם למבנה הפרויקט שלך
 import bcrypt from "bcrypt"; // ודא שהתקנת את bcrypt עם `npm install bcrypt`
+import { generateToken } from "@/app/functions/tokenFunction";
 
 
 export async function POST(request: Request) {
@@ -27,7 +28,8 @@ export async function POST(request: Request) {
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
+        console.log(isPasswordCorrect, "pass");
+        
         if (!isPasswordCorrect) {
             return NextResponse.json(
                 { error: true, message: "Invalid credentials" },
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
             );
         }
 
-        const token = generateToken(user._id.toString(), user.email, user.fullName);
+        const token = generateToken(user._id.toString(), user.email, user.fullName, user.address, user.googleUser);
 
         return NextResponse.json(
             { error: false, message: "Login successful", token },
