@@ -4,7 +4,7 @@ import SignUpForm from '@/app/components/SignupForm';
 import React, { useState } from 'react';
 import { signupFunction } from '@/app/services/userService';
 import GoogleSignInButton from '@/app/components/GoogleButton';
-import SomeDatails from '@/app/components/SomeDatails';
+import SomeDatails from '@/app/components/SomeDetails';
 import { useRouter } from "next/navigation";
 
 
