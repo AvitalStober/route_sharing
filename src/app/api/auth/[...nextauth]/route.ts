@@ -98,11 +98,11 @@ const handler = NextAuth({
         }
 
         // יצירת טוקן עבור המשתמש החדש או הקיים
-        const token = jwt.sign(
-          { id: user.id, email: user.email, name: user.name },
-          SECRET_KEY,
-          { expiresIn: "1h" }
-        );
+        // const token = jwt.sign(
+        //   { id: user.id, email: user.email, name: user.name },
+        //   SECRET_KEY,
+        //   { expiresIn: "1h" }
+        // );
 
         return true; // הצלחה בהתחברות
       } catch (error) {
