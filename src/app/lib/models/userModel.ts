@@ -7,6 +7,7 @@ const UsersSchema: Schema<IUser> = new Schema({
   email: { type: String, required: true },
   age: { type: Number, required: true },
   address: { type: String, required: true },
+  googleUser: { type: Boolean, required: true },
   historyRoutes: { type: [Schema.Types.ObjectId], required: true },
 });
 

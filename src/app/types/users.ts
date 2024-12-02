@@ -6,5 +6,6 @@ export default interface IUser{
     email:string;
     age:number;
     address:string;
+    googleUser:boolean;
     historyRoutes:[Types.ObjectId];
 }
