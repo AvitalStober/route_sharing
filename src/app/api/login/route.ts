@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import connect from "@/app/lib/DB/connectDB"; // עדכן את הנתיב בהתאם למבנה הפרויקט שלך
-import User from "@/app/lib/models/userModel"; // עדכן את הנתיב בהתאם למבנה הפרויקט שלך
-import bcrypt from "bcrypt"; // ודא שהתקנת את bcrypt עם `npm install bcrypt`
+import connect from "@/app/lib/DB/connectDB"; 
+import User from "@/app/lib/models/userModel"; 
+import bcrypt from "bcrypt"; 
 import { generateToken } from "@/app/functions/tokenFunction";
 
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import User from "@/app/lib/models/userModel"; // וודא שהנתיב מתאים למיקום הקובץ
-import connect from "@/app/lib/DB/connectDB"; // פונקציה שמחברת ל-MongoDB
+import User from "@/app/lib/models/userModel"; 
+import connect from "@/app/lib/DB/connectDB"; 
 import { generateToken } from "@/app/functions/tokenFunction";
 
 
