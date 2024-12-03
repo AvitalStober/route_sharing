@@ -2,12 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { getRoutesByOwner } from "@/app/services/routeService";
 import Route from "@/app/types/routes";
-import Cards from "./Cards";
+// import Cards from "./Cards";
 import useStore from "@/app/store/store";
-
+import RouteCard from "./RouteCard";
+interface StoreState {
+  token?: { id: string };
+  // Add other properties of the store state if needed
+}
 const Routes = () => {
   const [ownerRoutes, setOwnerRoutes] = useState<Route[]>([]); // עדכון לסוג מערך של Routes
-  const token = useStore((state) => state.token?.id);
+  const token = useStore((state:StoreState) => state.token?.id);
   console.log("routes by owner", token);
   const userId = token || "";
 
@@ -25,7 +29,7 @@ const Routes = () => {
 
   return (
     <div>
-      <Cards ownerRoutes={ownerRoutes} />
+      <RouteCard ownerRoutes={ownerRoutes} />
     </div>
   );
 };
