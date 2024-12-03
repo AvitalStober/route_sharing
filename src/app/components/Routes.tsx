@@ -21,7 +21,7 @@ const Routes = () => {
       }
     };
     FetchUserRoutes();
-  }, []);
+  }, [userId]);
 
   return (
     <div>
