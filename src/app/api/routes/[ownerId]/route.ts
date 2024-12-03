@@ -1,11 +1,12 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
 import User from "@/app/lib/models/userModel";
+import { Params } from "next/dist/server/request/params";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { ownerId: string; }; }
+  { params }: { params: Params }
 ) {
   try {
     await connect();
