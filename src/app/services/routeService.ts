@@ -23,7 +23,7 @@ export const getAllRoutes = async () => {
   }
 };
 
-export const getRoutesByOwner = async (ownerId: string | undefined) => {
+export const getRoutesByOwner = async (ownerId: string) => {
   try {
     const response = await axios.get(`${url}/api/routes/${ownerId}`);
     return response.data;
