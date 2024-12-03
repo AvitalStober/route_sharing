@@ -33,12 +33,13 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
 import User from "@/app/lib/models/userModel";
+import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 
 // מסלול GET
 export async function GET(
   request: Request,
-  { params }: { params: { ownerId: string } }
+  { params }: { params: { ownerId: Types.ObjectId } }
 ) {
   try {
     // התחברות למסד הנתונים
