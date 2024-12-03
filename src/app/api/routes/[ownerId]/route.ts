@@ -12,7 +12,8 @@ export async function GET(
     await connect();
 
     // שליפת ownerId מתוך context.params
-    const { ownerId } = params.params;
+    const { ownerId } = await params.params;
+    console.log("ownerId",ownerId);
 
     if (!ownerId) {
       return NextResponse.json(
@@ -38,8 +39,6 @@ export async function GET(
     );
   }
 }
-
-
 
 // import connect from "@/app/lib/DB/connectDB";
 // import Route from "@/app/lib/models/routeModel";
