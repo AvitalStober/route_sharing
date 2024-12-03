@@ -2,7 +2,7 @@ import axios from "axios";
 import Route from "../types/users";
 
 // const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app"
+const url = "https://route-sharing-bsd7.vercel.app";
 export const addRoute = async (newRoute: Route) => {
   try {
     const response = await axios.post(`${url}/api/routes`, newRoute);
@@ -23,8 +23,12 @@ export const getAllRoutes = async () => {
   }
 };
 
-export const getRoutesByOwner = async (ownerId: string) => {
+export const getRoutesByOwner = async (ownerId: string | undefined) => {
   try {
+    if (ownerId) {
+      console.error("Owner ID is missing from the token");
+      return; 
+    }
     const response = await axios.get(`${url}/api/routes/${ownerId}`);
     return response.data;
   } catch (error) {

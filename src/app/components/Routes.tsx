@@ -8,12 +8,16 @@ import useStore from "@/app/store/store";
 const Routes = () => {
   const [ownerRoutes, setOwnerRoutes] = useState<Route[]>([]); // עדכון לסוג מערך של Routes
   const token = useStore((state) => state.token?.id);
-  console.log("routes by owner",token);
-  const userId = token || '';
+  console.log("routes by owner", token);
+  const userId = token || "";
 
   useEffect(() => {
     const FetchUserRoutes = async () => {
       try {
+        if (userId) {
+          console.error("Owner ID is missing from the token");
+          return;
+        }
         const ownerR = await getRoutesByOwner(userId);
         setOwnerRoutes(ownerR);
       } catch (error) {
