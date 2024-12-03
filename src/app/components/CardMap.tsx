@@ -1,4 +1,4 @@
-"use client"
+"use client";
 // כל כרטיס מכיל מפה של המסלול שלו
 // עמוד זה משרטט מסלול על מפה אחת
 // קלט: מערך של נקודות ציון
@@ -7,7 +7,7 @@
 import React, { useState } from "react";
 import {
   GoogleMap,
-  LoadScript,
+  //   LoadScript,
   Marker,
   DirectionsRenderer,
 } from "@react-google-maps/api";
@@ -69,37 +69,43 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
     setHours(calculatedHours);
     setMinutes(calculatedMinutes);
 
-    console.log(`הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`);
+    console.log(
+      `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
+    );
   };
 
   return (
     <>
       <button onClick={calculateRoute}>calculateRoute</button>
 
-      <LoadScript googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}>
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={center}
-          zoom={12}
-        >
-          {points.map((point, index) => (
-            <Marker key={index} position={point} />
-          ))}
-          {directions && (
-            <DirectionsRenderer
-              directions={directions}
-              options={{
-                polylineOptions: {
-                  strokeColor: "#FF0000",
-                  strokeOpacity: 0.8,
-                  strokeWeight: 2,
-                },
-              }}
-            />
-          )}
-        </GoogleMap>
-      </LoadScript>
-      <p>הזמן הכולל להליכה: {hours} שעות, {minutes} דקות</p>
+      {/* <LoadScript
+        googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}
+      > */}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={12}
+      >
+        {points.map((point, index) => (
+          <Marker key={index} position={point} />
+        ))}
+        {directions && (
+          <DirectionsRenderer
+            directions={directions}
+            options={{
+              polylineOptions: {
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+              },
+            }}
+          />
+        )}
+      </GoogleMap>
+      {/* </LoadScript> */}
+      <p>
+        הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
+      </p>
     </>
   );
 };

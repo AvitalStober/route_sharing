@@ -59,14 +59,6 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
             return;
         }
 
-        // if (!formData.address) {
-        //   setErrors((prev) => ({
-        //     ...prev,
-        //     address: "יש להזין כתובת תקינה מגוגל מפות",
-        //   }));
-        //   return;
-        // }
-
         onSubmit(parseInt(formData.age), formData.address);
     };
 
