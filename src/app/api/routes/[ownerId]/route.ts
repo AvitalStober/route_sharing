@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  context: { params: { ownerId: string } } // הגדרה נכונה של טיפוס params
+  params: { params: { ownerId: string } } // הגדרה נכונה של טיפוס params
 ) {
   try {
     // התחברות למסד הנתונים
     await connect();
 
     // שליפת ownerId מתוך context.params
-    const { ownerId } = context.params;
+    const { ownerId } = params.params;
 
     if (!ownerId) {
       return NextResponse.json(
