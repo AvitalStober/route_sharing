@@ -23,7 +23,7 @@ export const getAllRoutes = async () => {
   }
 };
 
-export const getRoutesByOwner = async (ownerId: string | undefined) => {
+export const getRoutesByOwner = async (ownerId: string) => {
   try {
     if (ownerId) {
       console.error("Owner ID is missing from the token");
