@@ -25,7 +25,7 @@ const Routes = () => {
 
   return (
     <div>
-      <Cards ownerRoutes={ownerRoutes} />
+      <Cards Routes={ownerRoutes} />
     </div>
   );
 };

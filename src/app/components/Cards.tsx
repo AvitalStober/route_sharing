@@ -1,4 +1,3 @@
-
 // עמוד זה מקבל מערך של טיפוס מסלול
 // מוצגים כרטיסים
 // כל כרטיס מכיל את המידע הרלוונטי על המסלול
@@ -6,19 +5,21 @@
 
 import React from "react";
 import CardMap from "./CardMap";
-import RouteCardProps from "../types/‎RouteCardProps"
+import RouteCardProps from "../types/‎RouteCardProps";
 
-const RouteCard: React.FC<RouteCardProps> = ({ ownerRoutes }) => {
+const RouteCard: React.FC<RouteCardProps> = ({ Routes }) => {
   return (
     <div>
       <h2 className="text-3xl font-bold mb-6">Owners Routes</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {ownerRoutes.map((route, index) => (
+        {Routes.map((route, index) => (
           <div
             key={index}
             className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <CardMap points={route.pointsArray} />
+            <p>rate: {route.rate}</p>
+            <p>numRate: {route.ratingNum}</p>
             <a
               href="#"
               className="inline-flex font-medium items-center text-blue-600 hover:underline mt-4"

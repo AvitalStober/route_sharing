@@ -34,7 +34,6 @@ export const signupFunction = (
         id: decodedToken.id,
         email: decodedToken.email,
         name: decodedToken.name,
-        address: decodedToken.address,
       };
 
       setToken(userToken);
@@ -63,7 +62,6 @@ export const loginFunction = (
         id: decodedToken.id,
         email: decodedToken.email,
         name: decodedToken.name,
-        address: decodedToken.address,
       };
 
       setToken(userToken);
@@ -74,8 +72,6 @@ export const loginFunction = (
       return null;
     });
 };
-
-// export const addUser = async (newUser: IUser) => {
 //   try {
 //     const response = await axios.post(`${url}/api/users`, newUser);
 //     return response.data;
