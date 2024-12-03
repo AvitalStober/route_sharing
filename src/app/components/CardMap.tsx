@@ -1,4 +1,4 @@
-"use client"
+"use client";
 // כל כרטיס מכיל מפה של המסלול שלו
 // עמוד זה משרטט מסלול על מפה אחת
 // קלט: מערך של נקודות ציון
@@ -61,22 +61,31 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
       totalTimeInSeconds += leg.duration!.value;
     });
 
-    // המרת הזמן לשעות, דקות ושניות
     const calculatedHours = Math.floor(totalTimeInSeconds / 3600); // שעות
     const calculatedMinutes = Math.floor((totalTimeInSeconds % 3600) / 60); // דקות
 
-    // עדכון הסטייט של השעות והדקות
     setHours(calculatedHours);
     setMinutes(calculatedMinutes);
 
-    console.log(`הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`);
+    console.log(
+      `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
+    );
   };
 
   return (
     <>
-      <button onClick={calculateRoute}>calculateRoute</button>
+      <div className="flex justify-center">
+        <button
+          onClick={calculateRoute}
+          className="mb-4  px-4 py-2 bg-blue-600 text-white font-medium text-sm rounded-lg shadow hover:bg-blue-700 hover:shadow-lg transition duration-300"
+        >
+          חישוב מסלול וזמן הליכה
+        </button>
+      </div>
 
-      <LoadScript googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}>
+      <LoadScript
+        googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}
+      >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={center}
@@ -99,7 +108,9 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
           )}
         </GoogleMap>
       </LoadScript>
-      <p>הזמן הכולל להליכה: {hours} שעות, {minutes} דקות</p>
+      <p>
+        הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
+      </p>
     </>
   );
 };
