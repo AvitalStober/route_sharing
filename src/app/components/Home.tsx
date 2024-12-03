@@ -125,8 +125,8 @@ const Home = () => {
               className="px-4 py-2 border rounded"
             />
           </div>
-          {/* <h1>קו רוחב: {mapAddress?.lat}</h1>
-          <h1>קו אורך: {mapAddress?.lng}</h1> */}
+          <h1>קו רוחב: {mapAddress?.lat}</h1>
+          <h1>קו אורך: {mapAddress?.lng}</h1>
           <RouteCard ownerRoutes={ownerRoutes} />
           {/* <CardMap points={points} /> */}
         </>
