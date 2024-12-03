@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     await connect();
-    const { ownerId } = params;
+    const { ownerId } = await params;
     console.log(ownerId);
 
     const user = await User.findById(ownerId);

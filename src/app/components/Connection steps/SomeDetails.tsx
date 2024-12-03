@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { z } from "zod";
-import SomeDetailsProps from "../types/props/SomeDetailsProps";
+import SomeDetailsProps from "../../types/props/SomeDetailsProps";
 
 const formSchema = z.object({
   age: z.string().refine(
