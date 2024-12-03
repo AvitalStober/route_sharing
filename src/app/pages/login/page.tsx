@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import LoginForm from "@/app/components/LoginForm";
-import GoogleSignInButton from "@/app/components/GoogleButton";
+import LoginForm from "@/app/components/Connection steps/LoginForm";
+import GoogleSignInButton from "@/app/components/Connection steps/GoogleButton";
 import { loginFunction } from "@/app/services/userService";
 
 const Login: React.FC = () => {
