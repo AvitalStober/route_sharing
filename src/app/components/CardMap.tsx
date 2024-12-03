@@ -7,7 +7,7 @@
 import React, { useState } from "react";
 import {
   GoogleMap,
-  LoadScript,
+  //   LoadScript,
   Marker,
   DirectionsRenderer,
 } from "@react-google-maps/api";
@@ -70,6 +70,9 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
     console.log(
       `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
     );
+    console.log(
+      `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
+    );
   };
 
   return (
@@ -83,31 +86,31 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
         </button>
       </div>
 
-      <LoadScript
+      {/* <LoadScript
         googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}
+      > */}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={12}
       >
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={center}
-          zoom={12}
-        >
-          {points.map((point, index) => (
-            <Marker key={index} position={point} />
-          ))}
-          {directions && (
-            <DirectionsRenderer
-              directions={directions}
-              options={{
-                polylineOptions: {
-                  strokeColor: "#FF0000",
-                  strokeOpacity: 0.8,
-                  strokeWeight: 2,
-                },
-              }}
-            />
-          )}
-        </GoogleMap>
-      </LoadScript>
+        {points.map((point, index) => (
+          <Marker key={index} position={point} />
+        ))}
+        {directions && (
+          <DirectionsRenderer
+            directions={directions}
+            options={{
+              polylineOptions: {
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+              },
+            }}
+          />
+        )}
+      </GoogleMap>
+      {/* </LoadScript> */}
       <p>
         הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
       </p>

@@ -46,14 +46,14 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
     setErrors({});
     const validationResult = formSchema.safeParse(formData);
 
-    if (!validationResult.success) {
-      const fieldErrors = validationResult.error.format();
-      setErrors({
-        age: fieldErrors.age?._errors[0],
-        address: fieldErrors.address?._errors[0],
-      });
-      return;
-    }
+        if (!validationResult.success) {
+            const fieldErrors = validationResult.error.format();
+            setErrors({
+                age: fieldErrors.age?._errors[0],
+                address: fieldErrors.address?._errors[0],
+            });
+            return;
+        }
 
     onSubmit(parseInt(formData.age), formData.address);
   };
