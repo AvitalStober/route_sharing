@@ -34,11 +34,11 @@ import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
 import User from "@/app/lib/models/userModel";
 import { Types } from "mongoose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // מסלול GET
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { ownerId: Types.ObjectId } }
 ) {
   try {
@@ -46,7 +46,7 @@ export async function GET(
     await connect();
 
     // שליפת ownerId מתוך params
-    const { ownerId } = params;
+    const { ownerId } = await params;
     console.log("Owner ID:", ownerId);
 
     // בדיקה אם המשתמש קיים
