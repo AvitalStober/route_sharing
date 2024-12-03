@@ -14,10 +14,6 @@ const Routes = () => {
   useEffect(() => {
     const FetchUserRoutes = async () => {
       try {
-        if (userId) {
-          console.error("Owner ID is missing from the token");
-          return;
-        }
         const ownerR = await getRoutesByOwner(userId);
         setOwnerRoutes(ownerR);
       } catch (error) {
