@@ -1,16 +1,24 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
 import User from "@/app/lib/models/userModel";
-import { Params } from "next/dist/server/request/params";
+// import { Params } from "next/dist/server/request/params";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Params }
+  context: { params: { ownerId: string } } // הגדרת context בצורה נכונה
 ) {
   try {
+    // התחברות למסד הנתונים
     await connect();
-    const { ownerId } = await params;
+
+    // גישה לפרמטרים מתוך context
+    const { ownerId } = context.params;
+    //   { params }: { params: Params }
+    // ) {
+    //   try {
+    //     await connect();
+    //     const { ownerId } = await params;
     console.log(ownerId);
 
     const user = await User.findById(ownerId);
