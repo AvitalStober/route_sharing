@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import SignUpFormProps from "../../types/props/SignUpFormProps";
+import SignUpFormProps from "@/app/types/props/SignUpFormProps";
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
   const [fullName, setFullName] = useState("");
