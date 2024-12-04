@@ -1,8 +1,8 @@
 import axios from "axios";
 import Route from "../types/users";
 
-// const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app";
+const url = "http://localhost:3000";
+// const url = "https://route-sharing-bsd7.vercel.app";
 
 export const addRoute = async (newRoute: Route) => {
   try {

@@ -1,10 +1,10 @@
 'use client'
 
-import SignUpForm from '@/app/components/Connection steps/SignupForm';
+import SignUpForm from '@/app/components/ConnectionSteps/SignupForm';
 import React, { useState } from 'react';
 import { signupFunction } from '@/app/services/userService';
-import GoogleSignInButton from '@/app/components/Connection steps/GoogleButton';
-import SomeDatails from '@/app/components/Connection steps/SomeDetails';
+import GoogleSignInButton from '@/app/components/ConnectionSteps/GoogleButton';
+import SomeDatails from '@/app/components/ConnectionSteps/SomeDetails';
 import { useRouter } from "next/navigation";
 
 
