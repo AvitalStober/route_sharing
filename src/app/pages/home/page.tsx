@@ -1,12 +1,12 @@
 import Footer from "@/app/components/Footer";
-import Home from "@/app/components/Home";
+import AddressSearch from "@/app/components/AddressSearch";
 import Routes from "@/app/components/Routes";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <Home />
+      <AddressSearch />
       <Routes />
       <Footer />
     </div>
