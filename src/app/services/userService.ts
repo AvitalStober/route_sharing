@@ -7,7 +7,7 @@ import { Token } from "../types/storeState";
 const url = "http://localhost:3000";
 // const url = "https://route-sharing-bsd7.vercel.app";
 
-export const signupFunction = (
+export const signupFunction = async (
   fullName: string,
   email: string,
   password: string,
@@ -15,7 +15,7 @@ export const signupFunction = (
   address: string,
   googleUser: boolean
 ): Promise<IUser | null> => {
-  return axios
+  return await axios
     .post(`${url}/api/signup`, {
       fullName,
       email,
@@ -46,11 +46,11 @@ export const signupFunction = (
     });
 };
 
-export const loginFunction = (
+export const loginFunction = async (
   email: string,
   password: string
 ): Promise<IUser | null> => {
-  return axios
+  return await axios
     .post(`${url}/api/login`, { email, password })
     .then((response) => {
       const { setToken } = useStore.getState();
