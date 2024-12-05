@@ -24,12 +24,33 @@ export const getAllRoutes = async () => {
   }
 };
 
-export const getRoutesByOwner = async (ownerId: string | undefined) => {
+export const getRoutesById = async (routeId: string | undefined) => {
   try {
-    const response = await axios.get(`${url}/api/routes/${ownerId}`);
+    const response = await axios.get(`${url}/api/routes/${routeId}`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching routes by owner:", error);
+    console.error("Error fetching routes by route id:", error);
     throw error;
   }
 };
+
+export const getRoutesByOwnerId = async (ownerId: string | undefined) => {
+  try {
+    const response = await axios.get(`${url}/api/routes/ownerId/${ownerId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching routes by owner id:", error);
+    throw error;
+  }
+};
+
+export const getRoutesInYourArea = async (address: string) => {
+  try {
+    const response = await axios.post(`${url}/api/routesByAddress`, { address });
+    return response.data.routes; 
+  } catch (error) {
+    console.error("Error fetching routes:", error);
+    throw new Error("Could not fetch routes. Please try again later.");
+  }
+};
+

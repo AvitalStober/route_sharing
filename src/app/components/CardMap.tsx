@@ -1,19 +1,13 @@
-"use client";
-// כל כרטיס מכיל מפה של המסלול שלו
-// עמוד זה משרטט מסלול על מפה אחת
-// קלט: מערך של נקודות ציון
-// פלט: תצוגה של המסלול המבוקש על גבי מפה
-
 import React, { useState } from "react";
 import {
   GoogleMap,
-  //   LoadScript,
+  LoadScript,
   Marker,
   DirectionsRenderer,
 } from "@react-google-maps/api";
 
 const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
-  points,
+  points = [], // נותנים ערך ברירת מחדל ריק למערך
 }) => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
@@ -22,10 +16,14 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
 
+  // הגדרת סגנון המפה
   const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
+
+  // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
   const calculateRoute = () => {
+    // אם אין מספיק נקודות למסלול
     if (points.length < 2) {
       alert("עליך לבחור לפחות שתי נקודות למסלול.");
       return;
@@ -70,9 +68,6 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
     console.log(
       `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
     );
-    console.log(
-      `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
-    );
   };
 
   return (
@@ -89,28 +84,33 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
       {/* <LoadScript
         googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}
       > */}
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={center}
-        zoom={12}
-      >
-        {points.map((point, index) => (
-          <Marker key={index} position={point} />
-        ))}
-        {directions && (
-          <DirectionsRenderer
-            directions={directions}
-            options={{
-              polylineOptions: {
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-              },
-            }}
-          />
-        )}
-      </GoogleMap>
-      {/* </LoadScript> */}
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
+          zoom={12}
+        >
+          {/* אם יש נקודות, נציג את המיקומים */}
+          {points.length > 0 ? (
+            points.map((point, index) => (
+              <Marker key={index} position={point} />
+            ))
+          ) : (
+            <p>אין נקודות למסלול</p> // אם אין נקודות, נראה הודעה
+          )}
+          {directions && (
+            <DirectionsRenderer
+              directions={directions}
+              options={{
+                polylineOptions: {
+                  strokeColor: "#FF0000",
+                  strokeOpacity: 0.8,
+                  strokeWeight: 2,
+                },
+              }}
+            />
+          )}
+        </GoogleMap>
+      {/* </LoadScripst> */}
       <p>
         הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
       </p>

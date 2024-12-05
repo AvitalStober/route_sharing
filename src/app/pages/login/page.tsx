@@ -17,7 +17,7 @@ const Login: React.FC = () => {
       console.log(token);
       
       if (token) {
-        router.push("/"); 
+        router.push("/pages/home"); 
       } else {
         setError("Invalid email or password");
       }
