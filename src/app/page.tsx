@@ -8,5 +8,5 @@ export default function Home() {
   console.log(token);
   
 
-  return <Link href={"/pages/FilteredRoute"}>link</Link>;
+  return <Link href={"/pages/home"}>link</Link>;
 }

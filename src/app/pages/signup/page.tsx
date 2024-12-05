@@ -26,7 +26,7 @@ const Signup = () => {
                 const token = await signupFunction(userData?.fullName, userData?.email, userData?.password, age, address, false);
                 console.log(token);
                 if (token) {
-                    router.push("/pages/FilteredRoute");
+                    router.push("/pages/home");
                 }
             } catch {
                 console.error("Failed to connect");

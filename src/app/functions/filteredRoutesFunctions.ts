@@ -20,6 +20,7 @@ export const fetchHistoryRoutes = async (
     console.error("User not found");
     return;
   }
+  console.log(user);
 
   const historyRoutes: Route[] = [];  // מערך שיכיל את כל המסלולים המלאים
 
@@ -45,6 +46,7 @@ export const FetchOwnerRoutes = async (
   setSelectedRoute("myRoutes");
   try {
     const ownerR = await getRoutesByOwnerId(userToken.id);
+    
     setRoutes(ownerR);
   } catch (error) {
     console.error("Error fetching user routes:", error);

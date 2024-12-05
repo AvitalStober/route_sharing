@@ -81,9 +81,9 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
         </button>
       </div>
 
-      <LoadScript
+      {/* <LoadScript
         googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}
-      >
+      > */}
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
@@ -110,7 +110,7 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
             />
           )}
         </GoogleMap>
-      </LoadScript>
+      {/* </LoadScripst> */}
       <p>
         הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
       </p>
