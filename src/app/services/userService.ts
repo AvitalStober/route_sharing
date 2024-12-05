@@ -4,8 +4,8 @@ import useStore from "@/app/store/store";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "../types/storeState";
 
-// const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app";
+const url = "http://localhost:3000";
+// const url = "https://route-sharing-bsd7.vercel.app";
 
 export const signupFunction = (
   fullName: string,
@@ -37,6 +37,7 @@ export const signupFunction = (
       };
 
       setToken(userToken);
+      localStorage.setItem("userToken", JSON.stringify(userToken));
       return response.data;
     })
     .catch((error) => {
@@ -54,7 +55,6 @@ export const loginFunction = (
     .then((response) => {
       const { setToken } = useStore.getState();
 
-      // פענוח התוקן
       const decodedToken = jwtDecode<Token>(response.data.token);
       console.log("decodedToken", decodedToken.id);
 
@@ -65,6 +65,7 @@ export const loginFunction = (
       };
 
       setToken(userToken);
+      localStorage.setItem("userToken", JSON.stringify(userToken));
       return response.data;
     })
     .catch((error) => {
@@ -88,5 +89,46 @@ export const getAllUsers = async () => {
   } catch (error) {
     console.error("Error get users:", error);
     throw error;
+  }
+};
+
+export const getUserById = async (userId: string) => {
+  try {
+    const response = await fetch(`/api/users/${userId}`, {
+      method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data.user;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
+};
+
+export const addHistoryRoute = async (userId:string, routeId:string) => {
+  try {
+    const response = await fetch(`/api/users`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, routeId }), // שליחת המידע לבקשה
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Route added successfully:", data);
+      return data; // החזרת התשובה (אם צריך להשתמש בה מאוחר יותר)
+    } else {
+      console.error("Error adding route:", data.message);
+      throw new Error(data.message); // טיפול בשגיאה
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+    throw new Error("Failed to add route");
   }
 };

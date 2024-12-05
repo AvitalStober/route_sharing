@@ -1,9 +1,3 @@
-"use client";
-// כל כרטיס מכיל מפה של המסלול שלו
-// עמוד זה משרטט מסלול על מפה אחת
-// קלט: מערך של נקודות ציון
-// פלט: תצוגה של המסלול המבוקש על גבי מפה
-
 import React, { useState } from "react";
 import {
   GoogleMap,
@@ -13,7 +7,7 @@ import {
 } from "@react-google-maps/api";
 
 const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
-  points,
+  points = [], // נותנים ערך ברירת מחדל ריק למערך
 }) => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
@@ -22,10 +16,14 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
 
+  // הגדרת סגנון המפה
   const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
+
+  // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
   const calculateRoute = () => {
+    // אם אין מספיק נקודות למסלול
     if (points.length < 2) {
       alert("עליך לבחור לפחות שתי נקודות למסלול.");
       return;
@@ -88,12 +86,17 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
       >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
-          center={center}
+          center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
           zoom={12}
         >
-          {points.map((point, index) => (
-            <Marker key={index} position={point} />
-          ))}
+          {/* אם יש נקודות, נציג את המיקומים */}
+          {points.length > 0 ? (
+            points.map((point, index) => (
+              <Marker key={index} position={point} />
+            ))
+          ) : (
+            <p>אין נקודות למסלול</p> // אם אין נקודות, נראה הודעה
+          )}
           {directions && (
             <DirectionsRenderer
               directions={directions}

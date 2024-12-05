@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.4.0",
     "@react-google-maps/api": "^2.20.3",
     "@types/google.maps": "^3.58.1",
+    "@types/googlemaps": "^3.43.3",
     "axios": "^1.7.8",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",

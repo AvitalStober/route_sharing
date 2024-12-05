@@ -1,16 +1,35 @@
-// עמוד זה מקבל מערך של טיפוס מסלול
-// מוצגים כרטיסים
-// כל כרטיס מכיל את המידע הרלוונטי על המסלול
-// כל כרטיס נשלח לקטמפוננטה MapComponent לשרטוט המסלול
-
-import React from "react";
+import React, { useState } from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/‎RouteCardProps";
+import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
 
-const RouteCard: React.FC<RouteCardProps> = ({ Routes }) => {
+const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
+  const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
+
+  // פונקציה ללחיצה על הכפתור
+  const handleSelectRoute = (routeId: string) => {
+    setSelectedRoutes((prevSelectedRoutes) => {
+      const updatedRoutes = new Set(prevSelectedRoutes);
+      if (updatedRoutes.has(routeId)) {
+        updatedRoutes.delete(routeId); // אם המסלול כבר נבחר, מסירים אותו
+      } else {
+        updatedRoutes.add(routeId); // אם לא, מוסיפים אותו
+        addRouteToHistoryRoute(routeId); // מוסיף את המסלול להיסטוריה
+      }
+      return updatedRoutes;
+    });
+  };
+  // טיפול בשגיאה אם המערך ריק
+  if (!Routes || Routes.length === 0) {
+    return (
+      <div className="text-center p-6 text-red-500">
+        <p>No routes available</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <h2 className="text-3xl font-bold mb-6">Owners Routes</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {Routes.map((route, index) => (
           <div
@@ -20,27 +39,21 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes }) => {
             <CardMap points={route.pointsArray} />
             <p>rate: {route.rate}</p>
             <p>numRate: {route.ratingNum}</p>
-            <a
-              href="#"
-              className="inline-flex font-medium items-center text-blue-600 hover:underline mt-4"
-            >
-              See details
-              <svg
-                className="w-3 h-3 ms-2.5 rtl:rotate-[270deg]"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 18 18"
+            {filtered === 1 && (
+              <button
+                onClick={() => handleSelectRoute(route._id as string)}
+                className={`mt-4 px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 ${
+                  selectedRoutes.has(route._id as string)
+                    ? "bg-green-600 text-white hover:bg-green-700 cursor-not-allowed"
+                    : "bg-green-500 text-white hover:bg-green-600"
+                }`}
+                disabled={selectedRoutes.has(route._id as string)} // אם המסלול נבחר, הכפתור יהיה לא מאופשר
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"
-                />
-              </svg>
-            </a>
+                {selectedRoutes.has(route._id as string)
+                  ? "Selected"
+                  : "Select Route"}
+              </button>
+            )}
           </div>
         ))}
       </div>

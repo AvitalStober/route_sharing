@@ -15,7 +15,7 @@ const Signup = () => {
     const [userData, setUserData] = useState<{ fullName: string; email: string; password: string; } | null>(null);
 
     const handleSignUp = (fullName: string, email: string, password: string) => {
-        setUserData({ fullName, email, password }); // מעדכן את ה-state
+        setUserData({ fullName, email, password }); 
     };
 
     const handleCompleteDetails = async (age: number, address: string) => {
@@ -26,7 +26,7 @@ const Signup = () => {
                 const token = await signupFunction(userData?.fullName, userData?.email, userData?.password, age, address, false);
                 console.log(token);
                 if (token) {
-                    router.push("/");
+                    router.push("/pages/FilteredRoute");
                 }
             } catch {
                 console.error("Failed to connect");
