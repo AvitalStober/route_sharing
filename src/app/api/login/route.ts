@@ -37,7 +37,7 @@ export async function POST(request: Request) {
             );
         }
 
-        const token = generateToken(user._id.toString(), user.email, user.fullName, user.address, user.googleUser);
+        const token = generateToken(user._id.toString(), user.email, user.fullName, user.googleUser);
 
         return NextResponse.json(
             { error: false, message: "Login successful", token },

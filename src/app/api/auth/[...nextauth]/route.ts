@@ -1,128 +1,66 @@
-// import NextAuth from "next-auth";
-// import GoogleProvider from "next-auth/providers/google";
-// import connect from "@/app/lib/DB/connectDB";
-// import User from "@/app/lib/models/userModel"; // מודל המשתמש שלך
-
-// console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-// console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
-
-// const handler = NextAuth({
-//   providers: [
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID!, // שם משתנה תואם ל-.env
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-//       authorization: {
-//         params: {
-//           prompt: 'select_account', // מאפשר בחירת חשבון Google כל פעם
-//         },
-//       },
-//     }),
-//   ],
-//   secret: process.env.NEXTAUTH_SECRET, // סוד לאימות
-
-//   callbacks: {
-//     async signIn({ user }) {
-//       await connect(); // חיבור למסד הנתונים
-//       try {
-//         const existingUser = await User.findOne({ email: user.email });
-//         if (!existingUser) {
-//           await User.create({
-//             fullName: user.name,
-//             email: user.email,
-//             password: "", // משתמש Google לא צריך סיסמה
-//             googleUser: true, // מזהה שמדובר במשתמש Google
-//           });
-//           console.log("New user created:", user);
-//         } else {
-//           console.log("User already exists:", user);
-//         }
-//         return true; // הצלחה בהתחברות
-//       } catch (error) {
-//         console.error("Error during sign-in:", error);
-//         return false; // כשלון בהתחברות
-//       }
-//     },
-
-//     async session({ session, token }) {
-//       return session;
-//     },
-
-//     async redirect({ url, baseUrl }) {
-//       if (url.startsWith(baseUrl)) {
-//         return url;
-//       }
-//       return baseUrl;
-//     },
-//   },
-// });
-
-// export { handler as GET, handler as POST };
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import connect from "@/app/lib/DB/connectDB";
-import User from "@/app/lib/models/userModel"; 
-// import jwt from "jsonwebtoken"; 
+import User from "@/app/lib/models/userModel";
+import { generateToken } from "@/app/functions/tokenFunction";
 
-// const SECRET_KEY = process.env.NEXTAUTH_SECRET || ""; 
+// מגדירים את הסוד עבור NextAuth
+const SECRET_KEY = process.env.NEXTAUTH_SECRET || "";
 
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!, // שם משתנה תואם ל-.env
+      clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          prompt: 'select_account', // מאפשר בחירת חשבון Google כל פעם
+          prompt: "select_account", // מאפשר בחירת חשבון Google כל פעם
         },
       },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET, // סוד לאימות
+  secret: SECRET_KEY,
 
   callbacks: {
-    async signIn({ user }) {
-      await connect(); // חיבור למסד הנתונים
-      try {
+    // יצירת טוקן חדש או עדכון טוקן קיים
+    async jwt({ token, user }) {
+      await connect();
+
+      if (user) {
         const existingUser = await User.findOne({ email: user.email });
-        
+
         if (!existingUser) {
-          await User.create({
+          const newUser = await User.create({
             fullName: user.name,
             email: user.email,
-            password: "", // משתמש Google לא צריך סיסמה
-            googleUser: true, // מזהה שמדובר במשתמש Google
+            password: "",
+            googleUser: true,
           });
-          console.log("New user created:", user);
+
+          token.id = newUser._id.toString();
+          token.email = newUser.email;
+          token.name = newUser.fullName;
+          token.token = generateToken(newUser._id.toString(), newUser.email, newUser.fullName, newUser.googleUser);
         } else {
-          console.log("User already exists:", user);
+          token.id = existingUser._id.toString();
+          token.email = existingUser.email;
+          token.name = existingUser.fullName;
+          token.token = generateToken(existingUser._id.toString(),existingUser.email,existingUser.fullName,existingUser.googleUser);
         }
-
-        // יצירת טוקן עבור המשתמש החדש או הקיים
-        // const token = jwt.sign(
-        //   { id: user.id, email: user.email, name: user.name },
-        //   SECRET_KEY,
-        //   { expiresIn: "1h" }
-        // );
-
-        return true; // הצלחה בהתחברות
-      } catch (error) {
-        console.error("Error during sign-in:", error);
-        return false; // כשלון בהתחברות
       }
+      return token;
     },
 
-    async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
+    // עדכון ה-session עם ה-token
+    async session({ session, token }) {
+      // הוספת הטוקן ל-session.user
+      session.user.token = token.token as string | null; // הוספנו את ההמרה כאן
+      return session;
+    },
 
-      // נוודא שהמשתמש ינותב לדף הבית אם הוא קיים
-      const user = await User.findOne({ email: url });
-      if (user) {
-        return `${baseUrl}`; // אם הוא קיים, הפנה לדף הבית
-      } else {
-        return `${baseUrl}/complete-details`; // אם הוא חדש, הפנה לדף הוספת פרטים
-      }
+    // טיפול בהפניות לאחר ההתחברות
+    async redirect({baseUrl}) {
+      return `${baseUrl}/pages/signup`;
     },
   },
 });

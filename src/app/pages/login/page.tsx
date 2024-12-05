@@ -27,6 +27,13 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleLoginGoogle = async (token: string | null) => {
+    if (token) {
+      //todo save token
+    }
+};
+
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
@@ -34,7 +41,7 @@ const Login: React.FC = () => {
         {error && <p className="text-sm text-red-600">{error}</p>}
         <LoginForm onSubmit={handleLogin} />
         <div className="text-center">
-          <GoogleSignInButton />
+          <GoogleSignInButton onSignIn={handleLoginGoogle}/>
         </div>
         <p className="mt-2 text-gray-700">
           Don&apos;t have an account? <a href="./signup" className="text-blue-500">Sign up</a>
