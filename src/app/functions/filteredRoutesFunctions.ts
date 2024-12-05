@@ -20,7 +20,6 @@ export const fetchHistoryRoutes = async (
     console.error("User not found");
     return;
   }
-  console.log(user);
 
   const historyRoutes: Route[] = [];  // מערך שיכיל את כל המסלולים המלאים
 

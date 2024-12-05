@@ -6,7 +6,7 @@ import {
   fetchRoutesInYourArea,
 } from "@/app/functions/filteredRoutesFunctions";
 import Route from "@/app/types/routes";
-import Cards from "@/app/components/Cards";
+import RouteCard from "@/app/components/RouteCard";
 
 const FilteredRoutes = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
@@ -53,9 +53,9 @@ const FilteredRoutes = () => {
         ></div>
       </div>
       <div>
-        {selectedRoute === "routes" && <Cards Routes={Routes} filtered={1} />}
-        {selectedRoute === "myRoutes" && <Cards Routes={Routes} filtered={2} />}
-        {selectedRoute === "history" && <Cards Routes={Routes} filtered={3} />}
+        {selectedRoute === "routes" && <RouteCard Routes={Routes} filtered={1} />}
+        {selectedRoute === "history" && <RouteCard Routes={Routes} filtered={2} />}
+        {selectedRoute === "myRoutes" && <RouteCard Routes={Routes} filtered={3} />}
       </div>
     </div>
   );
