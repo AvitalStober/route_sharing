@@ -1,14 +1,36 @@
 "use client";
 
 import { CldUploadButton } from "next-cloudinary";
+// import Image from "next/image";
 
 const cloudPresetName = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME;
 
-const CloudinaryUploader = () => {
+interface PictureProps {
+  pictures: string[]; // הערך הנוכחי
+  setPictures: React.Dispatch<React.SetStateAction<string[]>>; // פונקציית העדכון
+}
+
+// cloudinary.config({
+//   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+//   api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
+// });
+// interface CloudinaryImage {
+//   asset_id: string;
+//   secure_url: string;
+//   height: number;
+//   width: number;
+// }
+
+const CloudinaryUploader: React.FC<PictureProps> = ({
+  // pictures,
+  setPictures,
+}) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleUpload = (result: any) => {
     if (result?.info) {
       const imageUrl = result.info.secure_url;
+      setPictures((prevInfo: string[]) => [...prevInfo, imageUrl]);
       console.log("Uploaded image URL:", imageUrl);
       alert(`Image uploaded! URL: ${imageUrl}`);
     }
@@ -23,11 +45,12 @@ const CloudinaryUploader = () => {
         }}
         uploadPreset={cloudPresetName}
         onSuccessAction={handleUpload}
-        className="bg-green-400 py-2 px-3 rounded border mt-4 text-white
-        hover:bg-green-500 transition ease-in-out delay-200"
+        className="bg-orange-400 py-2 px-3 items-center rounded border m-2 text-white
+        hover:bg-orange-500 transition ease-in-out delay-200"
       >
         <span className="text-2xl">Upload Images</span>
       </CldUploadButton>
+
     </div>
   );
 };
