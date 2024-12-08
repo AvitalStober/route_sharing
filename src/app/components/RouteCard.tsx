@@ -29,6 +29,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <CardMap points={route.pointsArray} />
+            <Star selected={true} onClick={handleStarClick}/>
 
             {filtered === 1 && (
               <button
