@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/‎RouteCardProps";
 import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
