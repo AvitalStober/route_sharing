@@ -28,7 +28,10 @@ const Map = () => {
     useState<google.maps.DirectionsResult | null>(null);
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
 
-  const userFromLocal = localStorage.getItem("userToken");
+  let userFromLocal;
+  if (typeof window !== "undefined") {
+    userFromLocal = localStorage.getItem("userToken");
+  }
   const userData = JSON.parse(userFromLocal!);
 
   const router = useRouter();
