@@ -5,9 +5,11 @@ import FilteredRoutes from "@/app/components/FilteredRoutes";
 
 const page = () => {
   return (
-    <div>
-      <AddressSearch />
-      <FilteredRoutes />
+    <div className="min-h-screen flex flex-col">
+      <main className="flex-grow">
+        <AddressSearch />
+        <FilteredRoutes />
+      </main>
       <Footer />
     </div>
   );

@@ -37,7 +37,9 @@ export const signupFunction = async (
       };
 
       setToken(userToken);
-      localStorage.setItem("userToken", JSON.stringify(userToken));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("userToken", JSON.stringify(userToken));
+      }
       return response.data;
     })
     .catch((error) => {
@@ -65,7 +67,9 @@ export const loginFunction = async (
       };
 
       setToken(userToken);
-      localStorage.setItem("userToken", JSON.stringify(userToken));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("userToken", JSON.stringify(userToken));
+      }
       return response.data;
     })
     .catch((error) => {
@@ -108,7 +112,7 @@ export const getUserById = async (userId: string) => {
   }
 };
 
-export const addHistoryRoute = async (userId:string, routeId:string) => {
+export const addHistoryRoute = async (userId: string, routeId: string) => {
   try {
     const response = await fetch(`/api/users`, {
       method: "PUT",

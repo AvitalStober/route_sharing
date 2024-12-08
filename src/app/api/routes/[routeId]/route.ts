@@ -21,20 +21,55 @@ export async function GET(
   }
 }
 
-// export async function GET(
+export async function PUT(
+  request: Request,
+  { params }: { params: { routeId: string } }
+) {
+  try {
+    await connect();
+
+    const { routeId } = params; 
+    const { rate: newRate } = await request.json(); 
+
+    console.log("Route ID:", routeId);
+    console.log("New Rate:", newRate);
+
+    const route = await Route.findOne({ _id: routeId });
+    if (!route) {
+      return NextResponse.json(
+        { error: "Route not found" },
+        { status: 404 }
+      );
+    }
+
+    const newUpdateRate =
+      (route.rate * route.ratingNum + newRate) / (route.ratingNum + 1);
+
+    route.rate = newUpdateRate;
+    route.ratingNum = route.ratingNum + 1;
+
+    await route.save();
+
+    return NextResponse.json(route, { status: 200 });
+  } catch (error) {
+    console.error("Error updating route:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+// export async function PUT(
 //   request: Request,
-//   { params }: { params: { ownerId: string } }
+//   { params }: { params: { routeId: string } }
 // ) {
 //   try {
 //     await connect();
-//     const { ownerId } = await params;
-//     console.log(ownerId);
+//     const { routeId } = await params;
+//     console.log(routeId);
 
-//     const user = await User.findById(ownerId);
-//     if (!user) {
-//       return NextResponse.json({ message: "User not found" }, { status: 404 });
-//     }
-//     const routes = await Route.find({ ownerId: ownerId });
+//     const routes = await Route.find({ ownerId: routeId });
 //     return NextResponse.json(routes, { status: 200 });
 //   } catch (error) {
 //     console.error("Error fetching routes:", error);
