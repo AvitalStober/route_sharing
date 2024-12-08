@@ -1,27 +1,34 @@
-"use client";
-import { useState } from "react";
-import "@/app/style/star.css";
+import React from "react";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
+import StarProps from "@/app/types/starProps";
 
-import { Rating } from "@smastrom/react-rating";
-
-function Star() {
-  const [rating, setRating] = useState(0);
-
-  function onChange(newValue: number) {
-    console.log(newValue);
-    setRating(newValue);
-  }
-
+const Star: React.FC<StarProps> = ({ selected, onClick }) => {
+  
   return (
-    <div className="App">
-      <Rating
-        style={{ maxWidth: 180 }}
-        value={rating}
-        onChange={onChange}
-        transition="zoom"
-      />
-    </div>
+    <>
+      {selected ? (
+        <div className="inline-block hover:cursor-pointer">
+          <FontAwesomeIcon
+            icon={faStar}
+            color={"gold"}
+            className="w-6 h-6"
+            onClick={onClick}
+          />
+        </div>
+      ) : (
+        <div className="inline-block hover:cursor-pointer">
+          <FontAwesomeIcon
+            icon={regularStar}
+            color={"gold"}
+            className="w-6 h-6"
+            onClick={onClick}
+          />
+        </div>
+      )}
+    </>
   );
-}
+};
 
 export default Star;

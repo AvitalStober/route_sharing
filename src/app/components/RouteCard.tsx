@@ -16,6 +16,10 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     );
   }
 
+  const handleStarClick = () => {
+    console.log("star");
+  };
+
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -25,7 +29,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <CardMap points={route.pointsArray} />
-            <Star />
 
             {filtered === 1 && (
               <button
