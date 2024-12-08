@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import { addRoute } from "../services/routeService";
 import CloudinaryUploader from "./CloudinaryUploader";
 import Image from "next/image";
+import { getUserToken } from "../functions/usersFunctions";
 
 const Map = () => {
-  const [userData, setUserData] = useState({id: '', email: '', name: ''});
   const [description, setDescription] = useState("");
   const [pictures, setPictures] = useState<string[]>([]);
   const [address, setAddress] = useState(""); // לשמור את הכתובת
@@ -28,12 +28,6 @@ const Map = () => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
-
-  let userFromLocal: string;
-  if (typeof window !== "undefined") {
-    userFromLocal = localStorage.getItem("userToken")!;
-  }
-  setUserData(JSON.parse(userFromLocal!));
 
   const router = useRouter();
 
@@ -125,7 +119,7 @@ const Map = () => {
         });
 
         addRoute({
-          ownerId: userData.id,
+          ownerId: getUserToken()!.id,
           pointsArray: allRoutePoints,
           description: description,
           gallery: pictures,
