@@ -1,10 +1,10 @@
 import axios from "axios";
-import Route from "../types/users";
+import PartialRoute from "../types/RouteAddingProps";
 
 const url = "http://localhost:3000";
 // const url = "https://route-sharing-bsd7.vercel.app";
 
-export const addRoute = async (newRoute: Route) => {
+export const addRoute = async (newRoute: PartialRoute) => {
   try {
     const response = await axios.post(`${url}/api/routes`, newRoute);
     return response.data;
