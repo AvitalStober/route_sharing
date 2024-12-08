@@ -3,7 +3,7 @@ import IUser from "../types/users";
 import useStore from "@/app/store/store";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "../types/storeState";
-import IRoute from "../types/routes";
+// import IRoute from "../types/routes";
 
 const url = "http://localhost:3000";
 // const url = "https://route-sharing-bsd7.vercel.app";
@@ -35,7 +35,6 @@ export const signupFunction = async (
         id: decodedToken.id,
         email: decodedToken.email,
         name: decodedToken.name,
-        address: decodedToken.address,
       };
 
       setToken(userToken);
@@ -45,12 +44,12 @@ export const signupFunction = async (
       console.error("Signup error:", error);
       return null;
     });
-
+};
 
 export const loginFunction = async (
   email: string,
   password: string
-): Promise<IUser | null> => {
+): Promise<Token | null> => {
   return await axios
     .post(`${url}/api/login`, { email, password })
     .then((response) => {
@@ -64,7 +63,6 @@ export const loginFunction = async (
         id: decodedToken.id,
         email: decodedToken.email,
         name: decodedToken.name,
-        address: decodedToken.address,
       };
 
       setToken(userToken);
@@ -96,6 +94,16 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getUserById = async (userId: string) : Promise<IUser | null> => {
+  try {
+    const response = await axios.get(`${url}/api/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching user with ID ${userId}:`, error);
+    throw error; // ניתן לזרוק את השגיאה או להחזיר ערך ריק לטיפול ברמת הקריאה
+  }
+};
+
 export const updateUserData = async (token: string, password?: string, age?: number, fullName?: string, address?: string, historyRoutes: string[] = []) => {
   try {
     // יצירת אובייקט שמכיל רק את השדות שצורפו
@@ -113,7 +121,7 @@ export const updateUserData = async (token: string, password?: string, age?: num
     }
 
     // שליחת הבקשה לשרת
-    const response = await axios.put('/api/user/update', 
+    const response = await axios.put('/api/signup', 
       updateData,
       {
         headers: {

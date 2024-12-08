@@ -1,68 +1,95 @@
 import NextAuth from "next-auth";
+import { Account, User as AuthUser } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import connect from "@/app/lib/DB/connectDB";
+import bcrypt from "bcryptjs";
 import User from "@/app/lib/models/userModel";
-import { generateToken } from "@/app/functions/tokenFunction";
+import connect from "@/app/lib/DB/connectDB";
 
-// מגדירים את הסוד עבור NextAuth
-const SECRET_KEY = process.env.NEXTAUTH_SECRET || "";
-
-const handler = NextAuth({
+export const authOptions: any = {
+  // Configure one or more authentication providers
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          prompt: "select_account", // מאפשר בחירת חשבון Google כל פעם
-        },
+    CredentialsProvider({
+      id: "credentials",
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials: any) {
+        await connect();
+        try {
+          const user = await User.findOne({ email: credentials.email });
+          if (user) {
+            const isPasswordCorrect = await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
+            if (isPasswordCorrect) {
+              return user;
+            }
+          }
+        } catch (err: any) {
+          throw new Error(err);
+        }
       },
     }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID ?? "",
+      clientSecret: process.env.GITHUB_SECRET ?? "",
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID ?? "",
+      clientSecret: process.env.GOOGLE_SECRET ?? "",
+    }),
   ],
-  secret: SECRET_KEY,
-
   callbacks: {
-    // יצירת טוקן חדש או עדכון טוקן קיים
-    async jwt({ token, user }) {
-      await connect();
+    async signIn({ user, account }: { user: AuthUser; account: Account }) {
+      if (account?.provider == "credentials") {
+        return true;
+      }
+      if (account?.provider == "github") {
+        await connect();
+        try {
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new User({
+              email: user.email,
+            });
 
-      if (user) {
-        const existingUser = await User.findOne({ email: user.email });
-
-        if (!existingUser) {
-          const newUser = await User.create({
-            fullName: user.name,
-            email: user.email,
-            password: "",
-            googleUser: true,
-          });
-
-          token.id = newUser._id.toString();
-          token.email = newUser.email;
-          token.name = newUser.fullName;
-          token.token = generateToken(newUser._id.toString(), newUser.email, newUser.fullName, newUser.googleUser);
-        } else {
-          token.id = existingUser._id.toString();
-          token.email = existingUser.email;
-          token.name = existingUser.fullName;
-          token.token = generateToken(existingUser._id.toString(),existingUser.email,existingUser.fullName,existingUser.googleUser);
+            await newUser.save();
+            return true;
+          }
+          return true;
+        } catch (err) {
+          console.log("Error saving user", err);
+          return false;
         }
       }
-      return token;
-    },
 
-    // עדכון ה-session עם ה-token
-    async session({ session, token }) {
-      // הוספת הטוקן ל-session.user
-      session.user.token = token.token as string | null; // הוספנו את ההמרה כאן
-      return session;
-    },
+      if(account?.provider == "google"){
+        await connect();
+        try {
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new User({
+              email: user.email,
+            });
 
-    // טיפול בהפניות לאחר ההתחברות
-    async redirect({baseUrl}) {
-      return `${baseUrl}/pages/signup`;
+            await newUser.save();
+            return true;
+          }
+          return true;
+        } catch (err) {
+          console.log("Error saving user", err);
+          return false;
+        }
+      }
+
     },
   },
-});
+};
 
+export const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

@@ -47,3 +47,25 @@ export async function GET() {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
+
+
+export async function DELETE(request: Request) {
+  try {
+    console.log('Deleting all users...');
+
+    // מחיקת כל המשתמשים
+    await User.deleteMany({});
+
+    return NextResponse.json(
+      { message: "All users deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting all users:", error);
+    const err = error as Error;
+    return NextResponse.json(
+      { error: "Internal server error", details: err.message },
+      { status: 500 }
+    );
+  }
+}

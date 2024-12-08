@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     });
 
     //יצירת טוקן
-    const token = generateToken(newUser._id.toString(), newUser.email, newUser.fullName, newUser.googleUser);
+    const token = generateToken(newUser._id.toString(), newUser.email, newUser.fullName);
 
     return NextResponse.json(
       { message: "User created successfully", token },
@@ -93,18 +93,10 @@ export async function PUT(request: Request) {
     // קריאת נתוני הבקשה
     const { fullName, age, address, password, historyRoutes } = await request.json();
 
-    // // בדיקת בעלות על הבקשה
-    // if (email !== tokenEmail) {
-    //   return NextResponse.json(
-    //     { error: "You are not authorized to update this user" },
-    //     { status: 403 }
-    //   );
-    // }
-
     await connect(); // התחברות ל-MongoDB
 
     // מציאת המשתמש לפי האימייל
-    const existingUser = await User.findById(decodedToken.userId);
+    const existingUser = await User.findById(decodedToken.id);
     if (!existingUser) {
       return NextResponse.json(
         { error: "User not found" },
@@ -124,12 +116,13 @@ export async function PUT(request: Request) {
     if (historyRoutes) updatedFields.historyRoutes = historyRoutes;
 
     // עדכון המשתמש ב-DB
-    const updatedUser = await User.findOneAndUpdate(
-      { tokenEmail },
+    const updatedUser = await User.findByIdAndUpdate(
+      { id: decodedToken.id },
       { $set: updatedFields },
       { new: true } // מחזיר את הערך המעודכן
     );
-
+    console.log(updatedUser);
+    
     return NextResponse.json(
       { message: "User updated successfully", updatedUser },
       { status: 200 }

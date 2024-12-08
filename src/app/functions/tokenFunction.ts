@@ -1,26 +1,20 @@
 import jwt from 'jsonwebtoken';
+import { Token } from '../types/storeState';
 
 
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
 //יצירת טוקן
-export const generateToken = (id: string, email: string, fullName: string, googleUser: boolean) => {
+export const generateToken = (id: string, email: string, fullName: string) => {
   return jwt.sign(
-    { id: id, email: email, fullName: fullName, isGoogleUser: googleUser },
+    { id: id, email: email, fullName: fullName},
     SECRET_KEY,
     { expiresIn: '1h' }
   );
 };
 
-interface DecodedToken {
-  userId: string;
-  email: string;
-  fullName: string;
-  googleUser: boolean;
-}
-
 // הפונקציה לאימות הטוקן
-export const verifyToken = (token: string): DecodedToken => {
+export const verifyToken = (token: string): Token => {
 
   try {
     // מאמת את הטוקן ומפענח אותו
@@ -28,7 +22,7 @@ export const verifyToken = (token: string): DecodedToken => {
 
     // המרה ל-DecodedToken, assuming the token contains userId, email, and fullName
     if (typeof decoded === 'object' && decoded !== null) {
-      return decoded as DecodedToken; // המרה לבטיחות ל-DecodedToken
+      return decoded as Token; // המרה לבטיחות ל-DecodedToken
     } else {
       throw new Error('Invalid token format');
     }
@@ -39,14 +33,14 @@ export const verifyToken = (token: string): DecodedToken => {
 };
 
 
-export const decodeToken = (token: string | null): DecodedToken | null => {
+export const decodeToken = (token: string | null): Token | null => {
   if (token) {
     try {
       // פענוח הטוקן
       const decoded = jwt.decode(token); // decode עושה פיענוח טוקן בלי לבדוק את החתימה
       console.log("Decoded Token:", decoded);
-      decoded as DecodedToken;
-      return decoded as DecodedToken;
+      decoded as Token;
+      return decoded as Token;
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;

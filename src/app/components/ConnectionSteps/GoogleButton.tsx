@@ -8,15 +8,14 @@ interface GoogleSignInButtonProps {
 }
 
 const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({ onSignIn }) => {
-  const { data: session, status } = useSession();
   const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    // עדכון הטוקן אם הוא קיים ב-session
-    if (session?.user?.token) {
-      setToken(session.user.token); // עדכון הסטייט עם הטוקן החדש
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   // עדכון הטוקן אם הוא קיים ב-session
+  //   if (session?.user?.token) {
+  //     setToken(session.user.token); // עדכון הסטייט עם הטוקן החדש
+  //   }
+  // }, [session]);
 
   useEffect(() => {
     // רק כשיש טוקן חדש, תשלח אותו לפונקציה
