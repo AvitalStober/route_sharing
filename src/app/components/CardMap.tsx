@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  DirectionsRenderer,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
 
 const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
@@ -81,36 +76,30 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
         </button>
       </div>
 
-      {/* <LoadScript
-        googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY}`}
-      > */}
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
-          zoom={12}
-        >
-          {/* אם יש נקודות, נציג את המיקומים */}
-          {points.length > 0 ? (
-            points.map((point, index) => (
-              <Marker key={index} position={point} />
-            ))
-          ) : (
-            <p>אין נקודות למסלול</p> // אם אין נקודות, נראה הודעה
-          )}
-          {directions && (
-            <DirectionsRenderer
-              directions={directions}
-              options={{
-                polylineOptions: {
-                  strokeColor: "#FF0000",
-                  strokeOpacity: 0.8,
-                  strokeWeight: 2,
-                },
-              }}
-            />
-          )}
-        </GoogleMap>
-      {/* </LoadScripst> */}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
+        zoom={12}
+      >
+        {/* אם יש נקודות, נציג את המיקומים */}
+        {points.length > 0 ? (
+          points.map((point, index) => <Marker key={index} position={point} />)
+        ) : (
+          <p>אין נקודות למסלול</p> // אם אין נקודות, נראה הודעה
+        )}
+        {directions && (
+          <DirectionsRenderer
+            directions={directions}
+            options={{
+              polylineOptions: {
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+              },
+            }}
+          />
+        )}
+      </GoogleMap>
       <p>
         הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
       </p>
