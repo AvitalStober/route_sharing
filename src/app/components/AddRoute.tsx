@@ -12,6 +12,7 @@ import CloudinaryUploader from "./CloudinaryUploader";
 import Image from "next/image";
 
 const Map = () => {
+  const [userData, setUserData] = useState({id: '', email: '', name: ''});
   const [description, setDescription] = useState("");
   const [pictures, setPictures] = useState<string[]>([]);
   const [address, setAddress] = useState(""); // לשמור את הכתובת
@@ -32,7 +33,7 @@ const Map = () => {
   if (typeof window !== "undefined") {
     userFromLocal = localStorage.getItem("userToken");
   }
-  const userData = JSON.parse(userFromLocal!);
+  setUserData(JSON.parse(userFromLocal!));
 
   const router = useRouter();
 
