@@ -29,9 +29,9 @@ const Map = () => {
     useState<google.maps.DirectionsResult | null>(null);
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
 
-  let userFromLocal;
+  let userFromLocal: string;
   if (typeof window !== "undefined") {
-    userFromLocal = localStorage.getItem("userToken");
+    userFromLocal = localStorage.getItem("userToken")!;
   }
   setUserData(JSON.parse(userFromLocal!));
 
