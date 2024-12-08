@@ -17,7 +17,7 @@ const FilteredRoutes = () => {
   }, []);
 
   return (
-    <div>
+    <div className=" mt-auto">
       <div className="flex mb-6 relative text-right">
         <div
           onClick={() => fetchRoutesInYourArea(setSelectedRoute, setRoutes)}
