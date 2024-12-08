@@ -5,7 +5,7 @@ import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
-  const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
+  // const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
 
   // טיפול בשגיאה אם המערך ריק
   if (!Routes || Routes.length === 0) {
