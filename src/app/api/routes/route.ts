@@ -6,15 +6,13 @@ export async function POST(request: Request) {
   try {
     await connect();
 
-    const { ownerId, pointsArray, description, rate, ratingNum, gallery } =
+    const { ownerId, pointsArray, description, gallery } =
       await request.json();
 
     const newRoute = new Route({
       ownerId: ownerId,
       pointsArray: pointsArray,
       description: description,
-      rate: rate,
-      ratingNum: ratingNum,
       gallery: gallery
     });
 

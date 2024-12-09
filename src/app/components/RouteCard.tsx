@@ -138,12 +138,14 @@ import {
   raiting,
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
+import { useRouter } from "next/navigation";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
     [routeId: string]: number;
   }>({});
 
+  const router = useRouter();
   // טיפול בשגיאה אם המערך ריק
   if (!Routes || Routes.length === 0) {
     return (
@@ -169,7 +171,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   };
 
   return (
-    <div>
+    <div className="m-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {Routes.map((route, index) => (
           <div
@@ -189,6 +191,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
                 handleStarClick(route._id as string, newRate)
               }
             />
+
             {filtered === 1 && (
               <div className="mt-2">
                 <button
@@ -201,6 +204,16 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             )}
           </div>
         ))}
+        {filtered === 3 && (
+          <button
+            onClick={() => {
+              router.push('/pages/addRoute');
+            }}
+            className={`m-4 px-6 py-3 text-6xl text-center font-bold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-80 bg-blue-500 bg-opacity-75 text-white hover:bg-blue-600 hover:bg-opacity-80`}
+          >
+            +
+          </button>
+        )}
       </div>
     </div>
   );
