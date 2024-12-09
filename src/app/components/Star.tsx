@@ -117,4 +117,4 @@ const Star: React.FC<StarProps> = ({ rate, filtered, onClick }) => {
   );
 };
 
-// export default Star;
+export default Star;
