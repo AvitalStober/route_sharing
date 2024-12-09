@@ -2,11 +2,13 @@ import React from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/‎RouteCardProps";
 import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
-import Star from "@/app/components/Star";
+import { useRouter } from "next/navigation";
+// import Star from "@/app/components/Star";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   // const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
 
+  const router = useRouter();
   // טיפול בשגיאה אם המערך ריק
   if (!Routes || Routes.length === 0) {
     return (
@@ -16,12 +18,12 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     );
   }
 
-  const handleStarClick = () => {
-    console.log("star");
-  };
+  // const handleStarClick = () => {
+  //   console.log("star");
+  // };
 
   return (
-    <div>
+    <div className="m-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {Routes.map((route, index) => (
           <div
@@ -29,7 +31,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <CardMap points={route.pointsArray} />
-            <Star selected={true} onClick={handleStarClick}/>
+            {/* <Star selected={true} onClick={handleStarClick}/> */}
 
             {filtered === 1 && (
               <button
@@ -41,6 +43,16 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             )}
           </div>
         ))}
+        {filtered === 3 && (
+          <button
+            onClick={() => {
+              router.push('/pages/addRoute');
+            }}
+            className={`m-4 px-6 py-3 text-6xl text-center font-bold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-80 bg-blue-500 bg-opacity-75 text-white hover:bg-blue-600 hover:bg-opacity-80`}
+          >
+            +
+          </button>
+        )}
       </div>
     </div>
   );

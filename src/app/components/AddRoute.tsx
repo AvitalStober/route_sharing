@@ -1,36 +1,43 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import CloudinaryUploader from "./CloudinaryUploader";
+import Image from "next/image";
 import {
   GoogleMap,
   DirectionsRenderer,
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { useRouter } from "next/navigation";
-import { addRoute } from "../services/routeService";
-import CloudinaryUploader from "./CloudinaryUploader";
-import Image from "next/image";
-import { getUserToken } from "../functions/usersFunctions";
+import {
+  calculateRoute,
+  handleMapClick,
+  resetMap,
+} from "../functions/addRouteFunctions";
 
-const Map = () => {
+const AddRoute = () => {
+  // route/user information
   const [description, setDescription] = useState("");
   const [pictures, setPictures] = useState<string[]>([]);
+  // route details
   const [address, setAddress] = useState(""); // לשמור את הכתובת
+  const mapRef = useRef<google.maps.Map | null>(null); // ה-ref של המפה
+  const autocompleteRef = useRef<HTMLInputElement | null>(null); // ה-ref עבור ה-input של הכתובת
   const [center, setCenter] = useState<google.maps.LatLngLiteral>({
     lat: 32.0853,
     lng: 34.7818,
   });
-  const mapRef = useRef<google.maps.Map | null>(null); // ה-ref של המפה
-  const autocompleteRef = useRef<HTMLInputElement | null>(null); // ה-ref עבור ה-input של הכתובת
   const [routePoints, setRoutePoints] = useState<google.maps.LatLngLiteral[]>(
     []
   );
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
+  // make thw map disable after calaulate route
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
 
   const router = useRouter();
 
+  // map loading
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY || "",
     libraries: ["geometry", "places"],
@@ -74,128 +81,18 @@ const Map = () => {
     }
   }, [isLoaded]);
 
-  const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (disableMapClick) return;
-    if (event.latLng) {
-      const newPoint = { lat: event.latLng.lat(), lng: event.latLng.lng() };
-      setRoutePoints((prevPoints) => [...prevPoints, newPoint]);
-    }
-  };
-
-  const calculateRoute = () => {
-    if (routePoints.length < 2) {
-      alert("עליך לבחור לפחות שתי נקודות למסלול.");
-      return;
-    }
-
-    const directionsService = new google.maps.DirectionsService();
-    const request: google.maps.DirectionsRequest = {
-      origin: routePoints[0],
-      destination: routePoints[routePoints.length - 1],
-      waypoints: routePoints.slice(1, -1).map((point) => ({
-        location: point,
-        stopover: true,
-      })),
-      travelMode: google.maps.TravelMode.WALKING,
-    };
-
-    directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK && result) {
-        const allRoutePoints: google.maps.LatLngLiteral[] = [];
-        const route = result.routes[0];
-
-        allRoutePoints.push({
-          lat: route.legs[0].start_location.lat(),
-          lng: route.legs[0].start_location.lng(),
-        });
-
-        route.legs.forEach((leg) => {
-          leg.steps.forEach((step) => {
-            allRoutePoints.push({
-              lat: step.end_location.lat(),
-              lng: step.end_location.lng(),
-            });
-          });
-        });
-
-        addRoute({
-          ownerId: getUserToken()!.id,
-          pointsArray: allRoutePoints,
-          description: description,
-          gallery: pictures,
-        });
-
-        setDirections(result);
-        setDisableMapClick(true);
-        router.push("/pages/home");
-      } else {
-        alert("לא ניתן לחשב מסלול.");
-      }
-    });
-  };
-
-  // פונקציה להסרת ה-DirectionsRenderer מהמפה
-  const clearDirectionsRenderer = () => {
-    if (mapRef.current && directions) {
-      directions.routes.forEach((route) => {
-        route.overview_path.forEach((path) => {
-          const line = new google.maps.Polyline({
-            path: [path],
-            strokeColor: "red",
-            strokeOpacity: 0.8,
-            strokeWeight: 5,
-          });
-          line.setMap(mapRef.current);
-        });
-      });
-    }
-  };
-
-  const resetMap = () => {
-    console.log("reset route");
-
-    setRoutePoints([]);
-    setDirections(null);
-    clearDirectionsRenderer(); // מסיר את ה-DirectionsRenderer מהמפה
-    setDisableMapClick(false);
-  };
-
-  const handleAddressSubmit = () => {
-    const geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode({ address }, (results, status) => {
-      if (status === google.maps.GeocoderStatus.OK && results!.length > 0) {
-        const location = results![0].geometry.location;
-
-        setCenter({
-          lat: location.lat(),
-          lng: location.lng(),
-        });
-
-        setRoutePoints((prevPoints) => [
-          ...prevPoints,
-          { lat: location.lat(), lng: location.lng() },
-        ]);
-
-        if (mapRef.current) {
-          mapRef.current.setZoom(15);
-        }
-      } else {
-        alert("כתובת לא נמצאה, נסה שוב.");
-      }
-    });
-  };
-
   return (
     <div className="flex">
       <div className="justify-center w-[40%]">
+        <div
+          onClick={() => {
+            router.push("/pages/home");
+          }}
+          className="cursor-pointer font-bold rounded-lg m-2 p-2 w-[40px] bg-gray-100 hover:bg-gray-200 text-center"
+        >
+          ✕
+        </div>
         <div className="flex justify-center text-center items-center m-4 space-x-2">
-          <button
-            onClick={handleAddressSubmit}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            התחלה
-          </button>
           <input
             ref={autocompleteRef}
             type="text"
@@ -213,21 +110,38 @@ const Map = () => {
             className="px-4 py-2 border rounded"
           />
         </div>
+        <CloudinaryUploader setPictures={setPictures} />
         <div className="flex justify-center mb-2 space-x-2">
           <button
-            onClick={calculateRoute}
+            onClick={() =>
+              calculateRoute(
+                routePoints,
+                description,
+                pictures,
+                setDirections,
+                setDisableMapClick,
+                router
+              )
+            }
             className="px-4 py-2 bg-green-500 text-white rounded"
           >
-            חישוב מסלול
+            חישוב מסלול ושליחה
           </button>
           <button
-            onClick={resetMap}
+            onClick={() =>
+              resetMap(
+                setRoutePoints,
+                setDirections,
+                setDisableMapClick,
+                mapRef,
+                directions
+              )
+            }
             className="px-4 py-2 bg-red-500 text-white rounded"
           >
             איפוס מפה
           </button>
         </div>
-        <CloudinaryUploader pictures={pictures} setPictures={setPictures} />
 
         <div
           className="grid grid-cols-1 sm:grid-cols-2
@@ -257,7 +171,9 @@ const Map = () => {
           onLoad={(map) => {
             mapRef.current = map;
           }}
-          onClick={handleMapClick}
+          onClick={(event) =>
+            handleMapClick(event, disableMapClick, setRoutePoints)
+          }
         >
           {routePoints.map((point, index) => (
             <Marker key={index} position={point} />
@@ -282,4 +198,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default AddRoute;
