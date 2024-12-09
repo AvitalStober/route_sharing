@@ -35,8 +35,8 @@ export const getUserAddress = async () => {
     }
 
     return user.address;
-  } catch (error: any) {
-    console.error("Error fetching user address:", error.message || error);
+  } catch (error) {
+    console.error("Error fetching user address:", error);
     return null; 
   }
 };
