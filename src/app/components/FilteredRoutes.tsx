@@ -5,12 +5,13 @@ import {
   FetchOwnerRoutes,
   fetchRoutesInYourArea,
 } from "@/app/functions/filteredRoutesFunctions";
-import Route from "@/app/types/routes";
 import RouteCard from "@/app/components/RouteCard";
+import useStore from "@/app/store/store";
 
 const FilteredRoutes = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
-  const [Routes, setRoutes] = useState<Route[]>([]);
+  const Routes = useStore((state) => state.Routes); // גישה ל-Routes
+  const setRoutes = useStore((state) => state.setRoutes); // גישה לפונקציה setRoutes
 
   useEffect(() => {
     fetchRoutesInYourArea(setSelectedRoute, setRoutes);

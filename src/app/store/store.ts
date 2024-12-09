@@ -7,5 +7,7 @@ const useStore = create<StoreState>((set) => ({
     set({ token });
   },
   clearToken: () => set({ token: null }), // איפוס הערך
+  Routes: [],
+  setRoutes: (routes) => set((state) => ({ ...state, Routes: routes })),
 }));
 export default useStore;
