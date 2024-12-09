@@ -20,6 +20,8 @@ export const addRouteToHistoryRoute = (routeId: string) => {
 };
 
 export const raiting = async (routeId: string, newRate: number) => {
+  console.log(routeId, newRate);
+
   const updateRate = await editRoutes(routeId, newRate);
   return updateRate;
 };

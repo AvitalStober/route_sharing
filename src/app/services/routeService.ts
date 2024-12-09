@@ -56,8 +56,8 @@ export const getRoutesInYourArea = async (address: string) => {
 
 export const editRoutes = async (routeId: string, rate: number) => {
   try {
-    const response = await axios.put(`${url}/api/routesByAddress/${routeId}`, { rate });
-    console.log('Route updated:', response.data);
+    const response = await axios.put(`${url}/api/routes/${routeId}`, { rate });
+    return response.data;
   } catch (error) {
     console.error('Error updating route:', error);
   }

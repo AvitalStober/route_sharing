@@ -9,7 +9,6 @@ export async function GET(
   try {
     await connect();
     const { routeId } = await params;
-    console.log(routeId);
     const routes = await Route.find({ _id: routeId });
     return NextResponse.json(routes, { status: 200 });
   } catch (error) {
@@ -30,9 +29,6 @@ export async function PUT(
 
     const { routeId } = params; 
     const { rate: newRate } = await request.json(); 
-
-    console.log("Route ID:", routeId);
-    console.log("New Rate:", newRate);
 
     const route = await Route.findOne({ _id: routeId });
     if (!route) {

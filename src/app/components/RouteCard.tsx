@@ -1,84 +1,13 @@
-import React from "react";
-import CardMap from "./CardMap";
-import RouteCardProps from "../types/‎RouteCardProps";
-import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
-import Star from "@/app/components/Star";
-
-const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
-  // const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
-
-  // טיפול בשגיאה אם המערך ריק
-  if (!Routes || Routes.length === 0) {
-    return (
-      <div className="text-center p-6 text-red-500">
-        <p>No routes available</p>
-      </div>
-    );
-  }
-
-  const handleStarClick = () => {
-    console.log("star");
-  };
-
-  return (
-    <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {Routes.map((route, index) => (
-          <div
-            key={index}
-            className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-          >
-            <CardMap points={route.pointsArray} />
-            <Star selected={true} onClick={handleStarClick}/>
-
-            {filtered === 1 && (
-              <button
-                onClick={() => addRouteToHistoryRoute(route._id as string)}
-                className={`mt-4 px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 ${"bg-green-500 text-white hover:bg-green-600"}`}
-              >
-                Select Route
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default RouteCard;
-
-// import React, { useState } from "react";
+// import React from "react";
 // import CardMap from "./CardMap";
 // import RouteCardProps from "../types/‎RouteCardProps";
-// import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
+// import {
+//   addRouteToHistoryRoute,
+//   raiting,
+// } from "@/app/functions/cardsFunctions";
+// import Star from "@/app/components/Star";
 
 // const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
-//   const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
-//   const [ratings, setRatings] = useState<{ [key: string]: number }>({});
-
-//   // פונקציה ללחיצה על הכפתור
-//   const handleSelectRoute = (routeId: string) => {
-//     setSelectedRoutes((prevSelectedRoutes) => {
-//       const updatedRoutes = new Set(prevSelectedRoutes);
-//       if (updatedRoutes.has(routeId)) {
-//         updatedRoutes.delete(routeId); // אם המסלול כבר נבחר, מסירים אותו
-//       } else {
-//         updatedRoutes.add(routeId); // אם לא, מוסיפים אותו
-//         addRouteToHistoryRoute(routeId); // מוסיף את המסלול להיסטוריה
-//       }
-//       return updatedRoutes;
-//     });
-//   };
-
-//   // פונקציה לעדכון הדירוג
-//   const handleRating = (routeId: string, rating: number) => {
-//     setRatings((prevRatings) => ({
-//       ...prevRatings,
-//       [routeId]: rating,
-//     }));
-//   };
-
 //   // טיפול בשגיאה אם המערך ריק
 //   if (!Routes || Routes.length === 0) {
 //     return (
@@ -88,71 +17,206 @@ export default RouteCard;
 //     );
 //   }
 
+//   // פונקציה לעדכון הדירוג
+//   const handleStarClick = async (routeId: string, new_rate: number) => {
+//     console.log(routeId, new_rate);
+
+//     const updateRate = await raiting(routeId, new_rate);
+//     console.log(updateRate);
+//   };
+
 //   return (
 //     <div>
 //       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-//         {Routes.map((route, index) => {
-//           // חישוב הדירוג הכולל אם filtered === 1 או filtered === 3
-//           const calculatedRate =
-//             filtered === 1 || filtered === 3
-//               ? (route.rate * route.ratingNum + (route.rate + 1)) / route.ratingNum
-//               : route.rate; // אם filtered שווה 1 או 3, משתמשים בחישוב הנ"ל
-
-//           return (
-//             <div
-//               key={index}
-//               className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-//             >
-//               <CardMap points={route.pointsArray} />
-//               {/* הצגת הדירוג */}
-//               {filtered === 1 || filtered === 3 ? (
-//                 <p>rate: {calculatedRate.toFixed(2)}</p> // הצגת הדירוג המחושב
-//               ) : (
-//                 <p>rate: {route.rate}</p> // הצגת הדירוג אם filtered שונה
-//               )}
-
-//               {/* הצגת כפתור הבחירה אם filtered === 1 */}
-//               {filtered === 1 && (
+//         {Routes.map((route, index) => (
+//           <div
+//             key={index}
+//             className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+//           >
+//             <CardMap points={route.pointsArray} />
+//             {filtered != 2 ? (
+//               <Star key={index} rate={route.rate!} />
+//             ) : (
+//               <div className="m-2">
+//                 <Star
+//                   rate={route.rate!}
+//                   onClick={() =>
+//                     handleStarClick(route._id as string, route.rate!)
+//                   } // שליחת הדירוג לפונקציה
+//                 />
+//               </div>
+//             )}
+//             {filtered === 1 && (
+//               <div className="mt-2">
 //                 <button
-//                   onClick={() => handleSelectRoute(route._id as string)}
-//                   className={`mt-4 px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 ${
-//                     selectedRoutes.has(route._id as string)
-//                       ? "bg-green-600 text-white hover:bg-green-700 cursor-not-allowed"
-//                       : "bg-green-500 text-white hover:bg-green-600"
-//                   }`}
-//                   disabled={selectedRoutes.has(route._id as string)} // אם המסלול נבחר, הכפתור יהיה לא מאופשר
+//                   onClick={() => addRouteToHistoryRoute(route._id as string)}
+//                   className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 bg-green-500 text-white hover:bg-green-600`}
 //                 >
-//                   {selectedRoutes.has(route._id as string)
-//                     ? "Selected"
-//                     : "Select Route"}
+//                   Select Route
 //                 </button>
-//               )}
-
-//               {/* הצגת כוכבי דירוג אם filtered === 2 */}
-//               {filtered === 2 && (
-//                 <div className="flex items-center mt-4">
-//                   <span className="mr-2">rate:</span> {/* המילה rate לפני הכוכבים */}
-//                   {[1, 2, 3, 4, 5].map((star) => (
-//                     <button
-//                       key={star}
-//                       onClick={() => handleRating(route._id as string, star)}
-//                       className={`${
-//                         ratings[route._id as string] >= star
-//                           ? "text-yellow-500"
-//                           : "text-gray-400"
-//                       } text-2xl`} // גודל כוכב מוגדל
-//                     >
-//                       ★
-//                     </button>
-//                   ))}
-//                 </div>
-//               )}
-//             </div>
-//           );
-//         })}
+//               </div>
+//             )}
+//           </div>
+//         ))}
 //       </div>
 //     </div>
 //   );
 // };
 
 // export default RouteCard;
+
+// import React from "react";
+// import CardMap from "./CardMap";
+// import RouteCardProps from "../types/‎RouteCardProps";
+// import {
+//   addRouteToHistoryRoute,
+//   raiting,
+// } from "@/app/functions/cardsFunctions";
+// import Star from "@/app/components/Star";
+
+// const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
+//   // טיפול בשגיאה אם המערך ריק
+//   if (!Routes || Routes.length === 0) {
+//     return (
+//       <div className="text-center p-6 text-red-500">
+//         <p>No routes available</p>
+//       </div>
+//     );
+//   }
+
+//   // פונקציה לעדכון הדירוג
+//   const handleStarClick = async (routeId: string, new_rate: number) => {
+//     console.log("Clicked star:", new_rate);
+
+//     if (filtered === 2) {
+//       const updateRate = await raiting(routeId, new_rate);
+//       console.log("Updated rate:", updateRate);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+//         {Routes.map((route, index) => (
+//           <div
+//             key={index}
+//             className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+//           >
+//             <CardMap points={route.pointsArray} />
+//             <Star
+//               key={index}
+//               rate={route.rate!}
+//               filtered={filtered}
+//               onClick={(newRate) =>
+//                 filtered === 2 && handleStarClick(route._id as string, newRate)
+//               }
+//             />
+//             {filtered === 1 && (
+//               <div className="mt-2">
+//                 <button
+//                   onClick={() => addRouteToHistoryRoute(route._id as string)}
+//                   className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 bg-green-500 text-white hover:bg-green-600`}
+//                 >
+//                   Select Route
+//                 </button>
+//               </div>
+//             )}
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default RouteCard;
+
+import React, { useState } from "react";
+import CardMap from "./CardMap";
+import RouteCardProps from "../types/‎RouteCardProps";
+import {
+  addRouteToHistoryRoute,
+  raiting,
+} from "@/app/functions/cardsFunctions";
+import Star from "@/app/components/Star";
+import { useRouter } from "next/navigation";
+
+const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
+  const [selectedRatings, setSelectedRatings] = useState<{
+    [routeId: string]: number;
+  }>({});
+
+  const router = useRouter();
+  // טיפול בשגיאה אם המערך ריק
+  if (!Routes || Routes.length === 0) {
+    return (
+      <div className="text-center p-6 text-red-500">
+        <p>No routes available</p>
+      </div>
+    );
+  }
+
+  // פונקציה לעדכון הדירוג
+  const handleStarClick = async (routeId: string, new_rate: number) => {
+    if (selectedRatings[routeId]) return; // אם כבר נבחר דירוג, לא לעשות כלום
+
+    console.log("Clicked star:", new_rate);
+
+    if (filtered === 2) {
+      await raiting(routeId, new_rate); // שליחת דירוג לשרת
+      setSelectedRatings((prev) => ({
+        ...prev,
+        [routeId]: new_rate,
+      }));
+    }
+  };
+
+  return (
+    <div className="m-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {Routes.map((route, index) => (
+          <div
+            key={index}
+            className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+          >
+            <CardMap points={route.pointsArray} />
+            <Star
+              key={index}
+              rate={
+                filtered === 2
+                  ? selectedRatings[route._id as string] || 0
+                  : route.rate!
+              } // אם filtered===2, להציג דירוג מ- selectedRatings
+              filtered={filtered}
+              onClick={(newRate) =>
+                handleStarClick(route._id as string, newRate)
+              }
+            />
+
+            {filtered === 1 && (
+              <div className="mt-2">
+                <button
+                  onClick={() => addRouteToHistoryRoute(route._id as string)}
+                  className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 bg-green-500 text-white hover:bg-green-600`}
+                >
+                  Select Route
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+        {filtered === 3 && (
+          <button
+            onClick={() => {
+              router.push('/pages/addRoute');
+            }}
+            className={`m-4 px-6 py-3 text-6xl text-center font-bold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-80 bg-blue-500 bg-opacity-75 text-white hover:bg-blue-600 hover:bg-opacity-80`}
+          >
+            +
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default RouteCard;
