@@ -53,9 +53,15 @@ const FilteredRoutes = () => {
         ></div>
       </div>
       <div>
-        {selectedRoute === "routes" && <RouteCard Routes={Routes} filtered={1} />}
-        {selectedRoute === "history" && <RouteCard Routes={Routes} filtered={2} />}
-        {selectedRoute === "myRoutes" && <RouteCard Routes={Routes} filtered={3} />}
+        {selectedRoute === "routes" && (
+          <RouteCard Routes={Routes} filtered={1} />
+        )}
+        {selectedRoute === "history" && (
+          <RouteCard Routes={Routes} filtered={2} />
+        )}
+        {selectedRoute === "myRoutes" && (
+          <RouteCard Routes={Routes} filtered={3} />
+        )}
       </div>
     </div>
   );

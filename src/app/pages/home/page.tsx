@@ -1,15 +1,16 @@
+'use client'
 import Footer from "@/app/components/Footer";
 import AddressSearch from "@/app/components/AddressSearch";
 import React from "react";
 import FilteredRoutes from "@/app/components/FilteredRoutes";
 
-const page = () => {
+const Page = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow">
         <div className="flex justify-around px-4 py-2">
           <div className="flex-shrink-0">
-            <FilteredRoutes />
+            <FilteredRoutes/>
           </div>
           <div className="flex-shrink-0">
             <AddressSearch />
@@ -21,4 +22,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
