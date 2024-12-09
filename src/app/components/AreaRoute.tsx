@@ -7,8 +7,8 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { getRoutesInChosenArea } from "../services/routeService";
-
-// צריך להמיר את הכתובת של המשתמש כך שיהיה המרכז של המפה מיד כשנכנסים לעמוד................
+import { getUserAddress } from "../functions/usersFunctions";
+import Route from "@/app/types/routes";
 
 const EreaRoute = () => {
   const [address, setAddress] = useState(""); // לשמור את הכתובת
@@ -28,35 +28,78 @@ const EreaRoute = () => {
   });
 
   useEffect(() => {
-    if (isLoaded && autocompleteRef.current) {
-      const autocomplete = new google.maps.places.Autocomplete(
-        autocompleteRef.current
-      );
+    const initialize = async () => {
+      if (isLoaded && autocompleteRef.current) {
+        const autocomplete = new google.maps.places.Autocomplete(
+          autocompleteRef.current
+        );
 
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
+        // קריאה לפונקציה אסינכרונית לקבלת כתובת המשתמש
+        const userAddress = await getUserAddress();
+        setAddress(userAddress!);
 
-        if (place.geometry && place.geometry.location) {
-          const location = place.geometry.location;
+        // המרת הכתובת לנקודות ציון
+        const myAddress = geocodeAddress(userAddress!);
+        console.log("myAddress", myAddress);
 
-          // עדכון מרכז המפה
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+
+          if (place.geometry && place.geometry.location) {
+            const location = place.geometry.location;
+
+            // עדכון מרכז המפה
+            setCenter({
+              lat: location.lat(),
+              lng: location.lng(),
+            });
+
+            // זום למיקום הנבחר
+            if (mapRef.current) {
+              mapRef.current.setZoom(15);
+            }
+
+            // עדכון הכתובת בתיבת החיפוש
+            const formattedAddress = place.formatted_address || ""; // אם לא נמצא, השתמש בברירת מחדל ריקה
+            setAddress(formattedAddress);
+          }
+        });
+      }
+    };
+
+    // קריאה לפונקציה האסינכרונית
+    initialize();
+  }, [isLoaded]);
+
+  // פונקציה להמיר כתובת לנקודות ציון
+  const geocodeAddress = (address: string) => {
+    const geocoder = new google.maps.Geocoder();
+    if (geocoder && address) {
+      geocoder.geocode({ address }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK && results) {
+          const location = results[0].geometry.location;
+
+          // עדכון הנקודות ציון אחרי המרת הכתובת
           setCenter({
             lat: location.lat(),
             lng: location.lng(),
           });
 
-          // זום למיקום הנבחר
+          // עדכון המפה אם קיימת
           if (mapRef.current) {
             mapRef.current.setZoom(15);
           }
 
           // עדכון הכתובת בתיבת החיפוש
-          const formattedAddress = place.formatted_address || ""; // אם לא נמצא, השתמש בברירת מחדל ריקה
-          setAddress(formattedAddress);
+          setAddress(results[0].formatted_address || "");
+        } else {
+          console.error(
+            "Geocode was not successful for the following reason: " + status
+          );
         }
       });
     }
-  }, [isLoaded]);
+  };
 
   const handleMapClick = (event: google.maps.MapMouseEvent) => {
     if (event.latLng) {
@@ -90,73 +133,13 @@ const EreaRoute = () => {
     }
   };
 
-  // const calculateRoute = () => {
-  //   const directionsService = new google.maps.DirectionsService();
-  //   const request: google.maps.DirectionsRequest = {
-  //     origin: routePoints[0],
-  //     destination: routePoints[routePoints.length - 1],
-  //     waypoints: routePoints.slice(1, -1).map((point) => ({
-  //       location: point,
-  //       stopover: true,
-  //     })),
-  //     travelMode: google.maps.TravelMode.WALKING,
-  //   };
-
-  //   directionsService.route(request, (result, status) => {
-  //     if (status === google.maps.DirectionsStatus.OK && result) {
-  //       const allRoutePoints: google.maps.LatLngLiteral[] = [];
-  //       const route = result.routes[0];
-
-  //       allRoutePoints.push({
-  //         lat: route.legs[0].start_location.lat(),
-  //         lng: route.legs[0].start_location.lng(),
-  //       });
-
-  //       route.legs.forEach((leg) => {
-  //         leg.steps.forEach((step) => {
-  //           allRoutePoints.push({
-  //             lat: step.end_location.lat(),
-  //             lng: step.end_location.lng(),
-  //           });
-  //         });
-  //       });
-  //       setDirections(result);
-  //     } else {
-  //       alert("לא ניתן לחשב מסלול.");
-  //     }
-  //   });
-  // };
-
   const resetMap = () => {
     setAreaPoints([]);
   };
 
   const displayPoints = async () => {
-    const inMyArea = await getRoutesInChosenArea(areaPoints);
-    console.log(inMyArea);
-    
-  };
-
-  const handleAddressSubmit = () => {
-    const geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode({ address }, (results, status) => {
-      if (status === google.maps.GeocoderStatus.OK && results!.length > 0) {
-        const location = results![0].geometry.location;
-        console.log("location type ", typeof location);
-
-        setCenter({
-          lat: location.lat(),
-          lng: location.lng(),
-        });
-
-        if (mapRef.current) {
-          mapRef.current.setZoom(15);
-        }
-      } else {
-        alert("כתובת לא נמצאה, נסה שוב.");
-      }
-    });
+    const inMyArea: Route[] = await getRoutesInChosenArea(areaPoints);
+    console.log(typeof inMyArea);
   };
 
   return (
@@ -165,17 +148,10 @@ const EreaRoute = () => {
         <input
           ref={autocompleteRef}
           type="text"
-          placeholder="הזן כתובת לחיפוש"
-          value={address}
+          placeholder={address}
           onChange={(e) => setAddress(e.target.value)}
           className="px-4 py-2 border rounded"
         />
-        <button
-          onClick={handleAddressSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          חפש כתובת
-        </button>
       </div>
       <div className="flex justify-center mb-4 space-x-2">
         <button
@@ -232,3 +208,4 @@ const EreaRoute = () => {
 };
 
 export default EreaRoute;
+
