@@ -4,7 +4,5 @@ import Link from "next/link";
 import './globals.css'
 
 export default function Home() {
-  const token = useStore((state) => state.token); 
-
   return <Link href={"/pages/home"}>link</Link>;
 }
