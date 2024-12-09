@@ -11,7 +11,7 @@ const RoutePage = () => {
     ratingNum: 10,
     description: "A scenic route through San Francisco.",
     gallery: [],
-    isHistoryState: true,
+    isHistoryState: false,
   };
 
   const handleAddImage = (imageUrl: string) => {

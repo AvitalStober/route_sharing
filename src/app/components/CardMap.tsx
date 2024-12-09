@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
+import PopUpRoute from "./PopUpRoute";
+import IRoute from "../types/routes";
 
-const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
+interface CardMapProps{
+  points: google.maps.LatLngLiteral[],
+  route: IRoute | null
+}
+
+const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
+  route,
 }) => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
 
+    console.log(route, "route");
+    
   // משתני זמן כסטייט
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
+  //לפופאפ
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // הגדרת סגנון המפה
   const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
@@ -103,7 +115,31 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
       <p>
         הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
       </p>
-    </>
+      <div className="mt-auto px-4 pb-4 pt-0">
+        {!isExpanded && (<button
+          onClick={() => setIsExpanded(true)}
+          className="mt-auto rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          type="button"
+        >
+          Read more
+        </button>)}
+        {isExpanded && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
+          >
+            {route && <PopUpRoute
+              onClose={() => setIsExpanded(false)}
+              ownerId={route.ownerId}
+              pointsArray={route.pointsArray}
+              description={route.description}
+              rate={route.rate}
+              ratingNum={route.ratingNum}
+              gallery={route.gallery}
+            />}
+          </div>
+        )}
+      </div>    </>
   );
 };
 
