@@ -12,8 +12,8 @@ import {
 import { fetchRouteById } from "@/app/functions/routesFunctions";
 
 export const fetchHistoryRoutes = async (
-  setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>,
-  setRoutes: React.Dispatch<React.SetStateAction<Route[]>>
+  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
 ): Promise<void> => {
   const userToken = getUserToken();
   if (!userToken) {
@@ -45,8 +45,8 @@ export const fetchHistoryRoutes = async (
 };
 
 export const FetchOwnerRoutes = async (
-  setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>,
-  setRoutes: React.Dispatch<React.SetStateAction<Route[]>>
+  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
 ): Promise<void> => {
   const userToken = getUserToken();
   if (!userToken) {
@@ -65,13 +65,14 @@ export const FetchOwnerRoutes = async (
 };
 
 export const fetchRoutesInYourArea = async (
-  setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>,
-  setRoutes: React.Dispatch<React.SetStateAction<Route[]>>
+  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
 ): Promise<void> => {
   setSelectedRoute("routes");
   try {
     const address = await getUserAddress();
-    setRoutes(await getRoutesInYourArea(address as string));
+    const routes = await getRoutesInYourArea(address as string);
+    setRoutes(routes); // קריאה לפונקציה לעדכון הסטייט ב-Zustand
   } catch (error) {
     console.log(error);
   }
