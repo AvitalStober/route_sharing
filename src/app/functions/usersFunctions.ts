@@ -9,7 +9,6 @@ export const getUserToken = (): {
   if (typeof window === "undefined") {
     return null;
   }
-
   const userTokenFromStorage = localStorage.getItem("userToken");
   return userTokenFromStorage ? JSON.parse(userTokenFromStorage) : null;
 };
@@ -22,3 +21,23 @@ export const fetchUserById = async (userToken: { id: string }) => {
     console.error("Error fetching user data:", error);
   }
 };
+
+export const getUserAddress = async () => {
+  try {
+    const userToken = getUserToken();
+    if (!userToken) {
+      throw new Error("No user token found");
+    }
+
+    const user: User | undefined = await fetchUserById(userToken);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user.address;
+  } catch (error: any) {
+    console.error("Error fetching user address:", error.message || error);
+    return null; 
+  }
+};
+

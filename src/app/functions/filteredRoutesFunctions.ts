@@ -4,7 +4,11 @@ import {
 } from "@/app/services/routeService";
 import User from "@/app/types/users";
 import Route from "@/app/types/routes";
-import { getUserToken, fetchUserById } from "@/app/functions/usersFunctions";
+import {
+  getUserToken,
+  fetchUserById,
+  getUserAddress,
+} from "@/app/functions/usersFunctions";
 import { fetchRouteById } from "@/app/functions/routesFunctions";
 
 export const fetchHistoryRoutes = async (
@@ -64,19 +68,11 @@ export const fetchRoutesInYourArea = async (
   setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>,
   setRoutes: React.Dispatch<React.SetStateAction<Route[]>>
 ): Promise<void> => {
-  const userToken = getUserToken();
-  if (!userToken) {
-    console.error("No user token found");
-    return;
-  }
-
-  const user: User | undefined = await fetchUserById(userToken);
   setSelectedRoute("routes");
-  if (!user) {
-    console.error("User not found");
-    return;
+  try {
+    const address = await getUserAddress();
+    setRoutes(await getRoutesInYourArea(address as string));
+  } catch (error) {
+    console.log(error);
   }
-  console.log(user.address);
-
-  setRoutes(await getRoutesInYourArea(user.address));
 };

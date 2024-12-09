@@ -7,8 +7,14 @@ const page = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow">
-        <AddressSearch />
-        <FilteredRoutes />
+        <div className="flex justify-around px-4 py-2">
+          <div className="flex-shrink-0">
+            <FilteredRoutes />
+          </div>
+          <div className="flex-shrink-0">
+            <AddressSearch />
+          </div>
+        </div>
       </main>
       <Footer />
     </div>

@@ -21,7 +21,28 @@ export const addRouteToHistoryRoute = (routeId: string) => {
 
 export const raiting = async (routeId: string, newRate: number) => {
   console.log(routeId, newRate);
-
   const updateRate = await editRoutes(routeId, newRate);
   return updateRate;
+};
+
+// cardsFunctions.ts
+
+export const handleStarClick = async (
+  routeId: string,
+  new_rate: number,
+  selectedRatings: { [routeId: string]: number },
+  filtered: number,
+  setSelectedRatings: React.Dispatch<React.SetStateAction<{ [routeId: string]: number }>>
+) => {
+  if (selectedRatings[routeId]) return;
+
+  console.log("Clicked star:", new_rate);
+
+  if (filtered === 2) {
+    await raiting(routeId, new_rate);
+    setSelectedRatings((prev) => ({
+      ...prev,
+      [routeId]: new_rate,
+    }));
+  }
 };

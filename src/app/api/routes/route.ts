@@ -13,6 +13,8 @@ export async function POST(request: Request) {
       ownerId: ownerId,
       pointsArray: pointsArray,
       description: description,
+      rate:0,
+      ratingNum:0,
       gallery: gallery
     });
 
