@@ -1,5 +1,6 @@
 export default interface StarProps {
-    selected: boolean;
-    onClick: () => void;
+    rate: number;
+    filtered:number;
+    onClick?: (index:number) => void;
   }
   

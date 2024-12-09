@@ -1,8 +1,8 @@
 import axios from "axios";
 import Route from "../types/users";
 
-// const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app";
+const url = "http://localhost:3000";
+// const url = "https://route-sharing-bsd7.vercel.app";
 
 export const addRoute = async (newRoute: Route) => {
   try {
@@ -56,8 +56,8 @@ export const getRoutesInYourArea = async (address: string) => {
 
 export const editRoutes = async (routeId: string, rate: number) => {
   try {
-    const response = await axios.put(`${url}/api/routesByAddress/${routeId}`, { rate });
-    console.log('Route updated:', response.data);
+    const response = await axios.put(`${url}/api/routes/${routeId}`, { rate });
+    return response.data;
   } catch (error) {
     console.error('Error updating route:', error);
   }
