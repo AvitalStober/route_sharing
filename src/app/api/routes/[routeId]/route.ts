@@ -24,6 +24,8 @@ export async function PUT(
   request: Request,
   { params }: { params: { routeId: string } }
 ) {
+  console.log("params", params);
+  
   try {
     await connect();
 
