@@ -5,7 +5,6 @@ import {
   FetchOwnerRoutes,
   fetchRoutesInYourArea,
 } from "@/app/functions/filteredRoutesFunctions";
-import Route from "@/app/types/routes";
 import RouteCard from "@/app/components/RouteCard";
 import useStore from "@/app/store/store";
 
