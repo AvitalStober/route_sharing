@@ -1,6 +1,5 @@
 import connect from "@/app/lib/DB/connectDB";
 import User from "@/app/lib/models/userModel";
-import IUser from "@/app/types/users";
 import { NextResponse } from "next/server";
 
 export async function GET(

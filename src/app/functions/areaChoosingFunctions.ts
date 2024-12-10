@@ -1,4 +1,5 @@
 import Route from "@/app/types/routes";
+import { getRoutesInChosenArea } from "../services/routeService";
 
 export function isPointInsidePolygon(
   point: { lat: number; lng: number },
@@ -82,12 +83,12 @@ export const resetMap = (
 };
 
 export const displayPoints = async (
-  getRoutesInChosenArea: (
-    polygonPoints: {
-      lat: number;
-      lng: number;
-    }[]
-  ) => Promise<any>,
+  // getRoutesInChosenArea: (
+  //   polygonPoints: {
+  //     lat: number;
+  //     lng: number;
+  //   }[]
+  // ) => Promise<any>,
   setRoutes: (routes: Route[]) => void,
   setIsAreaChoosing: React.Dispatch<React.SetStateAction<boolean>>,
   areaPoints: google.maps.LatLngLiteral[]

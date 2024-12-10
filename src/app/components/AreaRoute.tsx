@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { getRoutesInChosenArea } from "../services/routeService";
+// import { getRoutesInChosenArea } from "../services/routeService";
 import { getUserAddress } from "../functions/usersFunctions";
 import useStore from "@/app/store/store";
 import AreaRouteProps from "../types/props/AreaRouteProps";
 import {
   displayPoints,
-  geocodeAddress,
+  // geocodeAddress,
   handleMapClick,
   resetMap,
 } from "../functions/areaChoosingFunctions";
@@ -47,12 +47,12 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
         const userAddress = await getUserAddress();
         setAddress(userAddress!);
         // המרת הכתובת לנקודות ציון
-        const myAddress = geocodeAddress(
-          userAddress!,
-          setCenter,
-          mapRef,
-          setAddress
-        );
+        // const myAddress = geocodeAddress(
+        //   userAddress!,
+        //   setCenter,
+        //   mapRef,
+        //   setAddress
+        // );
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
@@ -107,7 +107,7 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
         <button
           onClick={() =>
             displayPoints(
-              getRoutesInChosenArea,
+              // getRoutesInChosenArea,
               setRoutes,
               setIsAreaChoosing,
               areaPoints
