@@ -1,10 +1,11 @@
 
+"use client";
 import React, { useState } from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/‎RouteCardProps";
 import {
   addRouteToHistoryRoute,
-  raiting,
+  handleStarClick,
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import { useRouter } from "next/navigation";
@@ -15,28 +16,15 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   }>({});
 
   const router = useRouter();
-  // טיפול בשגיאה אם המערך ריק
-  if (!Routes || Routes.length === 0) {
-    return (
-      <div className="text-center p-6 text-red-500">
-        <p>No routes available</p>
-      </div>
+
+  const handleStarClickInternal = async (routeId: string, new_rate: number) => {
+    await handleStarClick(
+      routeId,
+      new_rate,
+      selectedRatings,
+      filtered,
+      setSelectedRatings
     );
-  }
-
-  // פונקציה לעדכון הדירוג
-  const handleStarClick = async (routeId: string, new_rate: number) => {
-    if (selectedRatings[routeId]) return; // אם כבר נבחר דירוג, לא לעשות כלום
-
-    console.log("Clicked star:", new_rate);
-
-    if (filtered === 2) {
-      await raiting(routeId, new_rate); // שליחת דירוג לשרת
-      setSelectedRatings((prev) => ({
-        ...prev,
-        [routeId]: new_rate,
-      }));
-    }
   };
 
   return (
@@ -61,22 +49,28 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
               }
             />
 
-            {filtered === 1 && (
-              <div className="mt-2">
-                <button
-                  onClick={() => addRouteToHistoryRoute(route._id as string)}
-                  className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 bg-green-500 text-white hover:bg-green-600`}
-                >
-                  Select Route
-                </button>
-              </div>
-            )}
+              {filtered === 1 && (
+                <div className="mt-2">
+                  <button
+                    onClick={() => addRouteToHistoryRoute(route._id as string)}
+                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 bg-green-500 text-white hover:bg-green-600`}
+                  >
+                    Select Route
+                  </button>
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="w-full text-center p-4 mb-4 text-red-500 font-semibold bg-red-100 border border-red-400 rounded">
+            No routes available.
           </div>
-        ))}
+        )}
+
         {filtered === 3 && (
           <button
             onClick={() => {
-              router.push('/pages/addRoute');
+              router.push("/pages/addRoute");
             }}
             className={`m-4 px-6 py-3 text-6xl text-center font-bold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-80 bg-blue-500 bg-opacity-75 text-white hover:bg-blue-600 hover:bg-opacity-80`}
           >

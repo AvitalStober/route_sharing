@@ -4,12 +4,16 @@ import {
 } from "@/app/services/routeService";
 import User from "@/app/types/users";
 import Route from "@/app/types/routes";
-import { getUserToken, fetchUserById } from "@/app/functions/usersFunctions";
+import {
+  getUserToken,
+  fetchUserById,
+  getUserAddress,
+} from "@/app/functions/usersFunctions";
 import { fetchRouteById } from "@/app/functions/routesFunctions";
 
 export const fetchHistoryRoutes = async (
-  setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>,
-  setRoutes: React.Dispatch<React.SetStateAction<Route[]>>
+  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
 ): Promise<void> => {
   const userToken = getUserToken();
   if (!userToken) {
@@ -41,8 +45,8 @@ export const fetchHistoryRoutes = async (
 };
 
 export const FetchOwnerRoutes = async (
-  setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>,
-  setRoutes: React.Dispatch<React.SetStateAction<Route[]>>
+  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
 ): Promise<void> => {
   const userToken = getUserToken();
   if (!userToken) {
@@ -61,22 +65,15 @@ export const FetchOwnerRoutes = async (
 };
 
 export const fetchRoutesInYourArea = async (
-  setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>,
-  setRoutes: React.Dispatch<React.SetStateAction<Route[]>>
+  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
 ): Promise<void> => {
-  const userToken = getUserToken();
-  if (!userToken) {
-    console.error("No user token found");
-    return;
-  }
-
-  const user: User | undefined = await fetchUserById(userToken);
   setSelectedRoute("routes");
-  if (!user) {
-    console.error("User not found");
-    return;
+  try {
+    const address = await getUserAddress();
+    const routes = await getRoutesInYourArea(address as string);
+    setRoutes(routes); // קריאה לפונקציה לעדכון הסטייט ב-Zustand
+  } catch (error) {
+    console.log(error);
   }
-  console.log(user.address);
-
-  setRoutes(await getRoutesInYourArea(user.address));
 };

@@ -5,12 +5,13 @@ import {
   FetchOwnerRoutes,
   fetchRoutesInYourArea,
 } from "@/app/functions/filteredRoutesFunctions";
-import Route from "@/app/types/routes";
 import RouteCard from "@/app/components/RouteCard";
+import useStore from "@/app/store/store";
 
 const FilteredRoutes = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
-  const [Routes, setRoutes] = useState<Route[]>([]);
+  const Routes = useStore((state) => state.Routes); // גישה ל-Routes
+  const setRoutes = useStore((state) => state.setRoutes); // גישה לפונקציה setRoutes
 
   useEffect(() => {
     fetchRoutesInYourArea(setSelectedRoute, setRoutes);
@@ -53,9 +54,15 @@ const FilteredRoutes = () => {
         ></div>
       </div>
       <div>
-        {selectedRoute === "routes" && <RouteCard Routes={Routes} filtered={1} />}
-        {selectedRoute === "history" && <RouteCard Routes={Routes} filtered={2} />}
-        {selectedRoute === "myRoutes" && <RouteCard Routes={Routes} filtered={3} />}
+        {selectedRoute === "routes" && (
+          <RouteCard Routes={Routes} filtered={1} />
+        )}
+        {selectedRoute === "history" && (
+          <RouteCard Routes={Routes} filtered={2} />
+        )}
+        {selectedRoute === "myRoutes" && (
+          <RouteCard Routes={Routes} filtered={3} />
+        )}
       </div>
     </div>
   );
