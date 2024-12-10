@@ -39,7 +39,7 @@ const PrivacyPolicy = () => {
             </h2>
             <ul className="list-disc list-inside text-lg leading-relaxed">
               <li>
-                מידע אישי, כמו שם, כתובת דוא"ל וגיל, שנמסר במהלך ההרשמה.
+                מידע אישי, כמו שם, כתובת דוא&quot;ל וגיל, שנמסר במהלך ההרשמה.
               </li>
               <li>נתוני מיקום לשיתוף מסלולים והמלצות.</li>
               <li>
@@ -59,7 +59,7 @@ const PrivacyPolicy = () => {
             <ul className="list-disc list-inside text-lg leading-relaxed">
               <li>שיפור חווית השימוש שלכם בפלטפורמה.</li>
               <li>הצעת המלצות מותאמות אישית.</li>
-              <li>יצירת קשר איתכם בנוגע לעדכונים ופיצ'רים חדשים.</li>
+              <li>יצירת קשר איתכם בנוגע לעדכונים ופיצ&apos;רים חדשים.</li>
             </ul>
           </section>
 
