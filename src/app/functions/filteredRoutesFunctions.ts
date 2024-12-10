@@ -2,7 +2,6 @@ import {
   getRoutesByOwnerId,
   getRoutesInYourArea,
 } from "@/app/services/routeService";
-import User from "@/app/types/users";
 import Route from "@/app/types/routes";
 import {
   getUserToken,
@@ -11,37 +10,76 @@ import {
 } from "@/app/functions/usersFunctions";
 import { fetchRouteById } from "@/app/functions/routesFunctions";
 
-export const fetchHistoryRoutes = async (
-  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
-  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
-): Promise<void> => {
-  const userToken = getUserToken();
-  if (!userToken) {
-    console.error("No user token found");
-    return;
-  }
+// export const fetchHistoryRoutes = async (
+//   setSelectedRoute: (route: string | null) => void,
+//   setRoutes: (routes: { routeId: Types.ObjectId; rateRoute: number }[]) => void
+// ): Promise<void> => {
+//   const userToken = getUserToken();
+//   if (!userToken) {
+//     console.error("No user token found");
+//     return;
+//   }
 
-  const user: User | undefined = await fetchUserById(userToken);
+//   const user: User | undefined = await fetchUserById(userToken);
+//   setSelectedRoute("history");
+//   if (!user) {
+//     console.error("User not found");
+//     return;
+//   }
+
+//   const historyRoutes: { routeId: Types.ObjectId; rateRoute: number }[] = [];
+
+//   for (const routeId of user.historyRoutes) {
+//     let validRouteId: Types.ObjectId;
+//     if (routeId instanceof mongoose.Types.ObjectId) {
+//       validRouteId = routeId;
+//     } else if (typeof routeId === "string") {
+//       try {
+//         validRouteId = new mongoose.Types.ObjectId(routeId);
+//       } catch (error) {
+//         console.error(`Invalid routeId: ${routeId}`, error);
+//         continue; 
+//       }
+//     } else {
+//       console.error(`Unsupported routeId type: ${typeof routeId}`);
+//       continue; 
+//     }
+
+//     const route: Route | undefined = await fetchRouteById(validRouteId.toHexString());
+//     if (route) {
+//       historyRoutes.push({ routeId: validRouteId, rateRoute: 0 });
+//     }
+//   }
+
+//   console.log("Final history routes:", historyRoutes);
+//   setRoutes(historyRoutes);
+// };
+
+export const fetchHistoryRoutes = async (
+  setSelectedRoute: (route: string | null) => void, 
+  setRoutes: (routes: Route[]) => void 
+): Promise<void> => {
+  const user = await fetchUserById();
   setSelectedRoute("history");
+
   if (!user) {
     console.error("User not found");
     return;
   }
 
-  const historyRoutes: Route[] = []; // מערך שיכיל את כל המסלולים המלאים
+  const userRoutes = user.historyRoutes; 
+  const historyRoutes: Route[] = []; 
 
-  for (const routeId of user.historyRoutes) {
+  for (const historyRoute of userRoutes) {
+    const routeId = historyRoute.routeId; 
     const route: Route | undefined = await fetchRouteById(routeId.toString());
-
     if (route) {
-      historyRoutes.push(route); // מוסיף את המסלול המלא
+      historyRoutes.push(route);
     }
   }
-
+  console.log("historyRoutes", historyRoutes);
   const flattenedRoutes = historyRoutes.flat();
-
-  console.log(flattenedRoutes);
-  setRoutes(flattenedRoutes);
+  setRoutes(flattenedRoutes); 
 };
 
 export const FetchOwnerRoutes = async (
@@ -65,14 +103,20 @@ export const FetchOwnerRoutes = async (
 };
 
 export const fetchRoutesInYourArea = async (
-  setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
-  setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
+  setRoutes: (routes: Route[]) => void,
+  setSelectedRoute?: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  areaAddress?: string
 ): Promise<void> => {
-  setSelectedRoute("routes");
+  setSelectedRoute && setSelectedRoute("routes");
   try {
-    const address = await getUserAddress();
-    const routes = await getRoutesInYourArea(address as string);
-    setRoutes(routes); // קריאה לפונקציה לעדכון הסטייט ב-Zustand
+    let routes;
+    if (!areaAddress) {
+      const address = await getUserAddress();
+      routes = await getRoutesInYourArea(address as string);
+    } else {
+      routes = await getRoutesInYourArea(areaAddress as string);
+    }
+    setRoutes(routes);
   } catch (error) {
     console.log(error);
   }
