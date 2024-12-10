@@ -14,9 +14,8 @@ const CardMap: React.FC<CardMapProps> = ({
 }) => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
+  console.log(route?._id , "id");
 
-    console.log(route, "route");
-    
   // משתני זמן כסטייט
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
@@ -25,7 +24,6 @@ const CardMap: React.FC<CardMapProps> = ({
 
   // הגדרת סגנון המפה
   const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
-
   // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
@@ -126,11 +124,12 @@ const CardMap: React.FC<CardMapProps> = ({
         {isExpanded && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
-            onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
+            // onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
           >
             {route && <PopUpRoute
               onClose={() => setIsExpanded(false)}
-              ownerId={route.ownerId}
+              routeId={typeof route._id === "string" ? route._id : String(route._id)}
+              ownerId={typeof route.ownerId === "string" ? route.ownerId : String(route.ownerId)}
               pointsArray={route.pointsArray}
               description={route.description}
               rate={route.rate}

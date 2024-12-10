@@ -54,10 +54,20 @@ export const getRoutesInYourArea = async (address: string) => {
   }
 };
 
-export const editRoutes = async (routeId: string, rate: number) => {
+export const editRoutes = async (routeId: string, rate?: number, gallery?: string[]) => {
   try {
-    const response = await axios.put(`${url}/api/routes/${routeId}`, { rate });
-    return response.data;
+    if(rate){
+      console.log(rate, "func");
+      
+      const response = await axios.put(`${url}/api/routes/${routeId}`, { rate });
+      return response.data;
+    }
+    if(gallery){
+      console.log(gallery, "func");
+
+      const response = await axios.put(`${url}/api/routes/${routeId}`, { gallery });
+      return response.data;
+    }
   } catch (error) {
     console.error('Error updating route:', error);
   }

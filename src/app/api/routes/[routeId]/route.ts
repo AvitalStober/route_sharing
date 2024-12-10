@@ -24,27 +24,34 @@ export async function PUT(
   request: Request,
   { params }: { params: { routeId: string } }
 ) {
+  console.log("server");
+  
   try {
     await connect();
 
-    const { routeId } = params; 
-    const { rate: newRate } = await request.json(); 
+    const { routeId } = params;
+    const { newRate, gallery } = await request.json();
 
-    const route = await Route.findOne({ _id: routeId });
+    const route = await Route.findById({ routeId });
     if (!route) {
       return NextResponse.json(
         { error: "Route not found" },
         { status: 404 }
       );
     }
+    if (newRate) {
+      const newUpdateRate =
+        (route.rate * route.ratingNum + newRate) / (route.ratingNum + 1);
 
-    const newUpdateRate =
-      (route.rate * route.ratingNum + newRate) / (route.ratingNum + 1);
+      route.rate = newUpdateRate;
+      route.ratingNum = route.ratingNum + 1;
 
-    route.rate = newUpdateRate;
-    route.ratingNum = route.ratingNum + 1;
-
-    await route.save();
+      await route.save();
+    }
+    if(gallery){
+      route.gallery = gallery;
+      await route.save;
+    }
 
     return NextResponse.json(route, { status: 200 });
   } catch (error) {
