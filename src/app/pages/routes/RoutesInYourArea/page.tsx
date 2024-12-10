@@ -1,4 +1,4 @@
-import AreaRoute from "@/app/components/AreaRoute";
+// import AreaRoute from "@/app/components/AreaRoute";
 import React from "react";
 
 const page = () => {
