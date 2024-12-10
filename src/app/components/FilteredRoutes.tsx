@@ -14,8 +14,9 @@ const FilteredRoutes = () => {
   const setRoutes = useStore((state) => state.setRoutes); // גישה לפונקציה setRoutes
 
   useEffect(() => {
-    fetchRoutesInYourArea(setSelectedRoute, setRoutes);
-  }, []);
+    if (selectedRoute !== "routes")
+      fetchRoutesInYourArea(setSelectedRoute, setRoutes);
+  }, [setRoutes]);
 
   return (
     <div className=" mt-auto">

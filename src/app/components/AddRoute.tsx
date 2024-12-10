@@ -14,6 +14,7 @@ import {
   handleMapClick,
   resetMap,
 } from "../functions/addRouteFunctions";
+import { getUserAddress } from "../functions/usersFunctions";
 
 const AddRoute = () => {
   // route/user information
@@ -45,6 +46,11 @@ const AddRoute = () => {
   });
 
   useEffect(() => {
+    const initializeAddress = async () => {
+      const userAddress = await getUserAddress();
+      setAddress(userAddress!);
+    };
+
     if (isLoaded && autocompleteRef.current) {
       const autocomplete = new google.maps.places.Autocomplete(
         autocompleteRef.current
@@ -79,6 +85,7 @@ const AddRoute = () => {
         }
       });
     }
+    initializeAddress();
   }, [isLoaded]);
 
   return (
@@ -96,8 +103,8 @@ const AddRoute = () => {
           <input
             ref={autocompleteRef}
             type="text"
-            placeholder="הזן כתובת יציאה"
-            value={address}
+            placeholder={address}
+            // value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="px-4 py-2 border rounded"
           />

@@ -3,9 +3,6 @@
 // import connect from "@/app/lib/DB/connectDB";
 // import User from "@/app/lib/models/userModel"; // מודל המשתמש שלך
 
-// console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-// console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
-
 // const handler = NextAuth({
 //   providers: [
 //     GoogleProvider({

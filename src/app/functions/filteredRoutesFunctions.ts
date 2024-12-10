@@ -77,3 +77,18 @@ export const fetchRoutesInYourArea = async (
     console.log(error);
   }
 };
+
+export const fetchRoutesByChoosingArea = async (
+  // setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setRoutes: (routes: Route[]) => void, // פונקציה פשוטה לעדכון רשימת ה-Routes
+  routesInChosenArea: Route[]
+): Promise<void> => {
+  // setSelectedRoute("routes");
+  try {
+    // const routes = await getRoutesInChosenArea(routesInChosenArea);
+    setRoutes(routesInChosenArea); // קריאה לפונקציה לעדכון הסטייט ב-Zustand
+    
+  } catch (error) {
+    console.log(error);
+  }
+};

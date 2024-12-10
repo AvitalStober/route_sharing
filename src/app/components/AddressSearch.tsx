@@ -201,7 +201,7 @@ const AddressSearch = () => {
           value={address} // הצגת הכתובת במשתנה address
           placeholder="הזן כתובת"
           style={{ inlineSize: `${inputWidth}px` }}
-          className={`mt-1 block px-4 py-2 border ${
+          className={`mt-1 block px-4 py-2 border text-right ${
             errors.address ? "border-red-500" : "border-gray-300"
           } rounded-md`}
           onFocus={(e) => {

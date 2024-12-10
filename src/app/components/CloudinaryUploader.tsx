@@ -49,7 +49,6 @@ export default CloudinaryUploader;
 //       .expression("")
 //       .execute();
 
-//     console.log(images.resources);
 //     return (
 //       <main>
 

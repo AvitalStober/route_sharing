@@ -13,8 +13,6 @@ export const handleUpload = (
   ) {
     const imageUrl = result.info.secure_url;
     setPictures((prevInfo: string[]) => [...prevInfo, imageUrl]);
-    console.log("Uploaded image URL:", imageUrl);
-    alert(`Image uploaded! URL: ${imageUrl}`);
   } else {
     console.error("Failed to upload image. Result info is invalid.");
     alert("Upload failed. Please try again.");
