@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
+import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 
 const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
@@ -82,11 +82,11 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
         zoom={12}
       >
         {/* אם יש נקודות, נציג את המיקומים */}
-        {points.length > 0 ? (
+        {/* {points.length > 0 ? (
           points.map((point, index) => <Marker key={index} position={point} />)
         ) : (
           <p>אין נקודות למסלול</p> // אם אין נקודות, נראה הודעה
-        )}
+        )} */}
         {directions && (
           <DirectionsRenderer
             directions={directions}

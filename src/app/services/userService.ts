@@ -136,3 +136,21 @@ export const addHistoryRoute = async (userId: string, routeId: string) => {
     throw new Error("Failed to add route");
   }
 };
+
+export const putUserDetails = async (
+  userId: string,
+  userDetails: {
+    fullName: string;
+    email: string;
+    address: string;
+  }
+) => {
+  try {
+    const response = await axios.put(`${url}/api/users/${userId}`, {
+      userDetails,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating route:", error);
+  }
+};
