@@ -1,7 +1,5 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
-import IRoute from "@/app/types/routes";
-import { log } from "console";
 import { NextResponse } from "next/server";
 
 export async function GET(

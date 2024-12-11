@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
-import { Types } from "mongoose";
 import Star from "./Star";
 import Image from 'next/image';
 import CloudinaryUploader from "./CloudinaryUploader";

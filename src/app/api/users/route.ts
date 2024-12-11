@@ -51,28 +51,28 @@ export async function PUT(request: Request) {
 }
 
 
-export async function GET() {
-  try {
-    await connect();
-    const users = await User.find();
-    if (users) return NextResponse.json(users, { status: 200 });
-    else
-      return NextResponse.json({ error: "users not found" }, { status: 500 });
-  } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
-  }
-}
+// export async function GET() {
+//   try {
+//     await connect();
+//     const users = await User.find();
+//     if (users) return NextResponse.json(users, { status: 200 });
+//     else
+//       return NextResponse.json({ error: "users not found" }, { status: 500 });
+//   } catch (error) {
+//     return NextResponse.json({ error: error }, { status: 500 });
+//   }
+// }
 
-export async function DELETE(request: Request) {
-  try {
-    await connect();
-    const result = await User.deleteMany({});
-    return NextResponse.json(
-      { message: "All users have been deleted", deletedCount: result.deletedCount },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Error deleting users:", error);
-    return NextResponse.json({ error: "Failed to delete users" }, { status: 500 });
-  }
-}
+// export async function DELETE(request: Request) {
+//   try {
+//     await connect();
+//     const result = await User.deleteMany({});
+//     return NextResponse.json(
+//       { message: "All users have been deleted", deletedCount: result.deletedCount },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error("Error deleting users:", error);
+//     return NextResponse.json({ error: "Failed to delete users" }, { status: 500 });
+//   }
+// }
