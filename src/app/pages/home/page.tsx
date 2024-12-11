@@ -7,7 +7,6 @@ import AreaRoute from "@/app/components/AreaRoute";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useStore from "@/app/store/store";
-import { verifyToken } from "@/app/functions/tokenFunction";
 
 const Page = () => {
   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
@@ -15,7 +14,7 @@ const Page = () => {
   const Routes = useStore((state) => state.Routes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
   if (Routes && Routes.length == 0 ) initializeRoutes();
-  
+
 
   return (
     <div className="min-h-screen flex flex-col">
