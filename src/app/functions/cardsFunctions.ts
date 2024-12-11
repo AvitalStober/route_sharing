@@ -5,8 +5,6 @@ import {
   putUserRate,
 } from "@/app/functions/usersFunctions";
 import { editRoutes } from "../services/routeService";
-import { fetchRouteById } from "./routesFunctions";
-import IRoute from "../types/routes";
 import { Types } from "mongoose";
 
 export const addRouteToHistoryRoute = (routeId: string) => {
