@@ -1,6 +1,6 @@
-import Route from "../types/routes";
+import IRoute from "../routes";
 
 export default interface RouteCardProps {
-  Routes: Route[];
+  Routes: IRoute[];
   filtered: number;
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import PartialRoute from "../types/RouteAddingProps";
+import PartialRoute from "../types/props/RouteAddingProps";
 
 const url = "http://localhost:3000";
 // const url = "https://route-sharing-bsd7.vercel.app";

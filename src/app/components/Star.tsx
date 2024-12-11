@@ -2,24 +2,28 @@ import React, { useState } from "react";
 import { faStar, faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
-import StarProps from "@/app/types/starProps";
+import StarProps from "@/app/types/props/starProps";
 
 const Star: React.FC<StarProps> = ({ rate, filtered, onClick }) => {
   const [hoveredRate, setHoveredRate] = useState<number | null>(null); // דירוג זמני לצביעה
   const [selectedRate, setSelectedRate] = useState<number | null>(null); // דירוג שנבחר בלחיצה
 
   // יצירת המערך של הכוכבים
-  const starsArray = Array(5).fill("empty"); // ברירת מחדל: 5 כוכבים ריקים
+  const starsArray = Array(5).fill("empty");
   if (filtered !== 2 && rate) {
     // אם filtered !== 2, חישוב דירוג רגיל
     starsArray.splice(0, Math.floor(rate), ...Array(Math.floor(rate)).fill("full")); // כוכבים מלאים
     if (rate % 1 >= 0.3 && rate % 1 < 0.8) starsArray[Math.floor(rate)] = "half"; // כוכב חצי
-  } else if (filtered === 2 && hoveredRate !== null) {
+  } else if (filtered === 2 && hoveredRate !== null && rate === 0) {
     // צביעה זמנית לפי מה שנבחר
     starsArray.splice(0, hoveredRate, ...Array(hoveredRate).fill("full"));
-  } else if (filtered === 2 && selectedRate !== null) {
+  } else if (filtered === 2 && selectedRate !== null && rate === 0) {
     // צביעה לפי הבחירה הסופית
     starsArray.splice(0, selectedRate, ...Array(selectedRate).fill("full"));
+  } else if (filtered === 2 && rate !== null && typeof rate === "number" && rate >= 0) {
+    const fullStars = Math.floor(rate);
+    const validFullStars = Math.min(fullStars, starsArray.length); // לוודא שאין חיתוך מעבר לאורך המערך
+    starsArray.splice(0, validFullStars, ...Array(validFullStars).fill("full"));
   }
 
   return (
@@ -27,11 +31,15 @@ const Star: React.FC<StarProps> = ({ rate, filtered, onClick }) => {
       {starsArray.map((type, index) => (
         <div
           key={index}
-          className="inline-block hover:cursor-pointer"
-          onMouseEnter={() => filtered === 2 && setHoveredRate(index + 1)} // שינוי זמני של דירוג בעת מעבר עם העכבר
-          onMouseLeave={() => filtered === 2 && setHoveredRate(null)} // איפוס זמני כאשר העכבר עוזב
+          className={`inline-block ${rate !== 0 && filtered === 2 ? "cursor-not-allowed" : "hover:cursor-pointer"}`}
+          onMouseEnter={() => {
+            if (filtered === 2 && rate === 0) setHoveredRate(index + 1); // שינוי זמני של דירוג בעת מעבר עם העכבר
+          }}
+          onMouseLeave={() => {
+            if (filtered === 2 && rate === 0) setHoveredRate(null); // איפוס זמני כאשר העכבר עוזב
+          }}
           onClick={() => {
-            if (filtered === 2 && selectedRate === null) {
+            if (filtered === 2 && rate === 0 && selectedRate === null) {
               setSelectedRate(index + 1); // עדכון דירוג סופי
               onClick?.(index + 1); // קריאה ל-onClick עם הדירוג הנבחר
             }

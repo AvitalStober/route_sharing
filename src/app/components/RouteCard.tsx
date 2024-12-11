@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
-import RouteCardProps from "../types/‎RouteCardProps";
+import RouteCardProps from "../types/props/‎RouteCardProps";
 import {
   addRouteToHistoryRoute,
   handleStarClick,
+  getUserRouteRate,
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,26 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
     [routeId: string]: number;
   }>({});
+
+  const [routeRates, setRouteRates] = useState<{ [routeId: string]: number }>(
+    {}
+  );
+
+  const fetchRates = async () => {
+    const rates: Record<string, number> = {}; 
+    for (const route of Routes) {
+      if (filtered === 2) {
+        rates[route._id as string] = (await getUserRouteRate(route._id as string)) || 0; 
+      }
+    }
+    setRouteRates(rates);
+  };
+
+  useEffect(() => {
+    if (filtered === 2) {
+      fetchRates();
+    }
+  }, [filtered, Routes]);
 
   const router = useRouter();
 
@@ -29,7 +50,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   return (
     <div className="m-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {/* בדיקה אם Routes הוא מערך ולא ריק */}
         {Array.isArray(Routes) && Routes.length > 0 ? (
           Routes.map((route, index) => (
             <div
@@ -38,11 +58,8 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             >
               <CardMap points={route.pointsArray} route={route} />
               <Star
-                key={index}
                 rate={
-                  filtered === 2
-                    ? selectedRatings[route._id as string] || 0
-                    : route.rate!
+                  filtered === 2 ? routeRates[route._id as string] || 0 : route.rate || 0
                 }
                 filtered={filtered}
                 onClick={(newRate) =>

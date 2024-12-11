@@ -1,46 +1,99 @@
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Footer = () => {
+  const router = useRouter();
   return (
-    <footer className="bg-gray-800 text-white py-6">
+    <footer className="bg-gray-800 text-white py-6" dir="rtl">
       <div className="container mx-auto text-center">
-        <p>
-          &copy; {new Date().getFullYear()} Routes Sharing. All Rights Reserved.
-        </p>
+        <p className="text-xs">Routes Sharing &copy; כל הזכויות שמורות</p>
         {/* קישורי מידע */}
-        <div className="mt-4">
-          <a href="/about" className="text-white hover:text-gray-400 mx-2">
-            About Us
+        <div className="mt-2">
+          <a
+            href="/pages/about"
+            className="text-white hover:text-gray-400 mx-2"
+          >
+            אודותינו
           </a>
-          <a href="/privacy" className="text-white hover:text-gray-400 mx-2">
-            Privacy Policy
+          <a
+            href="/pages/privacy"
+            className="text-white hover:text-gray-400 mx-2"
+          >
+            מדיניות פרטיות
           </a>
-          <a href="/terms" className="text-white hover:text-gray-400 mx-2">
-            Terms of Service
+          <a
+            href="/pages/terms"
+            className="text-white hover:text-gray-400 mx-2"
+          >
+            תנאי שימוש
           </a>
         </div>
         {/* קישורי רשתות חברתיות */}
-        <div className="mt-4">
-          <p>Follow us on:</p>
+        <div className="mt-2">
+          <p>עקבו אחרינו ב:</p>
           <div className="flex justify-center">
-            <a
+            {/* <a
               href="https://www.facebook.com"
               className="text-white hover:text-gray-400 mx-2"
             >
-              Facebook
+              פייסבוק
             </a>
             <a
               href="https://www.twitter.com"
               className="text-white hover:text-gray-400 mx-2"
             >
-              Twitter
+              טוויטר
             </a>
             <a
               href="https://www.instagram.com"
               className="text-white hover:text-gray-400 mx-2"
             >
-              Instagram
-            </a>
+              אינסטגרם
+            </a> */}
+            <div
+              className="cursor-pointer m-2"
+              onClick={() => {
+                router.push("/pages/editUser");
+              }}
+            >
+              <Image
+                className="flex flex-wrap justify-center"
+                src="https://res.cloudinary.com/dltlyphap/image/upload/v1733217346/facebook_zbulob.png"
+                height={20}
+                width={20}
+                alt="profil edit"
+              />
+            </div>
+            <div
+              className="cursor-pointer m-2"
+              onClick={() => {
+                router.push("/pages/editUser");
+              }}
+            >
+              <Image
+                className="flex flex-wrap justify-center"
+                src="https://res.cloudinary.com/dltlyphap/image/upload/v1733832740/logos_v3m3j7.png"
+                height={20}
+                width={20}
+                alt="profil edit"
+              />
+            </div>
+            <div
+              className="cursor-pointer m-2"
+              onClick={() => {
+                router.push("/pages/editUser");
+              }}
+            >
+              <Image
+                className="flex flex-wrap justify-center"
+                src="https://res.cloudinary.com/dltlyphap/image/upload/v1733216561/instagram_pfumqz.png"
+                height={20}
+                width={20}
+                alt="profil edit"
+              />
+            </div>
+            
           </div>
         </div>
       </div>

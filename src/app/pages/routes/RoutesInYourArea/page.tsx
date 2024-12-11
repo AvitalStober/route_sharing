@@ -1,10 +1,13 @@
-import EreaRoute from '@/app/components/AreaRoute'
-import React from 'react'
+// import AreaRoute from "@/app/components/AreaRoute";
+import React from "react";
 
 const page = () => {
   return (
-    <div><EreaRoute/></div>
-  )
-}
+    <div>
+      {/* <AreaRoute setIsAreaChoosing={} /> */}
+      area page
+    </div>
+  );
+};
 
-export default page
+export default page;

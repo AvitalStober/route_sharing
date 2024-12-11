@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
+import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 import PopUpRoute from "./PopUpRoute";
-import IRoute from "../types/routes";
 import { Types } from "mongoose";
 import { CardMapProps } from "../types/props/CardMapProps";
 
@@ -89,12 +88,6 @@ const CardMap: React.FC<CardMapProps> = ({
         center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
         zoom={12}
       >
-        {/* אם יש נקודות, נציג את המיקומים */}
-        {points.length > 0 ? (
-          points.map((point, index) => <Marker key={index} position={point} />)
-        ) : (
-          <p>אין נקודות למסלול</p> // אם אין נקודות, נראה הודעה
-        )}
         {directions && (
           <DirectionsRenderer
             directions={directions}

@@ -1,25 +1,35 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+// import { getRoutesInChosenArea } from "../services/routeService";
+import { getUserAddress } from "../functions/usersFunctions";
+import useStore from "@/app/store/store";
+import AreaRouteProps from "../types/props/AreaRouteProps";
+import {
+  displayPoints,
+  // geocodeAddress,
+  handleMapClick,
+  resetMap,
+} from "../functions/areaChoosingFunctions";
 import {
   GoogleMap,
   Marker,
   Polygon,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { getRoutesInChosenArea } from "../services/routeService";
 
-// צריך להמיר את הכתובת של המשתמש כך שיהיה המרכז של המפה מיד כשנכנסים לעמוד................
+const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
 
-const EreaRoute = () => {
-  const [address, setAddress] = useState(""); // לשמור את הכתובת
+  const [address, setAddress] = useState("");
   const [center, setCenter] = useState<google.maps.LatLngLiteral>({
     lat: 32.0853,
     lng: 34.7818,
   });
-  const polygonRef = useRef<google.maps.Polygon | null>(null); // לשמור את הפוליגון הצהוב
-  const mapRef = useRef<google.maps.Map | null>(null); // ה-ref של המפה
-  const autocompleteRef = useRef<HTMLInputElement | null>(null); // ה-ref עבור ה-input של הכתובת
+  const polygonRef = useRef<google.maps.Polygon | null>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const autocompleteRef = useRef<HTMLInputElement | null>(null);
   const [areaPoints, setAreaPoints] = useState<google.maps.LatLngLiteral[]>([]);
+
+  const setRoutes = useStore((state) => state.setRoutes);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY || "",
@@ -28,165 +38,87 @@ const EreaRoute = () => {
   });
 
   useEffect(() => {
-    if (isLoaded && autocompleteRef.current) {
-      const autocomplete = new google.maps.places.Autocomplete(
-        autocompleteRef.current
-      );
+    const initialize = async () => {
+      if (isLoaded && autocompleteRef.current) {
+        const autocomplete = new google.maps.places.Autocomplete(
+          autocompleteRef.current
+        );
+        // קריאה לפונקציה אסינכרונית לקבלת כתובת המשתמש
+        const userAddress = await getUserAddress();
+        setAddress(userAddress!);
+        // המרת הכתובת לנקודות ציון
+        // const myAddress = geocodeAddress(
+        //   userAddress!,
+        //   setCenter,
+        //   mapRef,
+        //   setAddress
+        // );
 
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
 
-        if (place.geometry && place.geometry.location) {
-          const location = place.geometry.location;
-
-          // עדכון מרכז המפה
-          setCenter({
-            lat: location.lat(),
-            lng: location.lng(),
-          });
-
-          // זום למיקום הנבחר
-          if (mapRef.current) {
-            mapRef.current.setZoom(15);
+          if (place.geometry && place.geometry.location) {
+            const location = place.geometry.location;
+            // עדכון מרכז המפה
+            setCenter({
+              lat: location.lat(),
+              lng: location.lng(),
+            });
+            // זום למיקום הנבחר
+            if (mapRef.current) {
+              mapRef.current.setZoom(15);
+            }
+            // עדכון הכתובת בתיבת החיפוש
+            const formattedAddress = place.formatted_address || ""; // אם לא נמצא, השתמש בברירת מחדל ריקה
+            setAddress(formattedAddress);
           }
-
-          // עדכון הכתובת בתיבת החיפוש
-          const formattedAddress = place.formatted_address || ""; // אם לא נמצא, השתמש בברירת מחדל ריקה
-          setAddress(formattedAddress);
-        }
-      });
-    }
-  }, [isLoaded]);
-
-  const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (event.latLng) {
-      const newPoint = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
-      };
-
-      setAreaPoints((prevPoints) => {
-        const updatedPoints = [...prevPoints, newPoint];
-        console.log("Updated AreaPoints: ", updatedPoints);
-
-        // בניית הפוליגון רק אם יש יותר מ-2 נקודות
-        if (updatedPoints.length > 2) {
-          const polygon = new google.maps.Polygon({
-            paths: updatedPoints,
-            fillColor: "yellow",
-            fillOpacity: 0.1,
-            strokeColor: "yellow",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-          });
-          polygon.setMap(mapRef.current);
-          console.log("Polygon: ", polygon);
-
-          polygonRef.current = polygon;
-        }
-
-        return updatedPoints;
-      });
-    }
-  };
-
-  // const calculateRoute = () => {
-  //   const directionsService = new google.maps.DirectionsService();
-  //   const request: google.maps.DirectionsRequest = {
-  //     origin: routePoints[0],
-  //     destination: routePoints[routePoints.length - 1],
-  //     waypoints: routePoints.slice(1, -1).map((point) => ({
-  //       location: point,
-  //       stopover: true,
-  //     })),
-  //     travelMode: google.maps.TravelMode.WALKING,
-  //   };
-
-  //   directionsService.route(request, (result, status) => {
-  //     if (status === google.maps.DirectionsStatus.OK && result) {
-  //       const allRoutePoints: google.maps.LatLngLiteral[] = [];
-  //       const route = result.routes[0];
-
-  //       allRoutePoints.push({
-  //         lat: route.legs[0].start_location.lat(),
-  //         lng: route.legs[0].start_location.lng(),
-  //       });
-
-  //       route.legs.forEach((leg) => {
-  //         leg.steps.forEach((step) => {
-  //           allRoutePoints.push({
-  //             lat: step.end_location.lat(),
-  //             lng: step.end_location.lng(),
-  //           });
-  //         });
-  //       });
-  //       setDirections(result);
-  //     } else {
-  //       alert("לא ניתן לחשב מסלול.");
-  //     }
-  //   });
-  // };
-
-  const resetMap = () => {
-    setAreaPoints([]);
-  };
-
-  const displayPoints = async () => {
-    const inMyArea = await getRoutesInChosenArea(areaPoints);
-    console.log(inMyArea);
-    
-  };
-
-  const handleAddressSubmit = () => {
-    const geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode({ address }, (results, status) => {
-      if (status === google.maps.GeocoderStatus.OK && results!.length > 0) {
-        const location = results![0].geometry.location;
-        console.log("location type ", typeof location);
-
-        setCenter({
-          lat: location.lat(),
-          lng: location.lng(),
         });
-
-        if (mapRef.current) {
-          mapRef.current.setZoom(15);
-        }
-      } else {
-        alert("כתובת לא נמצאה, נסה שוב.");
       }
-    });
-  };
+    };
+    initialize();
+  }, [isLoaded]);
 
   return (
     <div className="flex flex-col">
+      <div
+        onClick={() => {
+          setIsAreaChoosing(false);
+        }}
+        className="cursor-pointer font-bold rounded-lg m-2 p-2 w-[40px] bg-gray-100 hover:bg-gray-200 text-center"
+      >
+        ✕
+      </div>
       <div className="flex justify-center items-center mb-4 mt-4 space-x-2">
         <input
           ref={autocompleteRef}
           type="text"
-          placeholder="הזן כתובת לחיפוש"
-          value={address}
+          placeholder={address}
           onChange={(e) => setAddress(e.target.value)}
           className="px-4 py-2 border rounded"
         />
-        <button
-          onClick={handleAddressSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          חפש כתובת
-        </button>
       </div>
       <div className="flex justify-center mb-4 space-x-2">
         <button
-          onClick={resetMap}
+          onClick={() => resetMap(setAreaPoints)}
           className="px-4 py-2 bg-red-500 text-white rounded"
         >
           איפוס מפה
         </button>
         <button
-          onClick={displayPoints}
-          className="px-4 py-2 bg-yellow-500 text-white rounded"
+          onClick={() =>
+            displayPoints(
+              // getRoutesInChosenArea,
+              setRoutes,
+              setIsAreaChoosing,
+              areaPoints
+            )
+          }
+          disabled={areaPoints.length < 3} // הכפתור מושבת אם יש פחות מ-3 נקודות
+          className={`px-4 py-2 rounded ${
+            areaPoints.length < 3
+              ? "bg-gray-300 text-gray-600 cursor-not-allowed" // סגנון לכפתור מושבת
+              : "bg-yellow-500 text-white cursor-pointer" // סגנון לכפתור פעיל
+          }`}
         >
           מציאת מסלולים
         </button>
@@ -197,7 +129,9 @@ const EreaRoute = () => {
           mapContainerStyle={{ width: "100%", height: "500px" }}
           center={center}
           zoom={13}
-          onClick={handleMapClick}
+          onClick={(event) =>
+            handleMapClick(event, setAreaPoints, mapRef, polygonRef)
+          }
           onLoad={(map) => {
             mapRef.current = map;
           }}
@@ -231,4 +165,4 @@ const EreaRoute = () => {
   );
 };
 
-export default EreaRoute;
+export default AreaRoute;
