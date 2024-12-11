@@ -1,7 +1,6 @@
 import connect from "@/app/lib/DB/connectDB";
 import User from "@/app/lib/models/userModel";
 import { NextResponse } from "next/server";
-import { Types } from "mongoose";
 
 export async function PUT(request: Request) {
   try {
