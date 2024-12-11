@@ -67,9 +67,6 @@ const CardMap: React.FC<CardMapProps> = ({
     setHours(calculatedHours);
     setMinutes(calculatedMinutes);
 
-    console.log(
-      `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
-    );
   };
 
   return (

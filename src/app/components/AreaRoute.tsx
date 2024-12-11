@@ -20,10 +20,7 @@ import {
 const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
 
   const [address, setAddress] = useState("");
-  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
-    lat: 32.0853,
-    lng: 34.7818,
-  });
+  const [center, setCenter] = useState<google.maps.LatLngLiteral>();
   const polygonRef = useRef<google.maps.Polygon | null>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
   const autocompleteRef = useRef<HTMLInputElement | null>(null);
@@ -36,20 +33,40 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
     libraries: ["geometry", "places"],
     language: "he",
   });
-
+  
   useEffect(() => {
     const initialize = async () => {
       if (isLoaded && autocompleteRef.current) {
         const autocomplete = new google.maps.places.Autocomplete(
           autocompleteRef.current
         );
+  
         // קריאה לפונקציה אסינכרונית לקבלת כתובת המשתמש
         const userAddress = await getUserAddress();
         setAddress(userAddress!);
-
+  
+        // שימוש ב-Geocoding API כדי לקבל קואורדינטות של הכתובת
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: userAddress }, (results, status) => {
+          if (status === "OK" && results && results[0].geometry.location) {
+            const location = results[0].geometry.location;
+            setCenter({
+              lat: location.lat(),
+              lng: location.lng(),
+            });
+            // זום למיקום הנבחר
+            if (mapRef.current) {
+              mapRef.current.setZoom(15);
+            }
+          } else {
+            console.error("Geocoding failed: " + status);
+          }
+        });
+  
+        // מאזין לשינויים במיקום שנבחר בתיבת החיפוש
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-
+  
           if (place.geometry && place.geometry.location) {
             const location = place.geometry.location;
             // עדכון מרכז המפה
@@ -68,9 +85,10 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
         });
       }
     };
+  
     initialize();
   }, [isLoaded]);
-
+  
   return (
     <div className="flex flex-col">
       <div

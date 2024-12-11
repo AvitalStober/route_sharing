@@ -24,7 +24,7 @@ const Signup = () => {
 
             try {
                 const token = await signupFunction(userData?.fullName, userData?.email, userData?.password, address, false);
-                console.log(token);
+                
                 if (token) {
                     router.push("/pages/home");
                 }

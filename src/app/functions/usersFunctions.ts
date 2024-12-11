@@ -50,7 +50,6 @@ export const putUserRate = async (routeId: string, rate: number) => {
     }
 
     const userRate= await putUserRouteRate(userToken.id as string, routeId, rate);
-    console.log("Rate updated successfully");
     return userRate;
   } catch (error) {
     console.error("Error updating user route rate:", error);

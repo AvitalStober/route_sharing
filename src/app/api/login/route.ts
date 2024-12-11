@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export async function POST(request: Request) {
-//   console.log("env file", process.env);
 
   try {
     const { email, password } = await request.json();
@@ -31,7 +30,6 @@ export async function POST(request: Request) {
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    console.log(isPasswordCorrect, "pass");
 
     if (!isPasswordCorrect) {
       return NextResponse.json(

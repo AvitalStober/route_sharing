@@ -8,7 +8,6 @@
 // const Routes = () => {
 //   const [ownerRoutes, setOwnerRoutes] = useState<Route[]>([]); // עדכון לסוג מערך של Routes
 //   const token = useStore((state) => state.token?.id);
-//   console.log("routes by owner", token);
 //   const userId = token || "";
 
 //   useEffect(() => {

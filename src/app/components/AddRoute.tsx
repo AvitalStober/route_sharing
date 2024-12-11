@@ -47,8 +47,36 @@ const AddRoute = () => {
 
   useEffect(() => {
     const initializeAddress = async () => {
+      // קריאה לכתובת המשתמש
       const userAddress = await getUserAddress();
       setAddress(userAddress!);
+
+      // שימוש ב-Geocoding API לתרגום הכתובת לקואורדינטות
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: userAddress }, (results, status) => {
+        if (status === "OK" && results && results[0].geometry.location) {
+          const location = results[0].geometry.location;
+
+          // עדכון מרכז המפה למיקום הכתובת
+          setCenter({
+            lat: location.lat(),
+            lng: location.lng(),
+          });
+
+          // הוספת הכתובת לנקודת מסלול
+          setRoutePoints((prevPoints) => [
+            ...prevPoints,
+            { lat: location.lat(), lng: location.lng() },
+          ]);
+
+          // זום למיקום הכתובת
+          if (mapRef.current) {
+            mapRef.current.setZoom(15);
+          }
+        } else {
+          console.error("Geocoding failed: " + status);
+        }
+      });
     };
 
     if (isLoaded && autocompleteRef.current) {
@@ -69,11 +97,7 @@ const AddRoute = () => {
           });
 
           // הוסף את הנקודה הנבחרת למסלול
-          setRoutePoints((prevPoints) => [
-            ...prevPoints,
-            { lat: location.lat(), lng: location.lng() },
-          ]);
-
+          setRoutePoints(() => [{ lat: location.lat(), lng: location.lng() }]);
           // זום למיקום הנבחר
           if (mapRef.current) {
             mapRef.current.setZoom(20);
@@ -85,6 +109,8 @@ const AddRoute = () => {
         }
       });
     }
+
+    // קריאה לפונקציה לאתחול הכתובת
     initializeAddress();
   }, [isLoaded]);
 

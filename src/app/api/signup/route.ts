@@ -7,10 +7,8 @@ import { generateToken } from "@/app/functions/tokenFunction";
 
 export async function POST(request: Request) {
     try {
-      console.log('Receiving signup request...');
       // קבלת הנתונים מהבקשה
       const { fullName, email, password , address} = await request.json();
-     console.log(fullName, email, password , address);
      
       // בדיקה אם כל השדות הוזנו
       if (!fullName || !email || !password || !address) {

@@ -14,7 +14,6 @@ const Login: React.FC = () => {
     setError(null);
     try {
       const token = await loginFunction(email, password);
-      console.log(token);
       
       if (token) {
         router.push("/pages/home"); 

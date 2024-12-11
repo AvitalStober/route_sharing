@@ -24,8 +24,6 @@ export async function PUT(
   request: Request,
   { params }: { params: { routeId: string } }
 ) {
-  console.log("put - server");
-
   try {
     await connect();
 
@@ -81,3 +79,22 @@ export async function PUT(
     );
   }
 }
+
+// export async function PUT(
+//   request: Request,
+//   { params }: { params: { routeId: string } }
+// ) {
+//   try {
+//     await connect();
+//     const { routeId } = await params;
+
+//     const routes = await Route.find({ ownerId: routeId });
+//     return NextResponse.json(routes, { status: 200 });
+//   } catch (error) {
+//     console.error("Error fetching routes:", error);
+//     return NextResponse.json(
+//       { error: "Internal Server Error" },
+//       { status: 500 }
+//     );
+//   }
+// }

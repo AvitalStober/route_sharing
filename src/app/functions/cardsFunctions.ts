@@ -42,8 +42,6 @@ export const handleStarClick = async (
 ) => {
   if (selectedRatings[routeId]) return;
 
-  console.log("Clicked star:", new_rate);
-
   if (filtered === 2) {
     await raiting(routeId, new_rate);
     setSelectedRatings((prev) => ({
