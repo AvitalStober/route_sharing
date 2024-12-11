@@ -27,8 +27,6 @@ export const addRouteToHistoryRoute = (routeId: string) => {
 };
 
 export const raiting = async (routeId: string, newRate: number) => {
-  console.log("raiting");
-
   if (!routeId || !newRate) return null;
   const updateRate = await editRoutes(routeId, newRate);
   await putUserRate(routeId, newRate);
@@ -74,3 +72,18 @@ export const getUserRouteRate = async (routeId: string) => {
 
   return historyRoute.rateRoute;
 };
+
+// export  const fetchRates = async (
+//   Routes: IRoute[],
+//   filtered:number,
+//   routeId: string,
+//   setRouteRates:( routeId: string[] )=>void,
+// ): Promise<void> => {
+//   const rates: Record<string, number> = {}; 
+//   for (const route of Routes) {
+//     if (filtered === 2) {
+//       rates[routeId] = (await getUserRouteRate(route._id as string)) || 0; 
+//     }
+//   }
+//   setRouteRates(rates);
+// };

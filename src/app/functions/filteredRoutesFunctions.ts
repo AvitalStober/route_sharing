@@ -38,11 +38,11 @@ import { fetchRouteById } from "@/app/functions/routesFunctions";
 //         validRouteId = new mongoose.Types.ObjectId(routeId);
 //       } catch (error) {
 //         console.error(`Invalid routeId: ${routeId}`, error);
-//         continue; 
+//         continue;
 //       }
 //     } else {
 //       console.error(`Unsupported routeId type: ${typeof routeId}`);
-//       continue; 
+//       continue;
 //     }
 
 //     const route: Route | undefined = await fetchRouteById(validRouteId.toHexString());
@@ -56,8 +56,8 @@ import { fetchRouteById } from "@/app/functions/routesFunctions";
 // };
 
 export const fetchHistoryRoutes = async (
-  setSelectedRoute: (route: string | null) => void, 
-  setRoutes: (routes: Route[]) => void 
+  setSelectedRoute: (route: string | null) => void,
+  setRoutes: (routes: Route[]) => void
 ): Promise<void> => {
   const user = await fetchUserById();
   setSelectedRoute("history");
@@ -67,19 +67,18 @@ export const fetchHistoryRoutes = async (
     return;
   }
 
-  const userRoutes = user.historyRoutes; 
-  const historyRoutes: Route[] = []; 
+  const userRoutes = user.historyRoutes;
+  const historyRoutes: Route[] = [];
 
   for (const historyRoute of userRoutes) {
-    const routeId = historyRoute.routeId; 
+    const routeId = historyRoute.routeId;
     const route: Route | undefined = await fetchRouteById(routeId.toString());
     if (route) {
       historyRoutes.push(route);
     }
   }
-  console.log("historyRoutes", historyRoutes);
   const flattenedRoutes = historyRoutes.flat();
-  setRoutes(flattenedRoutes); 
+  setRoutes(flattenedRoutes);
 };
 
 export const FetchOwnerRoutes = async (
@@ -104,10 +103,10 @@ export const FetchOwnerRoutes = async (
 
 export const fetchRoutesInYourArea = async (
   setRoutes: (routes: Route[]) => void,
-  setSelectedRoute?: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
+  setSelectedRoute?: (route: string | null) => void,
   areaAddress?: string
 ): Promise<void> => {
-  setSelectedRoute && setSelectedRoute("routes");
+  if (setSelectedRoute) setSelectedRoute("routes");
   try {
     let routes;
     if (!areaAddress) {

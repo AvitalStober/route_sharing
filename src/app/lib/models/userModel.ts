@@ -1,6 +1,5 @@
 import IUser from "@/app/types/users";
 import mongoose, { Model, Schema } from "mongoose";
-import { number } from "zod";
 
 const UsersSchema: Schema<IUser> = new Schema({
   fullName: { type: String, required: true },

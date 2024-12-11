@@ -107,13 +107,13 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   );
 
   const fetchRates = async () => {
-    const rates: Record<string, number> = {}; // הקצאה עם הסוג המתאים
+    const rates: Record<string, number> = {}; 
     for (const route of Routes) {
       if (filtered === 2) {
-        rates[route._id] = (await getUserRouteRate(route._id as string)) || 0; // ודא ערך ברירת מחדל
+        rates[route._id] = (await getUserRouteRate(route._id as string)) || 0; 
       }
     }
-    setRouteRates(rates); // עדכון ה-state
+    setRouteRates(rates);
   };
 
   React.useEffect(() => {
