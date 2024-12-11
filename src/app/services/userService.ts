@@ -11,7 +11,6 @@ export const signupFunction = async (
   fullName: string,
   email: string,
   password: string,
-  age: number,
   address: string,
   googleUser: boolean
 ): Promise<IUser | null> => {
@@ -20,7 +19,6 @@ export const signupFunction = async (
       fullName,
       email,
       password,
-      age,
       address,
       googleUser,
     })
@@ -119,7 +117,7 @@ export const addHistoryRoute = async (userId: string, routeId: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId, routeId }), // שליחת המידע לבקשה
+      body: JSON.stringify({ userId, routeId }),
     });
 
     const data = await response.json();
@@ -134,6 +132,22 @@ export const addHistoryRoute = async (userId: string, routeId: string) => {
   } catch (error) {
     console.error("An error occurred:", error);
     throw new Error("Failed to add route");
+  }
+};
+
+export const putUserRouteRate = async (
+  userId: string,
+  routeId: string,
+  rateRoute: number
+) => {
+  try {
+    const response = await axios.put(`${url}/api/users/historyRateRoute/${userId}`, {
+      routeId,
+      rateRoute,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating route:", error);
   }
 };
 

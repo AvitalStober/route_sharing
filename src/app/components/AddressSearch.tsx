@@ -127,6 +127,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import MapLoader from "./MapLoader";
 import { getUserAddress } from "@/app/functions/usersFunctions";
+import useStore from "@/app/store/store";
+import { fetchRoutesInYourArea } from "../functions/filteredRoutesFunctions";
 
 const AddressSearch = () => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
@@ -136,6 +138,7 @@ const AddressSearch = () => {
     useState(false); // דגל האם הכתובת נבחרה מההשלמה
   const [initialAddress, setInitialAddress] = useState(""); // כתובת מקורית לפני שינוי
   const spanRef = useRef<HTMLSpanElement>(null);
+  const setRoutes = useStore((state) => state.setRoutes);
 
   // פונקציה שתבדוק אם הכתובת תקינה
   const isValidAddress = (input: string): boolean => {
@@ -178,7 +181,7 @@ const AddressSearch = () => {
     if (!isSelectedFromAutocomplete && !isValidAddress(address)) {
       setAddress(initialAddress); // חוזר לכתובת המקורית
     } else {
-      
+      fetchRoutesInYourArea(setRoutes, undefined, address);
     }
   }, [address, isSelectedFromAutocomplete, initialAddress]);
 
@@ -200,8 +203,11 @@ const AddressSearch = () => {
           id="address"
           value={address} // הצגת הכתובת במשתנה address
           placeholder="הזן כתובת"
-          style={{ inlineSize: `${inputWidth}px` }}
-          className={`mt-1 block px-4 py-2 border text-right ${
+          style={{
+            inlineSize: `${inputWidth}px`,
+            textAlign: "right", // יישור טקסט לימין
+          }}
+          className={`mt-1 block px-4 py-2 border ${
             errors.address ? "border-red-500" : "border-gray-300"
           } rounded-md`}
           onFocus={(e) => {

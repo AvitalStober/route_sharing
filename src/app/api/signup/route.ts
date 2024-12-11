@@ -9,11 +9,11 @@ export async function POST(request: Request) {
     try {
       console.log('Receiving signup request...');
       // קבלת הנתונים מהבקשה
-      const { fullName, email, password , address, age} = await request.json();
-     console.log(fullName, email, password , address, age);
+      const { fullName, email, password , address} = await request.json();
+     console.log(fullName, email, password , address);
      
       // בדיקה אם כל השדות הוזנו
-      if (!fullName || !email || !password || !address || !age) {
+      if (!fullName || !email || !password || !address) {
         return NextResponse.json(
           { error: "All fields are required" },
           { status: 400 } 
@@ -39,7 +39,6 @@ export async function POST(request: Request) {
         fullName,
         email,
         password: hashedPassword,
-        age,
         address,
         googleUser: false,
       });

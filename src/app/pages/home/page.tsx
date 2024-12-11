@@ -1,6 +1,5 @@
 "use client";
 import Footer from "@/app/components/Footer";
-import AddressSearch from "@/app/components/AddressSearch";
 import React, { useState } from "react";
 import FilteredRoutes from "@/app/components/FilteredRoutes";
 import AreaRoute from "@/app/components/AreaRoute";
@@ -20,8 +19,8 @@ const Page = () => {
               <div className="flex-shrink-0">
                 <FilteredRoutes />
               </div>
-              <div className="flex flex-col flex-shrink-0 items-center">
-                <AddressSearch />
+              {/* <div className="flex flex-col flex-shrink-0 items-center"> */}
+                {/* <AddressSearch /> */}
                 <button
                   onClick={() => {
                     setIsAreaChoosing(true);
@@ -39,7 +38,7 @@ const Page = () => {
                   alt="profil edit"
                 />
                 </div>
-              </div>
+              {/* </div> */}
             </div>
           </main>
           <Footer />

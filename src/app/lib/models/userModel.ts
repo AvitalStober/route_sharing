@@ -7,7 +7,15 @@ const UsersSchema: Schema<IUser> = new Schema({
   email: { type: String, required: true },
   address: { type: String, required: true },
   googleUser: { type: Boolean, required: true },
-  historyRoutes: { type: [Schema.Types.ObjectId], required: true },
+  historyRoutes: {
+    type: [
+      {
+        routeId: { type: Schema.Types.ObjectId },
+        rateRoute: { type: Number },
+      },
+    ],
+    required: true,
+  },
 });
 
 const Users: Model<IUser> =

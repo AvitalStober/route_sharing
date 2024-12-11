@@ -1,5 +1,5 @@
 import User from "@/app/types/users";
-import { getUserById } from "../services/userService";
+import { getUserById, putUserRouteRate } from "../services/userService";
 
 export const getUserToken = (): {
   id: string;
@@ -13,8 +13,13 @@ export const getUserToken = (): {
   return userTokenFromStorage ? JSON.parse(userTokenFromStorage) : null;
 };
 
-export const fetchUserById = async (userToken: { id: string }) => {
+export const fetchUserById = async () => {
   try {
+    const userToken = getUserToken();
+    if (!userToken) {
+      console.error("No user token found");
+      return;
+    }
     const user: User = await getUserById(userToken.id);
     return user;
   } catch (error) {
@@ -24,12 +29,7 @@ export const fetchUserById = async (userToken: { id: string }) => {
 
 export const getUserAddress = async () => {
   try {
-    const userToken = getUserToken();
-    if (!userToken) {
-      throw new Error("No user token found");
-    }
-
-    const user: User | undefined = await fetchUserById(userToken);
+    const user: User | undefined = await fetchUserById();
     if (!user) {
       throw new Error("User not found");
     }
@@ -37,6 +37,24 @@ export const getUserAddress = async () => {
     return user.address;
   } catch (error) {
     console.error("Error fetching user address:", error);
-    return null; 
+    return null;
   }
 };
+
+export const putUserRate = async (routeId: string, rate: number) => {
+  try {
+    const userToken = getUserToken();
+    if (!userToken) {
+      console.error("No user token found");
+      return;
+    }
+
+    const userRate= await putUserRouteRate(userToken.id as string, routeId, rate);
+    console.log("Rate updated successfully");
+    return userRate;
+  } catch (error) {
+    console.error("Error updating user route rate:", error);
+    throw new Error("Failed to update route rate");
+  }
+};
+

@@ -172,7 +172,7 @@ const AddRoute = () => {
 
       {isLoaded ? (
         <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "100vh" }}
+          mapContainerStyle={{ inlineSize: "100%", blockSize: "100vh" }}
           center={center}
           zoom={15}
           onLoad={(map) => {
