@@ -83,12 +83,6 @@ export const resetMap = (
 };
 
 export const displayPoints = async (
-  // getRoutesInChosenArea: (
-  //   polygonPoints: {
-  //     lat: number;
-  //     lng: number;
-  //   }[]
-  // ) => Promise<any>,
   setRoutes: (routes: Route[]) => void,
   setIsAreaChoosing: React.Dispatch<React.SetStateAction<boolean>>,
   areaPoints: google.maps.LatLngLiteral[]
