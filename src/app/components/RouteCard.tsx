@@ -86,7 +86,7 @@
 // export default RouteCard;
 
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/props/‎RouteCardProps";
 import {
@@ -110,13 +110,13 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     const rates: Record<string, number> = {}; 
     for (const route of Routes) {
       if (filtered === 2) {
-        rates[route._id] = (await getUserRouteRate(route._id as string)) || 0; 
+        rates[route._id as string] = (await getUserRouteRate(route._id as string)) || 0; 
       }
     }
     setRouteRates(rates);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (filtered === 2) {
       fetchRates();
     }
@@ -146,7 +146,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
               <CardMap points={route.pointsArray} />
               <Star
                 rate={
-                  filtered === 2 ? routeRates[route._id] || 0 : route.rate || 0
+                  filtered === 2 ? routeRates[route._id as string] || 0 : route.rate || 0
                 }
                 filtered={filtered}
                 onClick={(newRate) =>
