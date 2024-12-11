@@ -21,8 +21,8 @@ export async function PUT(request: Request) {
       { 
         $addToSet: { 
           historyRoutes: { 
-            routeId: new Types.ObjectId(routeId),  // הוספת ה- routeId כאובייקט
-            rateRoute: 0                           // rateRoute מאותחל ל-0
+            routeId: routeId,  
+            rateRoute: 0  
           }
         }
       },

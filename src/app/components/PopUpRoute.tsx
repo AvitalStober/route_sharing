@@ -39,14 +39,14 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
   }, [pictures]);
 
   return (
-    <div className="fixed top-0 left-0 h-full w-4/9 bg-white shadow-lg p-6 overflow-y-auto z-50 transition-transform transform translate-x-0">
+    <div className="fixed top-0 left-0 h-full w-1/2 bg-white shadow-lg p-6 overflow-y-auto z-50 transition-transform transform translate-x-0">
       <button
         onClick={onClose}
         className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
       >
         X
       </button>
-      <h2 className="text-2xl font-bold mb-4">Route Details</h2>
+      <h2 className="text-2xl font-bold mb-4">פרטי מסלול</h2>
       {!route  ? (
         <p>Loading...</p> // טקסט טעינה כדי למנוע תקלות
       ) : (
