@@ -60,9 +60,6 @@ const CardMap: React.FC<{ points: google.maps.LatLngLiteral[] }> = ({
     setHours(calculatedHours);
     setMinutes(calculatedMinutes);
 
-    console.log(
-      `הזמן הכולל להליכה: ${calculatedHours} שעות, ${calculatedMinutes} דקות`
-    );
   };
 
   return (

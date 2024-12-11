@@ -29,9 +29,8 @@
 //             password: "", // משתמש Google לא צריך סיסמה
 //             googleUser: true, // מזהה שמדובר במשתמש Google
 //           });
-//           console.log("New user created:", user);
 //         } else {
-//           console.log("User already exists:", user);
+//           allert("User already exists:", user);
 //         }
 //         return true; // הצלחה בהתחברות
 //       } catch (error) {
@@ -89,9 +88,9 @@ const handler = NextAuth({
             password: "", // משתמש Google לא צריך סיסמה
             googleUser: true, // מזהה שמדובר במשתמש Google
           });
-          console.log("New user created:", user);
+          alert("New user created:"+ user);
         } else {
-          console.log("User already exists:", user);
+          alert("User already exists:"+ user);
         }
 
         // יצירת טוקן עבור המשתמש החדש או הקיים

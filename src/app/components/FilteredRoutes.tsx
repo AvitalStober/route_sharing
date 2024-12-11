@@ -94,9 +94,6 @@ const FilteredRoutes = () => {
   const setRoutes = useStore((state) => state.setRoutes);
 
   useEffect(() => {
-    console.log("Routes",Routes);
-    console.log("selectedRoute",selectedRoute);
-    
     if (selectedRoute !== "routes")
       fetchRoutesInYourArea(setRoutes, setSelectedRoute);
   }, [setRoutes]);

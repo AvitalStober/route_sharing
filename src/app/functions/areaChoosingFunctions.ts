@@ -51,7 +51,6 @@ export const handleMapClick = (
 
     setAreaPoints((prevPoints) => {
       const updatedPoints = [...prevPoints, newPoint];
-      console.log("Updated AreaPoints: ", updatedPoints);
 
       // בניית הפוליגון רק אם יש יותר מ-2 נקודות
       if (updatedPoints.length > 2) {
@@ -64,7 +63,6 @@ export const handleMapClick = (
           strokeWeight: 2,
         });
         polygon.setMap(mapRef.current);
-        console.log("Polygon: ", polygon);
 
         polygonRef.current = polygon;
       }

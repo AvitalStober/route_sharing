@@ -24,8 +24,6 @@ export async function PUT(
   request: Request,
   { params }: { params: { routeId: string } }
 ) {
-  console.log("params", params);
-  
   try {
     await connect();
 
@@ -65,7 +63,6 @@ export async function PUT(
 //   try {
 //     await connect();
 //     const { routeId } = await params;
-//     console.log(routeId);
 
 //     const routes = await Route.find({ ownerId: routeId });
 //     return NextResponse.json(routes, { status: 200 });

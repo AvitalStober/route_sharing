@@ -13,7 +13,7 @@ const Page = () => {
   const router = useRouter();
   const Routes = useStore((state) => state.Routes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
-  if (Routes.length == 0) initializeRoutes();
+  if (Routes && Routes.length == 0) initializeRoutes();
 
   return (
     <div className="min-h-screen flex flex-col">

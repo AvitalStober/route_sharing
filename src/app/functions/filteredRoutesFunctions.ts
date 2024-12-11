@@ -51,7 +51,6 @@ import { fetchRouteById } from "@/app/functions/routesFunctions";
 //     }
 //   }
 
-//   console.log("Final history routes:", historyRoutes);
 //   setRoutes(historyRoutes);
 // };
 
@@ -117,7 +116,7 @@ export const fetchRoutesInYourArea = async (
     }
     setRoutes(routes);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -132,6 +131,6 @@ export const fetchRoutesByChoosingArea = async (
     setRoutes(routesInChosenArea); // קריאה לפונקציה לעדכון הסטייט ב-Zustand
     
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

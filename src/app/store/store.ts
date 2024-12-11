@@ -9,7 +9,7 @@
 //     const routes = await getRoutesInYourArea(address as string);
 //     return routes;
 //   } catch (error) {
-//     console.log(error);
+//     console.error(error);
 //     return [];
 //   }
 // };
@@ -36,14 +36,12 @@ import { getRoutesInYourArea } from "../services/routeService";
 const fetchRoutesInYourArea = async () => {
   try {
     const address = await getUserAddress();
-    console.log("address", address);
 
     const routes = await getRoutesInYourArea(address as string);
-    console.log("routes", routes);
     
     return routes; 
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return []; 
   }
 };
@@ -57,7 +55,6 @@ const useStore = create<StoreState>((set) => ({
   setRoutes: (routes) => set({ Routes: routes }),
   
   initializeRoutes: async () => {
-    console.log("ffffff");
     
     const routes = await fetchRoutesInYourArea();
     set({ Routes: routes }); 
