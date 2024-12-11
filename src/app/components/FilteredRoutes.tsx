@@ -90,13 +90,12 @@ import useStore from "@/app/store/store";
 const FilteredRoutes = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
   const Routes = useStore((state) => state.Routes);
-
   const setRoutes = useStore((state) => state.setRoutes);
 
   useEffect(() => {
-    console.log("Routes",Routes);
-    console.log("selectedRoute",selectedRoute);
-    
+    console.log("Routes", Routes);
+    console.log("selectedRoute", selectedRoute);
+
     if (selectedRoute !== "routes")
       fetchRoutesInYourArea(setRoutes, setSelectedRoute);
   }, [setRoutes]);

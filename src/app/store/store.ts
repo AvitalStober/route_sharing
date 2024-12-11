@@ -57,8 +57,6 @@ const useStore = create<StoreState>((set) => ({
   setRoutes: (routes) => set({ Routes: routes }),
   
   initializeRoutes: async () => {
-    console.log("ffffff");
-    
     const routes = await fetchRoutesInYourArea();
     set({ Routes: routes }); 
   },
