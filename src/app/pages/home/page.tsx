@@ -6,14 +6,12 @@ import FilteredRoutes from "@/app/components/FilteredRoutes";
 import AreaRoute from "@/app/components/AreaRoute";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import useStore from "@/app/store/store";
+// import useStore from "@/app/store/store";
 
 const Page = () => {
   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
   const router = useRouter();
-  const Routes = useStore((state) => state.Routes);
-  const initializeRoutes = useStore((state) => state.initializeRoutes);
-  if (Routes && Routes.length == 0) initializeRoutes();
+  // const Routes = useStore((state) => state.Routes);
 
   return (
     <div className="min-h-screen flex flex-col">

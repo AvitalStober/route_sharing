@@ -20,13 +20,16 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   );
 
   const fetchRates = async () => {
-    const rates: Record<string, number> = {}; 
-    for (const route of Routes) {
-      if (filtered === 2) {
-        rates[route._id as string] = (await getUserRouteRate(route._id as string)) || 0; 
+    const rates: Record<string, number> = {};
+    if (Routes) {
+      for (const route of Routes) {
+        if (filtered === 2) {
+          rates[route._id as string] =
+            (await getUserRouteRate(route._id as string)) || 0;
+        }
       }
+      setRouteRates(rates);
     }
-    setRouteRates(rates);
   };
 
   useEffect(() => {
@@ -59,7 +62,9 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
               <CardMap points={route.pointsArray} route={route} />
               <Star
                 rate={
-                  filtered === 2 ? routeRates[route._id as string] || 0 : route.rate || 0
+                  filtered === 2
+                    ? routeRates[route._id as string] || 0
+                    : route.rate || 0
                 }
                 filtered={filtered}
                 onClick={(newRate) =>

@@ -77,7 +77,7 @@
 // export default FilteredRoutes;
 
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   fetchHistoryRoutes,
   FetchOwnerRoutes,
@@ -91,11 +91,15 @@ const FilteredRoutes = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
   const Routes = useStore((state) => state.Routes);
   const setRoutes = useStore((state) => state.setRoutes);
+  const initializeRoutes = useStore((state) => state.initializeRoutes);
+  if (Routes && Routes.length == 0 && selectedRoute === "routes")
+    initializeRoutes();
 
-  useEffect(() => {
-    if (selectedRoute !== "routes")
-      fetchRoutesInYourArea(setRoutes, setSelectedRoute);
-  }, [setRoutes]);
+  // useEffect(() => {
+  //   if (selectedRoute !== "routes") {
+  //     setRoutes([]);
+  //   }
+  // }, []);
 
   return (
     <div className="flex flex-col">

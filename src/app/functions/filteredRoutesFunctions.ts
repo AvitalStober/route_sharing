@@ -58,8 +58,8 @@ export const fetchHistoryRoutes = async (
   setSelectedRoute: (route: string | null) => void,
   setRoutes: (routes: Route[]) => void
 ): Promise<void> => {
-  const user = await fetchUserById();
   setSelectedRoute("history");
+  const user = await fetchUserById();
 
   if (!user) {
     console.error("User not found");
@@ -68,7 +68,6 @@ export const fetchHistoryRoutes = async (
 
   const userRoutes = user.historyRoutes;
   const historyRoutes: Route[] = [];
-
   for (const historyRoute of userRoutes) {
     const routeId = historyRoute.routeId;
     const route: Route | undefined = await fetchRouteById(routeId.toString());
@@ -84,13 +83,13 @@ export const FetchOwnerRoutes = async (
   setSelectedRoute: (route: string | null) => void, // פונקציה פשוטה לעדכון סטייט
   setRoutes: (routes: Route[]) => void // פונקציה פשוטה לעדכון רשימת ה-Routes
 ): Promise<void> => {
+  setSelectedRoute("myRoutes");
   const userToken = getUserToken();
   if (!userToken) {
     console.error("No user token found");
     return;
   }
 
-  setSelectedRoute("myRoutes");
   try {
     const ownerR = await getRoutesByOwnerId(userToken.id);
 
@@ -129,7 +128,6 @@ export const fetchRoutesByChoosingArea = async (
   try {
     // const routes = await getRoutesInChosenArea(routesInChosenArea);
     setRoutes(routesInChosenArea); // קריאה לפונקציה לעדכון הסטייט ב-Zustand
-    
   } catch (error) {
     console.error(error);
   }
