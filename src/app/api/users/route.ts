@@ -1,7 +1,6 @@
 import connect from "@/app/lib/DB/connectDB";
 import User from "@/app/lib/models/userModel";
 import { NextResponse } from "next/server";
-import { Types } from "mongoose";
 
 export async function PUT(request: Request) {
   try {
@@ -21,7 +20,7 @@ export async function PUT(request: Request) {
       { 
         $addToSet: { 
           historyRoutes: { 
-            routeId: new Types.ObjectId(routeId),  // הוספת ה- routeId כאובייקט
+            routeId: routeId,  // הוספת ה- routeId כאובייקט
             rateRoute: 0                           // rateRoute מאותחל ל-0
           }
         }
