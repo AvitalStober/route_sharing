@@ -1,7 +1,8 @@
 "use client";
-import Link from "next/link";
 import "./globals.css";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  return <Link href={"/pages/home"}>link</Link>;
+  const router = useRouter();
+  router.push("/pages/login");
 }
