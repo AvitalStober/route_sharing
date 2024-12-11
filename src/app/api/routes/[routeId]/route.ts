@@ -1,5 +1,6 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
+import { log } from "console";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -24,34 +25,46 @@ export async function PUT(
   request: Request,
   { params }: { params: { routeId: string } }
 ) {
+  console.log("put - server");
+
   try {
     await connect();
 
     const { routeId } = params;
-    const { newRate, gallery } = await request.json();
+    const { rate: newRate, gallery } = await request.json();
+    console.log(routeId, "id", newRate, "rate", gallery, "galery");
 
-    const route = await Route.findById({ routeId });
-    if (!route) {
-      return NextResponse.json(
-        { error: "Route not found" },
-        { status: 404 }
+    // const route = await Route.findOne({ _id: routeId });
+    // if (!route) {
+    //   return NextResponse.json(
+    //     { error: "Route not found" },
+    //     { status: 404 }
+    //   );
+    // }
+    // console.log("route", route.gallery);
+
+    // if (newRate) {
+
+    //   const newUpdateRate =
+    //     (route.rate * route.ratingNum + newRate) / (route.ratingNum + 1);
+
+    //   route.rate = newUpdateRate;
+    //   route.ratingNum = route.ratingNum + 1;
+    // }
+
+    if (gallery) {
+      const updatedRoute = await Route.findByIdAndUpdate(
+        routeId,
+        { $set: { gallery: gallery } },
+        { new: true }
       );
-    }
-    if (newRate) {
-      const newUpdateRate =
-        (route.rate * route.ratingNum + newRate) / (route.ratingNum + 1);
+      if (updatedRoute)
+        console.log("newRoute", updatedRoute.gallery);
 
-      route.rate = newUpdateRate;
-      route.ratingNum = route.ratingNum + 1;
+      // await route.save();
 
-      await route.save();
+      return NextResponse.json(updatedRoute, { status: 200 });
     }
-    if(gallery){
-      route.gallery = gallery;
-      await route.save;
-    }
-
-    return NextResponse.json(route, { status: 200 });
   } catch (error) {
     console.error("Error updating route:", error);
     return NextResponse.json(

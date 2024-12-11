@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import CardMap from "./CardMap";
@@ -30,24 +29,26 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   return (
     <div className="m-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {Routes.map((route, index) => (
-          <div
-            key={index}
-            className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-          >
-            <CardMap points={route.pointsArray} route={route} />
-            <Star
+        {/* בדיקה אם Routes הוא מערך ולא ריק */}
+        {Array.isArray(Routes) && Routes.length > 0 ? (
+          Routes.map((route, index) => (
+            <div
               key={index}
-              rate={
-                filtered === 2
-                  ? selectedRatings[route._id as string] || 0
-                  : route.rate!
-              } // אם filtered===2, להציג דירוג מ- selectedRatings
-              filtered={filtered}
-              onClick={(newRate) =>
-                handleStarClick(route._id as string, newRate)
-              }
-            />
+              className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            >
+              <CardMap points={route.pointsArray} route={route} />
+              <Star
+                key={index}
+                rate={
+                  filtered === 2
+                    ? selectedRatings[route._id as string] || 0
+                    : route.rate!
+                }
+                filtered={filtered}
+                onClick={(newRate) =>
+                  handleStarClickInternal(route._id as string, newRate)
+                }
+              />
 
               {filtered === 1 && (
                 <div className="mt-2">

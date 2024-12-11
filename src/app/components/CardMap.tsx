@@ -2,25 +2,23 @@ import React, { useState } from "react";
 import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
 import PopUpRoute from "./PopUpRoute";
 import IRoute from "../types/routes";
+import { Types } from "mongoose";
+import { CardMapProps } from "../types/props/CardMapProps";
 
-interface CardMapProps{
-  points: google.maps.LatLngLiteral[],
-  route: IRoute | null
-}
 
 const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
   route,
+  expanded = false,
 }) => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
-  console.log(route?._id , "id");
 
   // משתני זמן כסטייט
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
   //לפופאפ
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>();
 
   // הגדרת סגנון המפה
   const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
@@ -113,32 +111,31 @@ const CardMap: React.FC<CardMapProps> = ({
       <p>
         הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
       </p>
-      <div className="mt-auto px-4 pb-4 pt-0">
-        {!isExpanded && (<button
-          onClick={() => setIsExpanded(true)}
-          className="mt-auto rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          type="button"
-        >
-          Read more
-        </button>)}
+      <div className="mt-auto px-4 pb-4 pt-0 flex justify-end">
+        {!isExpanded && !expanded && (
+          <button
+            onClick={() => setIsExpanded(true)}
+            className="mt-auto rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            type="button"
+          >
+            +
+          </button>
+        )}
         {isExpanded && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             // onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
           >
-            {route && <PopUpRoute
-              onClose={() => setIsExpanded(false)}
-              routeId={typeof route._id === "string" ? route._id : String(route._id)}
-              ownerId={typeof route.ownerId === "string" ? route.ownerId : String(route.ownerId)}
-              pointsArray={route.pointsArray}
-              description={route.description}
-              rate={route.rate}
-              ratingNum={route.ratingNum}
-              gallery={route.gallery}
-            />}
+            {route && (
+              <PopUpRoute
+                onClose={() => setIsExpanded(false)}
+                routeId={route._id as Types.ObjectId}
+              />
+            )}
           </div>
         )}
-      </div>    </>
+      </div>
+    </>
   );
 };
 

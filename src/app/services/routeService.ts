@@ -27,7 +27,7 @@ export const getAllRoutes = async () => {
 export const getRoutesById = async (routeId: string | undefined) => {
   try {
     const response = await axios.get(`${url}/api/routes/${routeId}`);
-    return response.data;
+    return response.data[0];
   } catch (error) {
     console.error("Error fetching routes by route id:", error);
     throw error;
@@ -74,6 +74,8 @@ export const getRoutesInChosenArea = async (
 };
 
 export const editRoutes = async (routeId: string, rate?: number, gallery?: string[]) => {
+  console.log(gallery, "function");
+  
   try {
     if(rate){
       console.log(rate, "func");
