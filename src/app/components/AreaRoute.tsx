@@ -46,13 +46,6 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
         // קריאה לפונקציה אסינכרונית לקבלת כתובת המשתמש
         const userAddress = await getUserAddress();
         setAddress(userAddress!);
-        // המרת הכתובת לנקודות ציון
-        // const myAddress = geocodeAddress(
-        //   userAddress!,
-        //   setCenter,
-        //   mapRef,
-        //   setAddress
-        // );
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
@@ -126,7 +119,7 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
 
       {isLoaded ? (
         <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "500px" }}
+          mapContainerStyle={{ inlineSize: "100%", blockSize: "500px" }}
           center={center}
           zoom={13}
           onClick={(event) =>

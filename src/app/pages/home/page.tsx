@@ -1,14 +1,19 @@
 "use client";
 import Footer from "@/app/components/Footer";
+import AddressSearch from "@/app/components/AddressSearch";
 import React, { useState } from "react";
 import FilteredRoutes from "@/app/components/FilteredRoutes";
 import AreaRoute from "@/app/components/AreaRoute";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import useStore from "@/app/store/store";
 
 const Page = () => {
   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
   const router = useRouter();
+  const Routes = useStore((state) => state.Routes);
+  const initializeRoutes = useStore((state) => state.initializeRoutes);
+  if (Routes.length == 0) initializeRoutes();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -19,8 +24,8 @@ const Page = () => {
               <div className="flex-shrink-0">
                 <FilteredRoutes />
               </div>
-              {/* <div className="flex flex-col flex-shrink-0 items-center"> */}
-                {/* <AddressSearch /> */}
+              <div className="flex flex-col flex-shrink-0 items-center">
+                <AddressSearch />
                 <button
                   onClick={() => {
                     setIsAreaChoosing(true);
@@ -29,16 +34,21 @@ const Page = () => {
                 >
                   סמן אזור נבחר
                 </button>
-                <div className="cursor-pointer" onClick={()=>{router.push('/pages/editUser')}}>
-                <Image
-                  className="flex flex-wrap justify-center"
-                  src="https://res.cloudinary.com/dltlyphap/image/upload/v1733825852/user_crv80f.png"
-                  height={70}
-                  width={70}
-                  alt="profil edit"
-                />
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    router.push("/pages/editUser");
+                  }}
+                >
+                  <Image
+                    className="flex flex-wrap justify-center"
+                    src="https://res.cloudinary.com/dltlyphap/image/upload/v1733825852/user_crv80f.png"
+                    height={70}
+                    width={70}
+                    alt="profil edit"
+                  />
                 </div>
-              {/* </div> */}
+              </div>
             </div>
           </main>
           <Footer />

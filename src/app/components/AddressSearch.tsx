@@ -132,6 +132,7 @@ import { fetchRoutesInYourArea } from "../functions/filteredRoutesFunctions";
 
 const AddressSearch = () => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
+  const [userAddress, setUserAddress] = useState(""); // כתובת שכותב המשתמש
   const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
   const [inputWidth, setInputWidth] = useState(200); // רוחב ההזנה של השדה
   const [isSelectedFromAutocomplete, setIsSelectedFromAutocomplete] =
@@ -155,6 +156,7 @@ const AddressSearch = () => {
     const fetchAddress = async () => {
       const fetchedAddress = await getUserAddress();
       if (fetchedAddress) {
+        setUserAddress(fetchedAddress);
         setAddress(fetchedAddress); // הצגת כתובת אם קיימת
         setInitialAddress(fetchedAddress); // שמירת הכתובת המקורית
       }
@@ -181,9 +183,10 @@ const AddressSearch = () => {
     if (!isSelectedFromAutocomplete && !isValidAddress(address)) {
       setAddress(initialAddress); // חוזר לכתובת המקורית
     } else {
-      fetchRoutesInYourArea(setRoutes, undefined, address);
+      if (address !== userAddress)
+        fetchRoutesInYourArea(setRoutes, undefined, address);
     }
-  }, [address, isSelectedFromAutocomplete, initialAddress]);
+  }, [address, isSelectedFromAutocomplete, initialAddress, setRoutes, userAddress]);
 
   return (
     <>

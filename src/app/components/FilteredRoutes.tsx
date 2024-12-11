@@ -85,17 +85,21 @@ import {
 } from "@/app/functions/filteredRoutesFunctions";
 import RouteCard from "@/app/components/RouteCard";
 import useStore from "@/app/store/store";
-import AddressSearch from "./AddressSearch";
+// import AddressSearch from "./AddressSearch";
 
 const FilteredRoutes = () => {
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
   const Routes = useStore((state) => state.Routes);
+
   const setRoutes = useStore((state) => state.setRoutes);
 
   useEffect(() => {
- 
-    fetchRoutesInYourArea(setRoutes, setSelectedRoute);
-  }, []);
+    console.log("Routes",Routes);
+    console.log("selectedRoute",selectedRoute);
+    
+    if (selectedRoute !== "routes")
+      fetchRoutesInYourArea(setRoutes, setSelectedRoute);
+  }, [setRoutes]);
 
   return (
     <div className="flex flex-col">
@@ -128,9 +132,9 @@ const FilteredRoutes = () => {
           </div>
         </div>
 
-        <div className="flex">
+        {/* <div className="flex">
           <AddressSearch />
-        </div>
+        </div> */}
       </div>
 
       {/* תוכן המסלולים */}
