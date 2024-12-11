@@ -1,5 +1,6 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
+import IRoute from "@/app/types/routes";
 import { log } from "console";
 import { NextResponse } from "next/server";
 
@@ -32,38 +33,47 @@ export async function PUT(
 
     const { routeId } = params;
     const { rate: newRate, gallery } = await request.json();
-    console.log(routeId, "id", newRate, "rate", gallery, "galery");
+    console.log(routeId, "id", newRate, "rate", gallery, "gallery");
 
-    // const route = await Route.findOne({ _id: routeId });
-    // if (!route) {
-    //   return NextResponse.json(
-    //     { error: "Route not found" },
-    //     { status: 404 }
-    //   );
-    // }
-    // console.log("route", route.gallery);
+    let updatedRoute;
+    
+    // Check if newRate is provided and calculate new rating
+    if (newRate) {
+      const route = await Route.findById(routeId);
+      if (!route) {
+        return NextResponse.json(
+          { error: "Route not found" },
+          { status: 404 }
+        );
+      }
 
-    // if (newRate) {
+      // Calculate the new average rate and increment rating number
+      const newUpdateRate = (route.rate * route.ratingNum + newRate) / (route.ratingNum + 1);
+      route.rate = newUpdateRate;
+      route.ratingNum = route.ratingNum + 1;
+      
+      updatedRoute = await route.save(); // Save the updated route
+    }
 
-    //   const newUpdateRate =
-    //     (route.rate * route.ratingNum + newRate) / (route.ratingNum + 1);
-
-    //   route.rate = newUpdateRate;
-    //   route.ratingNum = route.ratingNum + 1;
-    // }
-
+    // Update gallery if provided
     if (gallery) {
-      const updatedRoute = await Route.findByIdAndUpdate(
+      updatedRoute = await Route.findByIdAndUpdate(
         routeId,
         { $set: { gallery: gallery } },
         { new: true }
       );
-      if (updatedRoute)
+      if (updatedRoute) {
         console.log("newRoute", updatedRoute.gallery);
+      }
+    }
 
-      // await route.save();
-
+    if (updatedRoute) {
       return NextResponse.json(updatedRoute, { status: 200 });
+    } else {
+      return NextResponse.json(
+        { error: "Route not found or no updates made" },
+        { status: 404 }
+      );
     }
   } catch (error) {
     console.error("Error updating route:", error);
@@ -73,23 +83,3 @@ export async function PUT(
     );
   }
 }
-
-// export async function PUT(
-//   request: Request,
-//   { params }: { params: { routeId: string } }
-// ) {
-//   try {
-//     await connect();
-//     const { routeId } = await params;
-//     console.log(routeId);
-
-//     const routes = await Route.find({ ownerId: routeId });
-//     return NextResponse.json(routes, { status: 200 });
-//   } catch (error) {
-//     console.error("Error fetching routes:", error);
-//     return NextResponse.json(
-//       { error: "Internal Server Error" },
-//       { status: 500 }
-//     );
-//   }
-// }

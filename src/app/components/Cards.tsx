@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import CardMap from "./CardMap";
-import RouteCardProps from "../types/‎RouteCardProps";
+import RouteCardProps from "../types/props/‎RouteCardProps";
 import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
