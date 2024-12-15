@@ -62,16 +62,16 @@ export async function PUT(request: Request) {
 //   }
 // }
 
-// export async function DELETE(request: Request) {
-//   try {
-//     await connect();
-//     const result = await User.deleteMany({});
-//     return NextResponse.json(
-//       { message: "All users have been deleted", deletedCount: result.deletedCount },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error("Error deleting users:", error);
-//     return NextResponse.json({ error: "Failed to delete users" }, { status: 500 });
-//   }
-// }
+export async function DELETE(request: Request) {
+  try {
+    await connect();
+    const result = await User.deleteMany({});
+    return NextResponse.json(
+      { message: "All users have been deleted", deletedCount: result.deletedCount },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting users:", error);
+    return NextResponse.json({ error: "Failed to delete users" }, { status: 500 });
+  }
+}

@@ -14,9 +14,9 @@ const Login: React.FC = () => {
     setError(null);
     try {
       const token = await loginFunction(email, password);
-      
+
       if (token) {
-        router.push("/pages/home"); 
+        router.push("/pages/home");
       } else {
         setError("Invalid email or password");
       }
@@ -38,6 +38,9 @@ const Login: React.FC = () => {
         <p className="mt-2 text-gray-700">
           Don&apos;t have an account? <a href="./signup" className="text-blue-500">Sign up</a>
         </p>
+        <a href="./forgetPassword" className="text-blue-500">forget password?</a>
+
+
       </div>
     </div>
   );
