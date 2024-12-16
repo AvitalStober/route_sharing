@@ -79,14 +79,7 @@ export const loginFunction = async (
       return null;
     });
 };
-//   try {
-//     const response = await axios.post(`${url}/api/users`, newUser);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error adding user:", error);
-//     throw error;
-//   }
-// };
+
 
 export const getAllUsers = async () => {
   try {
@@ -171,3 +164,30 @@ export const putUserDetails = async (
     console.error("Error updating route:", error);
   }
 };
+
+export const verifyEmailAndSendOTP = async(email: string) =>{
+  try{
+    const response = axios.post(`${url}/api/forgetPassword`, {email});
+    return response;
+  }catch(error){
+    console.error(error)
+  }
+};
+
+export const verifyOTP = async(email: string, otp: string) =>{
+  try{
+    const response = axios.put(`${url}/api/forgetPassword`, {email, otp});
+    return response;
+  }catch(error){
+    console.error(error)
+  }
+}
+
+export const editPassword = async(email: string, newPassword: string) =>{
+  try{
+    const response = axios.put(`${url}/api/forgetPassword`, {email, password: newPassword});
+    return response;
+  }catch(error){
+    console.error(error)
+  }
+}

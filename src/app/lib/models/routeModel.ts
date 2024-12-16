@@ -7,7 +7,7 @@ const LatLngLiteralSchema: Schema = new Schema({
 });
 
 const RoutesSchema: Schema<IRoute> = new Schema({
-  ownerId: { type: Schema.Types.ObjectId, required: true },
+  ownerId: { type: Schema.Types.ObjectId},
   pointsArray: { type: [LatLngLiteralSchema], required: true },
   description: { type: String, required: false },
   rate: { type: Number, required: false },

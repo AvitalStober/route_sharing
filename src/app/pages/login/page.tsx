@@ -43,6 +43,9 @@ const Login: React.FC = () => {
             הרשמה
           </a>
         </p>
+        <a href="./forgetPassword" className="text-blue-500">forget password?</a>
+
+
       </div>
     </div>
   );
