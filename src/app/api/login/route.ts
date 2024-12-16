@@ -3,10 +3,9 @@ import connect from "@/app/lib/DB/connectDB";
 import User from "@/app/lib/models/userModel";
 import bcrypt from "bcrypt";
 import { generateToken } from "@/app/functions/tokenFunction";
-import dotenv from "dotenv";
 import Auth from "@/app/lib/models/authModel";
 
-dotenv.config();
+// dotenv.config();
 
 export async function POST(request: Request) {
   try {
@@ -22,6 +21,8 @@ export async function POST(request: Request) {
     await connect();
 
     const auth = await Auth.findOne({ email });
+    console.log(auth);
+    
     if (!auth) {
       return NextResponse.json(
         { error: true, message: "User not found" },
@@ -30,6 +31,8 @@ export async function POST(request: Request) {
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, auth.password);
+    console.log(isPasswordCorrect);
+    
     if (!isPasswordCorrect) {
       return NextResponse.json(
         { error: true, message: "Invalid credentials" },
@@ -38,6 +41,8 @@ export async function POST(request: Request) {
     }
 
     const user = await User.findOne({ email });
+    console.log(user);
+    
     if (!user) {
       return NextResponse.json(
         { error: true, message: "User not found" },

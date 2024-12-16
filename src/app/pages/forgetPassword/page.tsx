@@ -127,6 +127,8 @@ const ForgetPassword = () =>{
                 setError("Failed to send OTP. Please try again.");
             }
         } catch (err) {
+            console.error(err);
+            
             setError("An error occurred. Please try again.");
         } finally {
             setLoading(false);
