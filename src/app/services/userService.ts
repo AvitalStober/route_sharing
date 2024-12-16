@@ -4,8 +4,8 @@ import useStore from "@/app/store/store";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "../types/storeState";
 
-// const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app";
+const url = "http://localhost:3000";
+// const url = "https://route-sharing-bsd7.vercel.app";
 
 export const signupFunction = async (
   fullName: string,
@@ -14,6 +14,11 @@ export const signupFunction = async (
   address: string,
   googleUser: boolean
 ): Promise<IUser | null> => {
+  console.log(fullName,
+    email,
+    password,
+    address,);
+  
   return await axios
     .post(`${url}/api/signup`, {
       fullName,
@@ -56,7 +61,6 @@ export const loginFunction = async (
       const { setToken } = useStore.getState();
 
       const decodedToken = jwtDecode<Token>(response.data.token);
-      console.log("decodedToken", decodedToken.id);
 
       const userToken = {
         id: decodedToken.id,
@@ -123,7 +127,6 @@ export const addHistoryRoute = async (userId: string, routeId: string) => {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Route added successfully:", data);
       return data; // החזרת התשובה (אם צריך להשתמש בה מאוחר יותר)
     } else {
       console.error("Error adding route:", data.message);

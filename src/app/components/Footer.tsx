@@ -5,7 +5,7 @@ import React from "react";
 const Footer = () => {
   const router = useRouter();
   return (
-    <footer className="bg-gray-800 text-white py-6" dir="rtl">
+    <footer className="bg-gray-800 text-white py-4" dir="rtl">
       <div className="container mx-auto text-center">
         <p className="text-xs">Routes Sharing &copy; כל הזכויות שמורות</p>
         {/* קישורי מידע */}
@@ -30,27 +30,9 @@ const Footer = () => {
           </a>
         </div>
         {/* קישורי רשתות חברתיות */}
-        <div className="mt-2">
+        <div>
           <p>עקבו אחרינו ב:</p>
           <div className="flex justify-center">
-            {/* <a
-              href="https://www.facebook.com"
-              className="text-white hover:text-gray-400 mx-2"
-            >
-              פייסבוק
-            </a>
-            <a
-              href="https://www.twitter.com"
-              className="text-white hover:text-gray-400 mx-2"
-            >
-              טוויטר
-            </a>
-            <a
-              href="https://www.instagram.com"
-              className="text-white hover:text-gray-400 mx-2"
-            >
-              אינסטגרם
-            </a> */}
             <div
               className="cursor-pointer m-2"
               onClick={() => {

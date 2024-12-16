@@ -58,9 +58,6 @@ export async function PUT(
         { $set: { gallery: gallery } },
         { new: true }
       );
-      if (updatedRoute) {
-        console.log("newRoute", updatedRoute.gallery);
-      }
     }
 
     if (updatedRoute) {

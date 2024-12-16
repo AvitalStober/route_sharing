@@ -18,7 +18,6 @@ import {
 } from "@react-google-maps/api";
 
 const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
-
   const [address, setAddress] = useState("");
   const [center, setCenter] = useState<google.maps.LatLngLiteral>();
   const polygonRef = useRef<google.maps.Polygon | null>(null);
@@ -33,18 +32,18 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
     libraries: ["geometry", "places"],
     language: "he",
   });
-  
+
   useEffect(() => {
     const initialize = async () => {
       if (isLoaded && autocompleteRef.current) {
         const autocomplete = new google.maps.places.Autocomplete(
           autocompleteRef.current
         );
-  
+
         // קריאה לפונקציה אסינכרונית לקבלת כתובת המשתמש
         const userAddress = await getUserAddress();
         setAddress(userAddress!);
-  
+
         // שימוש ב-Geocoding API כדי לקבל קואורדינטות של הכתובת
         const geocoder = new google.maps.Geocoder();
         geocoder.geocode({ address: userAddress }, (results, status) => {
@@ -62,11 +61,11 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
             console.error("Geocoding failed: " + status);
           }
         });
-  
+
         // מאזין לשינויים במיקום שנבחר בתיבת החיפוש
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-  
+
           if (place.geometry && place.geometry.location) {
             const location = place.geometry.location;
             // עדכון מרכז המפה
@@ -85,12 +84,14 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
         });
       }
     };
-  
+
     initialize();
   }, [isLoaded]);
-  
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center">
+      <div className="flex w-[100%]">
+      {/* חזרה לעמוד בית */}
       <div
         onClick={() => {
           setIsAreaChoosing(false);
@@ -99,7 +100,8 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
       >
         ✕
       </div>
-      <div className="flex justify-center items-center mb-4 mt-4 space-x-2">
+      {/* כתובת */}
+      <div className="flex justify-center self-center items-center mb-4 mt-4 space-x-2">
         <input
           ref={autocompleteRef}
           type="text"
@@ -108,6 +110,8 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
           className="px-4 py-2 border rounded"
         />
       </div>
+      </div>
+      {/* כפתורי שליטה */}
       <div className="flex justify-center mb-4 space-x-2">
         <button
           onClick={() => resetMap(setAreaPoints)}
@@ -136,39 +140,41 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
       </div>
 
       {isLoaded ? (
-        <GoogleMap
-          mapContainerStyle={{ inlineSize: "100%", blockSize: "500px" }}
-          center={center}
-          zoom={13}
-          onClick={(event) =>
-            handleMapClick(event, setAreaPoints, mapRef, polygonRef)
-          }
-          onLoad={(map) => {
-            mapRef.current = map;
-          }}
-        >
-          {areaPoints.length > 2 && (
-            <Polygon
-              path={areaPoints}
-              options={{
-                fillColor: "yellow",
-                fillOpacity: 0.4,
-                strokeColor: "yellow",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-              }}
-            />
-          )}
-          {areaPoints.map((point, index) => (
-            <Marker
-              key={`area-${index}`}
-              position={point}
-              icon={{
-                url: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
-              }}
-            />
-          ))}
-        </GoogleMap>
+        <div className="w-[80%] mb-2 border border-black rounded-xl">
+          <GoogleMap
+            mapContainerStyle={{ inlineSize: "100%", blockSize: "500px", borderRadius: '11px' }}
+            center={center}
+            zoom={13}
+            onClick={(event) =>
+              handleMapClick(event, setAreaPoints, mapRef, polygonRef)
+            }
+            onLoad={(map) => {
+              mapRef.current = map;
+            }}
+          >
+            {areaPoints.length > 2 && (
+              <Polygon
+                path={areaPoints}
+                options={{
+                  fillColor: "yellow",
+                  fillOpacity: 0.4,
+                  strokeColor: "yellow",
+                  strokeOpacity: 0.8,
+                  strokeWeight: 2,
+                }}
+              />
+            )}
+            {areaPoints.map((point, index) => (
+              <Marker
+                key={`area-${index}`}
+                position={point}
+                icon={{
+                  url: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+                }}
+              />
+            ))}
+          </GoogleMap>
+        </div>
       ) : (
         <div>טוען מפה...</div>
       )}

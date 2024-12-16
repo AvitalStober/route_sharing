@@ -27,7 +27,7 @@ const Star: React.FC<StarProps> = ({ rate, filtered, onClick }) => {
   }
 
   return (
-    <div className="flex space-x-1 mt-2">
+    <div className="flex justify-end space-x-1 mt-2">
       {starsArray.map((type, index) => (
         <div
           key={index}

@@ -6,8 +6,6 @@ import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
-
-  console.log(Routes, "$$$$$$$$$$$$$$$");
   
   // פונקציה ללחיצה על הכפתור
   const handleSelectRoute = (routeId: string) => {
@@ -37,7 +35,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
         {Routes.map((route, index) => (
           <div
             key={index}
-            className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            className="max-w-md min-w-[500px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <CardMap points={route.pointsArray} route={route}/>
             <p>rate: {route.rate}</p>

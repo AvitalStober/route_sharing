@@ -37,7 +37,7 @@ const fetchRoutesInYourArea = async () => {
   try {
     const address = await getUserAddress();
 
-    const routes = await getRoutesInYourArea(address as string);
+    const routes = await getRoutesInYourArea(address as string, 1);
     
     return routes; 
   } catch (error) {
