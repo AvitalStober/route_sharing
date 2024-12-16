@@ -128,7 +128,6 @@ const ForgetPassword = () =>{
             }
         } catch (err) {
             console.error(err);
-            
             setError("An error occurred. Please try again.");
         } finally {
             setLoading(false);
@@ -147,6 +146,8 @@ const ForgetPassword = () =>{
                 setError("Invalid OTP. Please try again.");
             }
         } catch (err) {
+            console.error(err);
+            
             setError("An error occurred. Please try again.");
         } finally {
             setLoading(false);
@@ -166,6 +167,7 @@ const ForgetPassword = () =>{
                 setError("Failed to update password. Please try again.");
             }
         } catch (err) {
+            console.error(err);
             setError("An error occurred. Please try again.");
         } finally {
             setLoading(false);
