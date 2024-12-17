@@ -8,7 +8,6 @@ import Auth from "@/app/lib/models/authModel";
 
 export async function POST(request: Request) {
   try {
-    // קבלת הנתונים מהבקשה
     const { fullName, email, password, address } = await request.json();
 
     // בדיקה אם כל השדות הוזנו
@@ -35,24 +34,21 @@ export async function POST(request: Request) {
     const normalizedEmail = email.toLowerCase();
     await connect();
 
-
     // יצירת משתמש חדש ושמירתו ב-DB
     const newUser = await User.create({
       fullName,
       email: normalizedEmail,
-      // password: hashedPassword,
       address,
       googleUser: false,
     });
 
     const existingAuth = await Auth.findOne({ email:normalizedEmail });
-    console.log(existingAuth, "exist");
     
     if(!existingAuth){
-      const auth = await Auth.create({
+      await Auth.create({
         email: normalizedEmail, password: hashedPassword
       });
-      console.log(auth, "create auth");
+      
     }
 
     //יצירת טוקן

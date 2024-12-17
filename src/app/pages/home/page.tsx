@@ -144,6 +144,18 @@ const Page = () => {
   const router = useRouter();
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
 
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("האם אתה בטוח שברצונך להתנתק?");
+    if (confirmLogout) {
+      // מחיקת הטוקן מהסטור
+      if (typeof window === "undefined") {
+        return null;
+      }
+      localStorage.removeItem("userToken");
+      router.push("/pages/login");
+    }
+  };
+
   return (
     <div className="min-h-screen w-auto flex flex-col">
       {!isAreaChoosing ? (
@@ -174,6 +186,12 @@ const Page = () => {
                       alt="profil edit"
                     />
                   </div>
+                  <button
+                    onClick={handleLogout}
+                    className="mt-4 px-4 py-2 bg-red-600 text-white font-medium text-sm rounded-lg shadow hover:bg-red-700 hover:shadow-lg transition duration-300"
+                  >
+                    התנתקות
+                  </button>
                 </div>
               </div>
             )}
