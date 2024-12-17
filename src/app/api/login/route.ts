@@ -5,8 +5,6 @@ import bcrypt from "bcrypt";
 import { generateToken } from "@/app/functions/tokenFunction";
 import Auth from "@/app/lib/models/authModel";
 
-// dotenv.config();
-
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
@@ -21,7 +19,6 @@ export async function POST(request: Request) {
     await connect();
 
     const auth = await Auth.findOne({ email });
-    console.log(auth);
     
     if (!auth) {
       return NextResponse.json(
@@ -31,7 +28,6 @@ export async function POST(request: Request) {
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, auth.password);
-    console.log(isPasswordCorrect);
     
     if (!isPasswordCorrect) {
       return NextResponse.json(
@@ -41,7 +37,6 @@ export async function POST(request: Request) {
     }
 
     const user = await User.findOne({ email });
-    console.log(user);
     
     if (!user) {
       return NextResponse.json(

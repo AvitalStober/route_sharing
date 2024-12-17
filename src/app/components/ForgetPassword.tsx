@@ -1,147 +1,170 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { z } from 'zod';
+'use client';
+import { editPassword, verifyEmailAndSendOTP, verifyOTP } from "@/app/services/userService";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-const emailSchema = z.string().email('Invalid email address');
-const passwordSchema = z
-    .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[!@#$%^&*]/, 'Password must contain at least one special character');
+const ForgetPassword = () => {
+    const [email, setEmail] = useState("");
+    const [otp, setOtp] = useState("");
+    const [newPassword, setNewPassword] = useState(""); // For entering new password
+    const [step, setStep] = useState(1); // 1 = הזנת מייל, 2 = הזנת OTP, 3 = הזנת סיסמא חדשה
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
-    const [otp, setOtp] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [step, setStep] = useState(1); // 1: Request OTP, 2: Verify OTP & Reset Password
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
+    const router = useRouter();
 
-    const handleRequestOtp = async () => {
+    // בדיקת תקינות להזנת מייל
+    const isValidEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    // בדיקת תקינות להזנת סיסמה
+    const isValidPassword = (password: string) => {
+        return password.length >= 8 && /\d/.test(password) && /[!@#$%^&*]/.test(password);
+    };
+
+    const handleEmailSubmit = async () => {
+        setLoading(true);
+        setError("");
+
+        if (!isValidEmail(email)) {
+            setError("Please enter a valid email address.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            setError('');
-            setMessage('');
-    
-            // Validate email
-            emailSchema.parse(email);
-    
-            // Send request
-            const response = await axios.post('/api/auth/forgot-password', { email });
-    
-            setMessage(response.data.message || 'OTP sent to your email');
-            setStep(2);
-        } catch (err) {
-            if (err instanceof z.ZodError) {
-                setError(err.errors[0].message); // Show the first validation error
-            } else if (axios.isAxiosError(err)) {
-                setError(err.response?.data?.error || 'Failed to send OTP');
-            } else if (err instanceof Error) {
-                setError(err.message || 'Something went wrong');
+            const response = await verifyEmailAndSendOTP(email);
+
+            if (response) {
+                setStep(2); // מעבר לשלב הזנת ה-OTP
             } else {
-                setError('Unexpected error occurred');
+                setError("Failed to send OTP. Please try again.");
             }
+        } catch (err) {
+            console.error(err);
+            setError("An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
-    
-    const handleVerifyOtpAndReset = async () => {
+
+    const handleOtpSubmit = async () => {
+        setLoading(true);
+        setError("");
+
+        if (!otp.trim()) {
+            setError("Please enter the OTP sent to your email.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            setError('');
-            setMessage('');
-    
-            // Validate passwords
-            passwordSchema.parse(newPassword);
-    
-            if (newPassword !== confirmPassword) {
-                throw new Error('Passwords do not match');
-            }
-    
-            // Send request
-            const response = await axios.post('/api/auth/reset-password', {
-                email,
-                otp,
-                newPassword,
-            });
-    
-            setMessage(response.data.message || 'Password reset successful. You can now log in.');
-            setStep(1);
-            setEmail('');
-            setOtp('');
-            setNewPassword('');
-            setConfirmPassword('');
-        } catch (err) {
-            if (err instanceof z.ZodError) {
-                setError(err.errors[0].message); // Show the first validation error
-            } else if (axios.isAxiosError(err)) {
-                setError(err.response?.data?.error || err.message || 'Failed to reset password');
+            const response = await verifyOTP(email, otp);
+            if (response) {
+                setStep(3); // מעבר לשלב הזנת סיסמא חדשה
             } else {
-                setError('Unexpected error occurred');
+                setError("Invalid OTP. Please try again.");
             }
+        } catch (err) {
+            console.error(err);
+            setError("An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
-    
+
+    const handleNewPasswordSubmit = async () => {
+        setLoading(true);
+        setError("");
+
+        if (!isValidPassword(newPassword)) {
+            setError("Password must be at least 8 characters long, include a number and a special character.");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await editPassword(email, newPassword);
+            if (response) {
+                alert("סיסמא עודכנה בהצלחה");
+                router.push("/pages/login");
+            } else {
+                setError("Failed to update password. Please try again.");
+            }
+        } catch (err) {
+            console.error(err);
+            setError("An error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '0 auto', padding: '1rem' }}>
-            <h1>Forgot Password</h1>
-
-            {message && <p style={{ color: 'green' }}>{message}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-
-            {step === 1 && (
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+            {step === 1 ? (
                 <>
-                    <label>
-                        Enter your email:
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            style={{ width: '100%', padding: '0.5rem', margin: '0.5rem 0' }}
-                        />
-                    </label>
-                    <button onClick={handleRequestOtp} style={{ padding: '0.5rem 1rem' }}>
-                        Request OTP
+                    <h2 className="text-xl font-semibold mb-4">Verify Your Email</h2>
+                    <input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full px-4 py-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                    <button
+                        onClick={handleEmailSubmit}
+                        className={`w-full py-2 text-white rounded ${
+                            loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+                        }`}
+                        disabled={loading}
+                    >
+                        {loading ? "Sending..." : "Send OTP"}
                     </button>
                 </>
-            )}
-
-            {step === 2 && (
+            ) : step === 2 ? (
                 <>
-                    <label>
-                        Enter the OTP sent to your email:
-                        <input
-                            type="text"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            required
-                            style={{ width: '100%', padding: '0.5rem', margin: '0.5rem 0' }}
-                        />
-                    </label>
-                    <label>
-                        Enter new password:
-                        <input
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                            style={{ width: '100%', padding: '0.5rem', margin: '0.5rem 0' }}
-                        />
-                    </label>
-                    <label>
-                        Confirm new password:
-                        <input
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                            style={{ width: '100%', padding: '0.5rem', margin: '0.5rem 0' }}
-                        />
-                    </label>
-                    <button onClick={handleVerifyOtpAndReset} style={{ padding: '0.5rem 1rem' }}>
-                        Reset Password
+                    <h2 className="text-xl font-semibold mb-4">Enter OTP</h2>
+                    <p className="mb-4 text-gray-600">We have sent an OTP to your email.</p>
+                    <input
+                        type="text"
+                        placeholder="Enter OTP"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        className="w-full px-4 py-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                    <button
+                        onClick={handleOtpSubmit}
+                        className={`w-full py-2 text-white rounded ${
+                            loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+                        }`}
+                        disabled={loading}
+                    >
+                        {loading ? "Verifying..." : "Verify OTP"}
+                    </button>
+                </>
+            ) : (
+                <>
+                    <h2 className="text-xl font-semibold mb-4">Choose a New Password</h2>
+                    <input
+                        type="password"
+                        placeholder="Enter new password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="w-full px-4 py-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                    <button
+                        onClick={handleNewPasswordSubmit}
+                        className={`w-full py-2 text-white rounded ${
+                            loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+                        }`}
+                        disabled={loading}
+                    >
+                        {loading ? "Updating..." : "Update Password"}
                     </button>
                 </>
             )}
@@ -149,4 +172,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default ForgetPassword;

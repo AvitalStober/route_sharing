@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import LoginForm from "@/app/components/ConnectionSteps/LoginForm";
 import GoogleSignInButton from "@/app/components/ConnectionSteps/GoogleButton";
 import { loginFunction } from "@/app/services/userService";
+import { z } from "zod";
+
+const passwordSchema = z.string().min(4, "Password must be at least 4 characters long");
 
 const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -13,6 +16,8 @@ const Login: React.FC = () => {
   const handleLogin = async (email: string, password: string) => {
     setError(null);
     try {
+      // Validate password
+      passwordSchema.parse(password);
       const token = await loginFunction(email, password);
 
       if (token) {
@@ -20,9 +25,13 @@ const Login: React.FC = () => {
       } else {
         setError("Invalid email or password");
       }
-    } catch {
-      console.error("Failed to connect");
-      setError("An error occurred while trying to log in.");
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        setError(e.errors[0].message);
+      } else {
+        console.error("Failed to connect");
+        setError("An error occurred while trying to log in.");
+      }
     }
   };
 
@@ -36,10 +45,9 @@ const Login: React.FC = () => {
           <GoogleSignInButton />
         </div>
         <p className="mt-2 text-gray-700">
-          Don&apos;t have an account? <a href="./signup" className="text-blue-500">Sign up</a>
+          Don't have an account? <a href="./signup" className="text-blue-500">Sign up</a>
         </p>
-        <a href="./forgetPassword" className="text-blue-500">forget password?</a>
-
+        <a href="./forgetPassword" className="text-blue-500">Forget password?</a>
 
       </div>
     </div>

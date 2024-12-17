@@ -5,11 +5,9 @@ import Auth from '@/app/lib/models/authModel';
 import connect from '@/app/lib/DB/connectDB';
 import bcrypt from "bcrypt";
 
-
 export async function POST(request: Request) {
     try {
         const { email } = await request.json();
-        console.log(email);
         
         if (!email) {
             return NextResponse.json(
@@ -20,10 +18,8 @@ export async function POST(request: Request) {
 
         const normalizedEmail = email.toLowerCase();
         await connect();
-        console.log(normalizedEmail, "normal");
         
         const auth = await Auth.findOne({ email: normalizedEmail });
-        console.log(auth);
         
         if (!auth) {
             return NextResponse.json(
@@ -33,7 +29,6 @@ export async function POST(request: Request) {
         }
 
         const otp = crypto.randomInt(100000, 999999).toString();
-        console.log(otp);
         
         const otpExpiration = new Date();
         otpExpiration.setMinutes(otpExpiration.getMinutes() + 5);

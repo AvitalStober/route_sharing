@@ -1,13 +1,17 @@
 // 'use client'
-// import { verifyEmailAndSendOTP, verifyOTP } from "@/app/services/userService";
+// import { editPassword, verifyEmailAndSendOTP, verifyOTP } from "@/app/services/userService";
 // import { useState } from "react";
+// import { useRouter } from "next/navigation";
 
-// const ForgetPassword = () => {
+// const ForgetPassword = () =>{
 //     const [email, setEmail] = useState("");
 //     const [otp, setOtp] = useState("");
-//     const [step, setStep] = useState(1); // 1 = הזנת מייל, 2 = הזנת OTP
+//     const [newPassword, setNewPassword] = useState(""); // For entering new password
+//     const [step, setStep] = useState(1); // 1 = הזנת מייל, 2 = הזנת OTP, 3 = הזנת סיסמא חדשה
 //     const [error, setError] = useState("");
 //     const [loading, setLoading] = useState(false);
+
+//     const router = useRouter();
 
 //     const handleEmailSubmit = async () => {
 //         setLoading(true);
@@ -22,6 +26,7 @@
 //                 setError("Failed to send OTP. Please try again.");
 //             }
 //         } catch (err) {
+//             console.error(err);
 //             setError("An error occurred. Please try again.");
 //         } finally {
 //             setLoading(false);
@@ -35,11 +40,33 @@
 //         try {
 //             const response = await verifyOTP(email, otp);
 //             if (response) {
-//                 //כאן אני רוצה שיעבור לשלב 3 שהוא בחירת סיסמא חדשה ושליחה לעדכון
+//                 setStep(3); // מעבר לשלב הזנת סיסמא חדשה
 //             } else {
 //                 setError("Invalid OTP. Please try again.");
 //             }
 //         } catch (err) {
+//             console.error(err);
+            
+//             setError("An error occurred. Please try again.");
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     const handleNewPasswordSubmit = async () => {
+//         setLoading(true);
+//         setError("");
+
+//         try {
+//             const response = await editPassword(email, newPassword);
+//             if (response) {
+//                 alert("סיסמא עודכנה בהצלחה");
+//                 router.push("/pages/login");
+//             } else {
+//                 setError("Failed to update password. Please try again.");
+//             }
+//         } catch (err) {
+//             console.error(err);
 //             setError("An error occurred. Please try again.");
 //         } finally {
 //             setLoading(false);
@@ -69,7 +96,7 @@
 //                         {loading ? "Sending..." : "Send OTP"}
 //                     </button>
 //                 </>
-//             ) : (
+//             ) : step === 2 ? (
 //                 <>
 //                     <h2 className="text-xl font-semibold mb-4">Enter OTP</h2>
 //                     <p className="mb-4 text-gray-600">We have sent an OTP to your email.</p>
@@ -91,20 +118,40 @@
 //                         {loading ? "Verifying..." : "Verify OTP"}
 //                     </button>
 //                 </>
+//             ) : (
+//                 <>
+//                     <h2 className="text-xl font-semibold mb-4">Choose a New Password</h2>
+//                     <input
+//                         type="password"
+//                         placeholder="Enter new password"
+//                         value={newPassword}
+//                         onChange={(e) => setNewPassword(e.target.value)}
+//                         className="w-full px-4 py-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                     />
+//                     {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+//                     <button
+//                         onClick={handleNewPasswordSubmit}
+//                         className={`w-full py-2 text-white rounded ${
+//                             loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+//                         }`}
+//                         disabled={loading}
+//                     >
+//                         {loading ? "Updating..." : "Update Password"}
+//                     </button>
+//                 </>
 //             )}
 //         </div>
 //     );
-// };
+// }
 
 // export default ForgetPassword;
 
-
-'use client'
+'use client';
 import { editPassword, verifyEmailAndSendOTP, verifyOTP } from "@/app/services/userService";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const ForgetPassword = () =>{
+const ForgetPassword = () => {
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
     const [newPassword, setNewPassword] = useState(""); // For entering new password
@@ -114,9 +161,26 @@ const ForgetPassword = () =>{
 
     const router = useRouter();
 
+    // בדיקת תקינות להזנת מייל
+    const isValidEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    // בדיקת תקינות להזנת סיסמה
+    const isValidPassword = (password: string) => {
+        return password.length >= 8 && /\d/.test(password) && /[!@#$%^&*]/.test(password);
+    };
+
     const handleEmailSubmit = async () => {
         setLoading(true);
         setError("");
+
+        if (!isValidEmail(email)) {
+            setError("Please enter a valid email address.");
+            setLoading(false);
+            return;
+        }
 
         try {
             const response = await verifyEmailAndSendOTP(email);
@@ -138,6 +202,12 @@ const ForgetPassword = () =>{
         setLoading(true);
         setError("");
 
+        if (!otp.trim()) {
+            setError("Please enter the OTP sent to your email.");
+            setLoading(false);
+            return;
+        }
+
         try {
             const response = await verifyOTP(email, otp);
             if (response) {
@@ -147,7 +217,6 @@ const ForgetPassword = () =>{
             }
         } catch (err) {
             console.error(err);
-            
             setError("An error occurred. Please try again.");
         } finally {
             setLoading(false);
@@ -157,6 +226,12 @@ const ForgetPassword = () =>{
     const handleNewPasswordSubmit = async () => {
         setLoading(true);
         setError("");
+
+        if (!isValidPassword(newPassword)) {
+            setError("Password must be at least 8 characters long, include a number and a special character.");
+            setLoading(false);
+            return;
+        }
 
         try {
             const response = await editPassword(email, newPassword);
@@ -243,6 +318,6 @@ const ForgetPassword = () =>{
             )}
         </div>
     );
-}
+};
 
 export default ForgetPassword;

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import SignUpForm from '@/app/components/ConnectionSteps/SignupForm';
 import React, { useState } from 'react';
@@ -6,35 +6,38 @@ import { signupFunction } from '@/app/services/userService';
 import GoogleSignInButton from '@/app/components/ConnectionSteps/GoogleButton';
 import SomeDatails from '@/app/components/ConnectionSteps/SomeDetails';
 import { useRouter } from "next/navigation";
+import { z } from 'zod';
 
+// Zod schemas for validation
+const passwordSchema = z.string().min(4, "Password must be at least 4 characters long");
+const nameSchema = z.string().min(2, "Name must be at least 2 characters long").regex(/^[A-Za-z]+$/, "Name must contain only letters");
 
 const Signup = () => {
-
     const router = useRouter();
-
     const [userData, setUserData] = useState<{ fullName: string; email: string; password: string; } | null>(null);
 
     const handleSignUp = (fullName: string, email: string, password: string) => {
-        setUserData({ fullName, email, password }); 
+        setUserData({ fullName, email, password });
     };
 
     const handleCompleteDetails = async (age: number, address: string) => {
         if (userData?.fullName && userData.email && userData.password) {
-            console.log(userData, age, address);
-
             try {
+                // Validate user data
+                nameSchema.parse(userData.fullName);
+                passwordSchema.parse(userData.password);
+
                 const token = await signupFunction(userData?.fullName, userData?.email, userData?.password, address, false);
-                
+
                 if (token) {
                     router.push("/pages/home");
                 }
-            } catch {
-                console.error("Failed to connect");
+            } catch (e) {
+                console.error("Validation error:", e);
+                // Handle the validation error
             }
-
         }
     }
-
 
     return (
         <div>
@@ -49,11 +52,10 @@ const Signup = () => {
                             <GoogleSignInButton />
                         </div>
                         <p className="mt-2 text-gray-700">
-                            Don&apos;t have an account? <a href="./login" className="text-blue-500">Login</a>
+                            Don't have an account? <a href="./login" className="text-blue-500">Login</a>
                         </p>
                     </div>
                 </div>
-
             )}
         </div>
     );
