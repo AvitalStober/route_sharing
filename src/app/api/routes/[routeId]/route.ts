@@ -1,14 +1,11 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { routeId: string } }
-) {
+export async function GET(context:{params:{routeId: string}}) {
   try {
     await connect();
-    const { routeId } = await params;
+    const { routeId } = await  context.params;
     const routes = await Route.find({ _id: routeId });
     return NextResponse.json(routes, { status: 200 });
   } catch (error) {
