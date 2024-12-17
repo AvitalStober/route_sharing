@@ -3,8 +3,9 @@ import Route from "@/app/lib/models/routeModel";
 import { NextResponse } from "next/server";
 
 export async function GET(
+  { params }: { params: { routeId: string } },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   request: Request,
-  { params }: { params: { routeId: string } }
 ) {
   try {
     await connect();
