@@ -132,7 +132,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   // פונקציה לעדכון הסטייט על ידי הוספת מסלולים חדשים
   const appendRoutes = (newRoutes: IRoute[]) => {
     if (newRoutes.length !== 0) {
-      let newArray: IRoute[] = [...Routes, ...newRoutes];
+      const newArray: IRoute[] = [...Routes, ...newRoutes];
       setRoutes(newArray);
     }
   };

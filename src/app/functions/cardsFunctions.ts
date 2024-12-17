@@ -6,7 +6,6 @@ import {
 } from "@/app/functions/usersFunctions";
 import { editRoutes } from "../services/routeService";
 import { Types } from "mongoose";
-import { error } from "console";
 
 export const addRouteToHistoryRoute = (routeId: string) => {
   const userToken = getUserToken();

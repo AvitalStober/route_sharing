@@ -37,10 +37,6 @@
 
 import { create } from "zustand";
 import { StoreState } from "../types/storeState";
-import { getUserAddress } from "../functions/usersFunctions";
-import { getRoutesInYourArea } from "../services/routeService";
-import IRoute from "../types/routes";
-import Routes from "../lib/models/routeModel";
 import {fetchRoutesInYourArea} from "@/app/functions/filteredRoutesFunctions"
 
 // const fetchRoutesInYourArea = async () => {

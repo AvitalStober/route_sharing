@@ -147,11 +147,11 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
   });
   const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrors({});
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setErrors({});
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
 
   const handlePlaceSelect = (address: string) => {
     setFormData({ ...formData, address });
