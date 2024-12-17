@@ -45,9 +45,10 @@ export async function POST(request: Request) {
     const existingAuth = await Auth.findOne({ email:normalizedEmail });
     
     if(!existingAuth){
-      const auth = await Auth.create({
+      await Auth.create({
         email: normalizedEmail, password: hashedPassword
       });
+      
     }
 
     //יצירת טוקן

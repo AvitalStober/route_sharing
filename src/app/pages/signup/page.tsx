@@ -52,7 +52,7 @@ const Signup = () => {
                             <GoogleSignInButton />
                         </div>
                         <p className="mt-2 text-gray-700">
-                            Don't have an account? <a href="./login" className="text-blue-500">Login</a>
+                           כבר יש לך חשבון? <a href="./login" className="text-blue-500">Login</a>
                         </p>
                     </div>
                 </div>

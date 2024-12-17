@@ -45,7 +45,7 @@ const Login: React.FC = () => {
           <GoogleSignInButton />
         </div>
         <p className="mt-2 text-gray-700">
-          Don't have an account? <a href="./signup" className="text-blue-500">Sign up</a>
+          אין לך חשבון? <a href="./signup" className="text-blue-500">Sign up</a>
         </p>
         <a href="./forgetPassword" className="text-blue-500">Forget password?</a>
 
