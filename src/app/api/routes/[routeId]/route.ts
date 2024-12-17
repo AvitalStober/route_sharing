@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     await connect();
-    const { routeId } = params;
+    const { routeId } = await params;
     const routes = await Route.find({ _id: routeId });
     return NextResponse.json(routes, { status: 200 });
   } catch (error) {
