@@ -1,11 +1,41 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
-import {  NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-  export async function GET({params}:{params:{routeId: string}}) {
+//   export async function GET(request: NextRequest,{params}:{params:{routeId: string}}) {
+//   try {
+//     await connect();
+//     const { routeId } = await params;
+
+//     const routes = await Route.find({ _id: routeId });
+//     return NextResponse.json(routes, { status: 200 });
+//   } catch (error) {
+//     console.error("Error fetching routes:", error);
+//     return NextResponse.json(
+//       { error: "Internal Server Error" },
+//       { status: 500 }
+//     );
+//   }
+// }
+// import connect from "@/app/lib/DB/connectDB";
+// import Route from "@/app/lib/models/routeModel";
+// import { NextRequest, NextResponse } from "next/server";
+
+// // הגדרת type מחוץ לפונקציה
+// type Params = {
+//   routeId: string;
+// };
+
+// פונקציית GET עם type מחוץ לפונקציה
+// הגדרת type מחוץ לפונקציה
+type Params = {
+  routeId: string;
+};
+
+export async function GET(request: NextRequest, { params }: { params: Params }) {
   try {
     await connect();
-    const { routeId } = await params;
+    const { routeId } = params;
 
     const routes = await Route.find({ _id: routeId });
     return NextResponse.json(routes, { status: 200 });
@@ -17,6 +47,7 @@ import {  NextResponse } from "next/server";
     );
   }
 }
+
 
 export async function PUT(
   request: Request,
