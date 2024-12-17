@@ -38,6 +38,7 @@ export async function GET(request: NextRequest, { params }: Params) {
   try {
     await connect();
     const { routeId } = params;
+console.log("jjj");
 
     const routes = await Route.find({ _id: routeId });
     return NextResponse.json(routes, { status: 200 });
