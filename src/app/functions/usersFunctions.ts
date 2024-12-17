@@ -13,31 +13,40 @@ export const getUserToken = (): {
   return userTokenFromStorage ? JSON.parse(userTokenFromStorage) : null;
 };
 
-export const fetchUserById = async () => {
+export const getUserAddress = async () => {
+  debugger;
   try {
-    const userToken = getUserToken();
-    if (!userToken) {
-      console.error("No user token found");
+    const user: User | undefined = await fetchUserById();
+    console.log("getUserAddress", user);
+    debugger;
+
+    if (!user) {
+      // throw new Error("User not found");
+      console.log("user not found");
       return;
     }
-    const user: User = await getUserById(userToken.id);
-    return user;
+    return user.address;
   } catch (error) {
-    console.error("Error fetching user data:", error);
+    console.log("Error fetching user address:", error);
+    return null;
   }
 };
 
-export const getUserAddress = async () => {
+export const fetchUserById = async () => {
+  debugger;
   try {
-    const user: User | undefined = await fetchUserById();
-    if (!user) {
-      throw new Error("User not found");
+    const userToken = getUserToken();
+    if (!userToken) {
+      console.log("No user token found");
+      return;
     }
+    const user: User = await getUserById(userToken.id);
+    console.log("fetchUserById", user);
+    debugger;
 
-    return user.address;
+    return user;
   } catch (error) {
-    console.error("Error fetching user address:", error);
-    return null;
+    console.log("Error fetching user data:", error);
   }
 };
 
@@ -49,11 +58,14 @@ export const putUserRate = async (routeId: string, rate: number) => {
       return;
     }
 
-    const userRate= await putUserRouteRate(userToken.id as string, routeId, rate);
+    const userRate = await putUserRouteRate(
+      userToken.id as string,
+      routeId,
+      rate
+    );
     return userRate;
   } catch (error) {
     console.error("Error updating user route rate:", error);
     throw new Error("Failed to update route rate");
   }
 };
-

@@ -126,7 +126,6 @@
 // השלמה אוטומטית של גוגל-מפס
 import React, { useEffect, useState, useRef } from "react";
 import MapLoader from "./MapLoader";
-import { getUserAddress } from "@/app/functions/usersFunctions";
 import useStore from "@/app/store/store";
 import { fetchRoutesInYourArea } from "../functions/filteredRoutesFunctions";
 
@@ -153,7 +152,11 @@ const AddressSearch = () => {
   };
 
   useEffect(() => {
+    debugger;
+    const userTokenFromStorage = localStorage.getItem("userToken");
     const fetchAddress = async () => {
+      const { getUserAddress } = await import("@/app/functions/usersFunctions");
+
       const fetchedAddress = await getUserAddress();
       if (fetchedAddress) {
         setUserAddress(fetchedAddress);
@@ -161,8 +164,9 @@ const AddressSearch = () => {
         setInitialAddress(fetchedAddress); // שמירת הכתובת המקורית
       }
     };
-
-    fetchAddress();
+    if (userTokenFromStorage) {
+      fetchAddress();
+    }
   }, []);
 
   useEffect(() => {
@@ -184,9 +188,15 @@ const AddressSearch = () => {
       setAddress(initialAddress); // חוזר לכתובת המקורית
     } else {
       if (address !== userAddress)
-        fetchRoutesInYourArea(setRoutes, undefined, undefined, address);
+        fetchRoutesInYourArea(
+          setRoutes,
+          undefined,
+          undefined,
+          undefined,
+          address
+        );
     }
-  }, [address, isSelectedFromAutocomplete, initialAddress, setRoutes, userAddress]);
+  }, [address, isSelectedFromAutocomplete, initialAddress, userAddress]);
 
   return (
     <>

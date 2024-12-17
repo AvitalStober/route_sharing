@@ -25,10 +25,10 @@ export async function GET(
 ) {
   try {
     await connect();
-    const { ownerId } = params;
+    const { ownerId } = await params;
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "1");
-    const limit = parseInt(url.searchParams.get("limit") || "6");
+    const limit = parseInt(url.searchParams.get("limit") || "2");
     const skip = (page - 1) * limit;
 
     console.log("page", page, "limit", limit);

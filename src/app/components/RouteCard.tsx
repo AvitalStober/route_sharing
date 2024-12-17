@@ -9,6 +9,7 @@ import {
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
@@ -85,8 +86,16 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             </div>
           ))
         ) : (
-          <div className="w-full text-center p-4 mb-4 text-red-500 font-semibold bg-red-100 border border-red-400 rounded">
-            אין מסלולים זמינים.
+          <div className="w-full text-center items-center p-4 text-red-500 font-semibold bg-red-100 border border-red-400 rounded">
+            <Image
+              src={
+                "https://res.cloudinary.com/dltlyphap/image/upload/v1734356075/young-man-got-lost-in-the-forest-guy-scratching-vector-22538521_hfcg15.jpg"
+              }
+              alt={"no routes available"}
+              width={500}
+              height={500}
+            />
+            <p className="mt-4">לא נמצאו מסלולים</p>
           </div>
         )}
 

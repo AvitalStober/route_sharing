@@ -129,7 +129,6 @@ import React, { useState } from "react";
 import { z } from "zod";
 import SomeDetailsProps from "../../types/props/SomeDetailsProps";
 import MapLoader from "../MapLoader";
-import "flowbite-datepicker";
 
 const formSchema = z.object({
   // age: z.string().refine(

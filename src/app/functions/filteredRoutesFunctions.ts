@@ -132,6 +132,7 @@ import {
   getUserAddress,
 } from "@/app/functions/usersFunctions";
 import { fetchRouteById } from "@/app/functions/routesFunctions";
+import IRoute from "@/app/types/routes";
 
 // משתנה גלובלי לשמירת הדף הנוכחי עבור כל פונקציה
 let currentPageOwnerRoutes = 1;
@@ -207,6 +208,7 @@ export const FetchOwnerRoutes = async (
 
 export const fetchRoutesInYourArea = async (
   setRoutes: (routes: Route[]) => void,
+  setLastPage?: (lastPage: boolean) => void,
   appendRoutes?: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
   setSelectedRoute?: (route: string | null) => void,
   areaAddress?: string
@@ -214,27 +216,31 @@ export const fetchRoutesInYourArea = async (
   if (setSelectedRoute) setSelectedRoute("routes");
 
   try {
-    let routes;
-    if (!areaAddress) {
-      const address = await getUserAddress();
-      routes = await getRoutesInYourArea(
-        address as string,
-        currentPageAreaRoutes
-      );
-    } else {
-      routes = await getRoutesInYourArea(
-        areaAddress as string,
-        currentPageAreaRoutes
-      );
-    }
+    let data: { routes: IRoute[]; lastPage: boolean };
+    const userTokenFromStorage = localStorage.getItem("userToken");
+    if (userTokenFromStorage) {
+      if (!areaAddress) {
+        const address = await getUserAddress();
+        data = await getRoutesInYourArea(
+          address as string,
+          currentPageAreaRoutes
+        );
+      } else {
+        data = await getRoutesInYourArea(
+          areaAddress as string,
+          currentPageAreaRoutes
+        );
+      }
+      console.log("data", data);
 
-    if (currentPageAreaRoutes === 1) {
-      setRoutes(routes);
-    } else if (appendRoutes) {
-      appendRoutes(routes);
+      if (currentPageAreaRoutes === 1) {
+        setRoutes(data.routes);
+      } else if (appendRoutes) {
+        appendRoutes(data.routes);
+      }
+      if (setLastPage) setLastPage(data.lastPage);
+      currentPageAreaRoutes++;
     }
-
-    currentPageAreaRoutes++;
   } catch (error) {
     console.error(error);
   }

@@ -7,8 +7,9 @@ export async function GET(
   { params }: { params: { userId: string } }
 ) {
   try {
-    const { userId } = await params;
     await connect();
+    const { userId } = await params;
+
     const user = await User.findById(userId);
     return NextResponse.json({ user: user }, { status: 200 });
   } catch (error) {
@@ -23,15 +24,12 @@ export async function PUT(
   try {
     await connect();
 
-    const { userId } = params; 
-    const { userDetails } = await request.json(); 
+    const { userId } = params;
+    const { userDetails } = await request.json();
 
     const user = await User.findOne({ _id: userId });
     if (!user) {
-      return NextResponse.json(
-        { error: "Route not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Route not found" }, { status: 404 });
     }
 
     user.fullName = userDetails.fullName;

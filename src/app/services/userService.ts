@@ -14,11 +14,8 @@ export const signupFunction = async (
   address: string,
   googleUser: boolean
 ): Promise<IUser | null> => {
-  console.log(fullName,
-    email,
-    password,
-    address,);
-  
+  console.log(fullName, email, password, address);
+
   return await axios
     .post(`${url}/api/signup`, {
       fullName,
@@ -80,7 +77,6 @@ export const loginFunction = async (
     });
 };
 
-
 export const getAllUsers = async () => {
   try {
     const response = await axios.get(`${url}/api/users`);
@@ -93,17 +89,10 @@ export const getAllUsers = async () => {
 
 export const getUserById = async (userId: string) => {
   try {
-    const response = await fetch(`/api/users/${userId}`, {
-      method: "GET",
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data.user;
+    const response = await axios.get(`${url}/api/users/${userId}`);
+    return response.data.user;
   } catch (error) {
-    console.error("Error fetching user:", error);
-    throw error;
+    console.log("Error fetching user:", error);
   }
 };
 
@@ -137,10 +126,13 @@ export const putUserRouteRate = async (
   rateRoute: number
 ) => {
   try {
-    const response = await axios.put(`${url}/api/users/historyRateRoute/${userId}`, {
-      routeId,
-      rateRoute,
-    });
+    const response = await axios.put(
+      `${url}/api/users/historyRateRoute/${userId}`,
+      {
+        routeId,
+        rateRoute,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error updating route:", error);
@@ -165,29 +157,32 @@ export const putUserDetails = async (
   }
 };
 
-export const verifyEmailAndSendOTP = async(email: string) =>{
-  try{
-    const response = axios.post(`${url}/api/forgetPassword`, {email});
+export const verifyEmailAndSendOTP = async (email: string) => {
+  try {
+    const response = axios.post(`${url}/api/forgetPassword`, { email });
     return response;
-  }catch(error){
-    console.error(error)
+  } catch (error) {
+    console.error(error);
   }
 };
 
-export const verifyOTP = async(email: string, otp: string) =>{
-  try{
-    const response = axios.put(`${url}/api/forgetPassword`, {email, otp});
+export const verifyOTP = async (email: string, otp: string) => {
+  try {
+    const response = axios.put(`${url}/api/forgetPassword`, { email, otp });
     return response;
-  }catch(error){
-    console.error(error)
+  } catch (error) {
+    console.error(error);
   }
-}
+};
 
-export const editPassword = async(email: string, newPassword: string) =>{
-  try{
-    const response = axios.put(`${url}/api/forgetPassword`, {email, password: newPassword});
+export const editPassword = async (email: string, newPassword: string) => {
+  try {
+    const response = axios.put(`${url}/api/forgetPassword`, {
+      email,
+      password: newPassword,
+    });
     return response;
-  }catch(error){
-    console.error(error)
+  } catch (error) {
+    console.error(error);
   }
-}
+};

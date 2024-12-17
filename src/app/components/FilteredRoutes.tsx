@@ -123,19 +123,21 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   selectedRoute,
   setSelectedRoute,
 }) => {
+  const Routes = useStore((state) => state.Routes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
-
-  const storeRoutes = useStore((state) => state.Routes);
-  // const setRoutes = useStore((state) => state.setRoutes);
+  // const [Routes, setRoutes] = useState<IRoute[]>([]);
+  const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
-  const [Routes, setRoutes] = useState<IRoute[]>(storeRoutes || []);
-
+  const [lastPage, setLastPage] = useState(false);
   // פונקציה לעדכון הסטייט על ידי הוספת מסלולים חדשים
   const appendRoutes = (newRoutes: IRoute[]) => {
-    setRoutes((prevRoutes) => [...prevRoutes, ...newRoutes]);
+    if (newRoutes.length !== 0) {
+      let newArray: IRoute[] = [...Routes, ...newRoutes];
+      setRoutes(newArray);
+    }
   };
-  console.log("routes", Routes);
   // אם אין מסלולים, נטען את המסלולים הראשונים
+
   if (Routes && Routes.length === 0 && selectedRoute === "routes") {
     initializeRoutes();
   }
@@ -148,7 +150,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           <div
             onClick={() => {
               setSelectedRoute("routes"); // עדכון selectedRoute כאן
-              fetchRoutesInYourArea(setRoutes, appendRoutes);
+              fetchRoutesInYourArea(setRoutes, setLastPage, appendRoutes);
             }}
             className={`cursor-pointer py-2 px-4 inline-block text-center ${
               selectedRoute === "routes"
@@ -194,14 +196,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
         {selectedRoute === "routes" && (
           <>
             <RouteCard Routes={Routes} filtered={1} />
-            <button
-              onClick={() => {
-                fetchRoutesInYourArea(setRoutes, appendRoutes);
-              }}
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
-            >
-              טען עוד מסלולים
-            </button>
+            {!lastPage && (
+              <button
+                onClick={() => {
+                  fetchRoutesInYourArea(setRoutes, setLastPage, appendRoutes);
+                }}
+                className="mt-4 p-2 bg-blue-500 text-white rounded"
+              >
+                טען עוד מסלולים
+              </button>
+            )}
 
             <div>
               <div className="py-2 text-blue-600">
