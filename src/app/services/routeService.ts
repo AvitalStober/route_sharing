@@ -1,8 +1,8 @@
 import axios from "axios";
 import PartialRoute from "../types/props/RouteAddingProps";
 
-// const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app";
+const url = "http://localhost:3000";
+// const url = "https://route-sharing-bsd7.vercel.app";
 
 export const addRoute = async (newRoute: PartialRoute) => {
   try {
@@ -45,6 +45,7 @@ export const getRoutesByOwnerId = async (ownerId: string | undefined) => {
 };
 
 export const getRoutesInYourArea = async (address: string) => {
+
   try {
     const response = await axios.post(`${url}/api/routesByAddress`, {
       address,
@@ -73,20 +74,28 @@ export const getRoutesInChosenArea = async (
   }
 };
 
-export const editRoutes = async (routeId: string, rate?: number, gallery?: string[]) => {
+export const editRoutes = async (
+  routeId: string,
+  rate?: number,
+  gallery?: string[]
+) => {
   console.log(gallery, "function");
-  
+
   try {
-    if(rate){
+    if (rate) {
       console.log(rate, "func");
-      
-      const response = await axios.put(`${url}/api/routes/${routeId}`, { rate });
+
+      const response = await axios.put(`${url}/api/routes/${routeId}`, {
+        rate,
+      });
       return response.data;
     }
-    if(gallery){
+    if (gallery) {
       console.log(gallery, "func");
 
-      const response = await axios.put(`${url}/api/routes/${routeId}`, { gallery });
+      const response = await axios.put(`${url}/api/routes/${routeId}`, {
+        gallery,
+      });
       return response.data;
     }
   } catch (error) {

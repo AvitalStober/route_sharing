@@ -86,9 +86,11 @@ import {
 import RouteCard from "@/app/components/RouteCard";
 import useStore from "@/app/store/store";
 import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
-// import AddressSearch from "./AddressSearch";
 
-const FilteredRoutes: React.FC<FilteredRoutesProps> = ({ selectedRoute, setSelectedRoute }) => {
+const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
+  selectedRoute,
+  setSelectedRoute,
+}) => {
   const Routes = useStore((state) => state.Routes);
   const setRoutes = useStore((state) => state.setRoutes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
@@ -96,54 +98,60 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({ selectedRoute, setSelec
     initializeRoutes();
 
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-around mb-4 relative">
-        {/* טאבים - צמודים לשמאל */}
-        <div className="flex space-x-4">
-          <div
-            onClick={() => fetchRoutesInYourArea(setRoutes, setSelectedRoute)}
-            className={`cursor-pointer py-2 px-4 inline-block text-center ${
-              selectedRoute === "routes" ? "border-b-4 border-black z-10" : ""
-            }`}
-          >
-            מסלולים באזורך
+    <>
+      <div className="flex flex-col">
+        <div className="flex items-center justify-around mb-4 relative">
+          {/* טאבים - צמודים לשמאל */}
+          <div className="flex space-x-4">
+            <div
+              onClick={() => fetchRoutesInYourArea(setRoutes, setSelectedRoute)}
+              className={`cursor-pointer py-2 px-4 inline-block text-center ${
+                selectedRoute === "routes" ? "border-b-4 border-black z-10" : ""
+              }`}
+            >
+              מסלולים באזורך
+            </div>
+            <div
+              onClick={() => fetchHistoryRoutes(setSelectedRoute, setRoutes)}
+              className={`cursor-pointer py-2 px-4 inline-block text-center ${
+                selectedRoute === "history"
+                  ? "border-b-4 border-black z-10"
+                  : ""
+              }`}
+            >
+              הסטוריית מסלולים
+            </div>
+            <div
+              onClick={() => FetchOwnerRoutes(setSelectedRoute, setRoutes)}
+              className={`cursor-pointer py-2 px-4 inline-block text-center ${
+                selectedRoute === "myRoutes"
+                  ? "border-b-4 border-black z-10"
+                  : ""
+              }`}
+            >
+              מסלולים שלי
+            </div>
           </div>
-          <div
-            onClick={() => fetchHistoryRoutes(setSelectedRoute, setRoutes)}
-            className={`cursor-pointer py-2 px-4 inline-block text-center ${
-              selectedRoute === "history" ? "border-b-4 border-black z-10" : ""
-            }`}
-          >
-            הסטוריית מסלולים
-          </div>
-          <div
-            onClick={() => FetchOwnerRoutes(setSelectedRoute, setRoutes)}
-            className={`cursor-pointer py-2 px-4 inline-block text-center ${
-              selectedRoute === "myRoutes" ? "border-b-4 border-black z-10" : ""
-            }`}
-          >
-            מסלולים שלי
-          </div>
-        </div>
 
-        {/* <div className="flex">
+          {/* <div className="flex">
           <AddressSearch />
         </div> */}
-      </div>
+        </div>
 
-      {/* תוכן המסלולים */}
-      <div>
-        {selectedRoute === "routes" && (
-          <RouteCard Routes={Routes} filtered={1} />
-        )}
-        {selectedRoute === "history" && (
-          <RouteCard Routes={Routes} filtered={2} />
-        )}
-        {selectedRoute === "myRoutes" && (
-          <RouteCard Routes={Routes} filtered={3} />
-        )}
+        {/* תוכן המסלולים */}
+        <div>
+          {selectedRoute === "routes" && (
+            <RouteCard Routes={Routes} filtered={1} />
+          )}
+          {selectedRoute === "history" && (
+            <RouteCard Routes={Routes} filtered={2} />
+          )}
+          {selectedRoute === "myRoutes" && (
+            <RouteCard Routes={Routes} filtered={3} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

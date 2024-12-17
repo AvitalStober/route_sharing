@@ -6,8 +6,6 @@ import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
-
-  console.log(Routes, "$$$$$$$$$$$$$$$");
   
   // פונקציה ללחיצה על הכפתור
   const handleSelectRoute = (routeId: string) => {
