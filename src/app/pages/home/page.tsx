@@ -82,7 +82,8 @@ const Page = () => {
     const confirmLogout = window.confirm("האם אתה בטוח שברצונך להתנתק?");
     if (confirmLogout) {
       // מחיקת הטוקן מהסטור
-      localStorage.removeItem("token");
+      // localStorage.clear();
+      localStorage.removeItem("userToken");
       router.push("/pages/login");
     }
   };

@@ -46,13 +46,13 @@ const Signup = () => {
             ) : (
                 <div className="flex min-h-screen items-center justify-center bg-gray-100">
                     <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-                        <h2 className="text-2xl font-bold text-center text-gray-800">Create an Account</h2>
+                        <h2 className="text-2xl font-bold text-center text-gray-800">יצירת חשבון</h2>
                         <SignUpForm onContinue={handleSignUp} />
                         <div className="text-center">
                             <GoogleSignInButton />
                         </div>
                         <p className="mt-2 text-gray-700">
-                           כבר יש לך חשבון? <a href="./login" className="text-blue-500">Login</a>
+                           כבר יש לך חשבון? <a href="./login" className="text-blue-500">התחברות</a>
                         </p>
                     </div>
                 </div>
