@@ -3,13 +3,12 @@ import Route from "@/app/lib/models/routeModel";
 import { NextResponse } from "next/server";
 
 export async function GET(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   request: Request,
-  { params }: { params: { routeId: string } },
+  params: { params: { routeId: string } }
 ) {
   try {
     await connect();
-    const { routeId } = await params;
+    const { routeId } = await params.params;
 
     const routes = await Route.find({ _id: routeId });
     return NextResponse.json(routes, { status: 200 });
