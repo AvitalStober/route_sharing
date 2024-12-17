@@ -1,8 +1,26 @@
-console.log("ddddddddddd");
+import connect from "@/app/lib/DB/connectDB";
+import User from "@/app/lib/models/userModel";
+import { NextResponse } from "next/server";
 
-// import connect from "@/app/lib/DB/connectDB";
-// import Route from "@/app/lib/models/routeModel";
-// import { NextResponse } from "next/server";
+export async function DELETE() {
+  try {
+    await connect();
+    const result = await User.deleteMany({});
+    return NextResponse.json(
+      {
+        message: "All users have been deleted",
+        deletedCount: result.deletedCount,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting users:", error);
+    return NextResponse.json(
+      { error: "Failed to delete users" },
+      { status: 500 }
+    );
+  }
+}
 
 // export async function GET(
 //   request: Request,
@@ -22,11 +40,6 @@ console.log("ddddddddddd");
 //     );
 //   }
 // }
-
-
-
-
-
 
 // import connect from "@/app/lib/DB/connectDB";
 // import Route from "@/app/lib/models/routeModel";
