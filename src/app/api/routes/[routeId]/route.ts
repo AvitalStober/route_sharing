@@ -29,10 +29,12 @@ import { NextRequest, NextResponse } from "next/server";
 // פונקציית GET עם type מחוץ לפונקציה
 // הגדרת type מחוץ לפונקציה
 type Params = {
-  routeId: string;
+  params: {
+    routeId: string;
+  };
 };
 
-export async function GET(request: NextRequest, { params }: { params: Params }) {
+export async function GET(request: NextRequest, { params }: Params) {
   try {
     await connect();
     const { routeId } = params;
@@ -47,7 +49,6 @@ export async function GET(request: NextRequest, { params }: { params: Params }) 
     );
   }
 }
-
 
 export async function PUT(
   request: Request,
