@@ -29,7 +29,6 @@ export async function PUT(
 
     const { routeId } = params;
     const { rate: newRate, gallery } = await request.json();
-    console.log(routeId, "id", newRate, "rate", gallery, "gallery");
 
     let updatedRoute;
     
