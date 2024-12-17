@@ -24,7 +24,7 @@ export const addRoute = async (newRoute: PartialRoute) => {
 //   }
 // };
 
-export const getRoutesById = async (routeId: string | undefined) => {
+export const getRoutesById = async (routeId: string) => {
   try {
     const response = await axios.get(`${url}/api/routes/${routeId}`);
     return response.data[0];
