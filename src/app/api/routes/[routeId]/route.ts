@@ -1,10 +1,10 @@
 import connect from "@/app/lib/DB/connectDB";
 import Route from "@/app/lib/models/routeModel";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Params } from "next/dist/server/request/params";
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Params }
 ) {
   try {
