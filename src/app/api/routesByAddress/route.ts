@@ -31,7 +31,7 @@ function calculateDistance(
 
 export async function POST(request: Request) {
   try {
-    const { address, page=1 } = await request.json();
+    const { address, page = 1 } = await request.json();
     const skip = (page - 1) * LIMIT;
 
     if (!address) {
@@ -70,7 +70,10 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { routes: nearbyRoutes.slice(skip, skip + LIMIT), lastPage: totalPages <= page },
+      {
+        routes: nearbyRoutes.slice(skip, skip + LIMIT),
+        lastPage: totalPages <= page,
+      },
       { status: 200 }
     );
   } catch (error) {

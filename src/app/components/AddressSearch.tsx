@@ -152,7 +152,6 @@ const AddressSearch = () => {
   };
 
   useEffect(() => {
-    debugger;
     const userTokenFromStorage = localStorage.getItem("userToken");
     const fetchAddress = async () => {
       const { getUserAddress } = await import("@/app/functions/usersFunctions");
@@ -160,7 +159,7 @@ const AddressSearch = () => {
       const fetchedAddress = await getUserAddress();
       if (fetchedAddress) {
         setUserAddress(fetchedAddress);
-        setAddress(fetchedAddress); // הצגת כתובת אם קיימת
+        if (address == "") setAddress(fetchedAddress); // הצגת כתובת אם קיימת
         setInitialAddress(fetchedAddress); // שמירת הכתובת המקורית
       }
     };

@@ -29,7 +29,7 @@ export const getRoutesById = async (routeId: string) => {
     const response = await axios.get(`${url}/api/routes/${routeId}`);
     return response.data[0];
   } catch (error) {
-    console.log("Error fetching routes by route id:", error);
+    console.error("Error fetching routes by route id:", error);
     throw error;
   }
 };
@@ -52,8 +52,6 @@ export const getRoutesByOwnerId = async (
     const response = await axios.get(
       `${url}/api/routes/ownerId/${ownerId}?page=${page}&limit=${limit}`
     );
-    console.log("limited routes", response.data);
-
     return response.data;
   } catch (error) {
     console.error("Error fetching routes by owner id:", error);
@@ -75,7 +73,7 @@ export const getRoutesByOwnerId = async (
 export const getRoutesInYourArea = async (
   address: string,
   currentPageAreaRoutes: number
-) => {  
+) => {
   try {
     const response = await axios.post(`${url}/api/routesByAddress`, {
       address,
@@ -83,7 +81,7 @@ export const getRoutesInYourArea = async (
     });
     return response.data; // נקבל את הנתונים ונספק אותם בחזרה
   } catch (error) {
-    console.log("Error fetching routes:", error);
+    console.error("Error fetching routes:", error);
     // throw new Error("Could not fetch routes. Please try again later.");
   }
 };

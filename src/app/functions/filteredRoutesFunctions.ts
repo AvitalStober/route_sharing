@@ -214,7 +214,6 @@ export const fetchRoutesInYourArea = async (
   areaAddress?: string
 ): Promise<void> => {
   if (setSelectedRoute) setSelectedRoute("routes");
-
   try {
     let data: { routes: IRoute[]; lastPage: boolean };
     const userTokenFromStorage = localStorage.getItem("userToken");
@@ -226,18 +225,20 @@ export const fetchRoutesInYourArea = async (
           currentPageAreaRoutes
         );
       } else {
+        currentPageAreaRoutes = 1;
         data = await getRoutesInYourArea(
           areaAddress as string,
           currentPageAreaRoutes
         );
       }
-      console.log("data", data);
-
-      if (currentPageAreaRoutes === 1) {
-        setRoutes(data.routes);
-      } else if (appendRoutes) {
-        appendRoutes(data.routes);
+      if (data && data.routes) {
+        if (currentPageAreaRoutes === 1) {
+          setRoutes(data.routes);
+        } else if (appendRoutes) {
+          appendRoutes(data.routes);
+        }
       }
+
       if (setLastPage) setLastPage(data.lastPage);
       currentPageAreaRoutes++;
     }

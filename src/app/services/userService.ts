@@ -14,7 +14,6 @@ export const signupFunction = async (
   address: string,
   googleUser: boolean
 ): Promise<IUser | null> => {
-  console.log(fullName, email, password, address);
 
   return await axios
     .post(`${url}/api/signup`, {
@@ -92,7 +91,7 @@ export const getUserById = async (userId: string) => {
     const response = await axios.get(`${url}/api/users/${userId}`);
     return response.data.user;
   } catch (error) {
-    console.log("Error fetching user:", error);
+    console.error("Error fetching user:", error);
   }
 };
 

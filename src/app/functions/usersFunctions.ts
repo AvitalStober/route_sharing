@@ -14,39 +14,32 @@ export const getUserToken = (): {
 };
 
 export const getUserAddress = async () => {
-  debugger;
   try {
     const user: User | undefined = await fetchUserById();
-    console.log("getUserAddress", user);
-    debugger;
 
     if (!user) {
       // throw new Error("User not found");
-      console.log("user not found");
+      console.error("user not found");
       return;
     }
     return user.address;
   } catch (error) {
-    console.log("Error fetching user address:", error);
+    console.error("Error fetching user address:", error);
     return null;
   }
 };
 
 export const fetchUserById = async () => {
-  debugger;
   try {
     const userToken = getUserToken();
     if (!userToken) {
-      console.log("No user token found");
+      console.error("No user token found");
       return;
     }
     const user: User = await getUserById(userToken.id);
-    console.log("fetchUserById", user);
-    debugger;
-
     return user;
   } catch (error) {
-    console.log("Error fetching user data:", error);
+    console.error("Error fetching user data:", error);
   }
 };
 

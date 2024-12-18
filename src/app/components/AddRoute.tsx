@@ -46,9 +46,7 @@ const AddRoute = () => {
     language: "he",
   });
 
-  useEffect(() => {
-    console.log("isLoaded", isLoaded);
-    
+  useEffect(() => {    
     const initializeAddress = async () => {
       // קריאה לכתובת המשתמש
       const userAddress = await getUserAddress();
