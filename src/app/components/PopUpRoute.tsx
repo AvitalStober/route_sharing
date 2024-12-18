@@ -17,7 +17,6 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
       const newRoute = await fetchRouteById(routeId.toString());
       
       if (newRoute) {
-        console.log(newRoute, "@@@@@@@@@@@@@@@@@");
         setRoute(newRoute);
         setPictures(newRoute.gallery);
       }
@@ -26,11 +25,9 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
   }, []);
   useEffect(() => {
     async function func() {
-      console.log(pictures);
       if (route && pictures && pictures.length > route.gallery.length) {
         // Edit route when pictures are updated
         const response = await editRoutes(routeId.toString(), undefined, pictures);
-        console.log(response, "response");
         setRoute(response);
         setPictures(response.gallery);
       }
@@ -52,7 +49,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
       ) : (
         <>
           <CardMap points={route.pointsArray} route={route} expanded={true}/>
-          <Star rate={route.rate} filtered={1} onClick={() => console.log("pres")} />
+          <Star rate={route.rate} filtered={1} />
           <p>{route.description}</p>
           {pictures && pictures.length > 0 && (
             <div className="flex flex-wrap gap-4 items-center">

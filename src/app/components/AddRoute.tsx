@@ -37,15 +37,18 @@ const AddRoute = () => {
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
 
   const router = useRouter();
+  const libraries: ("geometry" | "places")[] = ["geometry", "places"];
 
   // map loading
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY || "",
-    libraries: ["geometry", "places"],
+    libraries,
     language: "he",
   });
 
   useEffect(() => {
+    console.log("isLoaded", isLoaded);
+    
     const initializeAddress = async () => {
       // קריאה לכתובת המשתמש
       const userAddress = await getUserAddress();
@@ -109,13 +112,14 @@ const AddRoute = () => {
         }
       });
     }
-
-    // קריאה לפונקציה לאתחול הכתובת
-    initializeAddress();
+    if (isLoaded) {
+      // קריאה לפונקציה לאתחול הכתובת
+      initializeAddress();
+    }
   }, [isLoaded]);
 
   return (
-    <div className="flex">
+    <div className="flex items-center">
       <div className="justify-center w-[40%]">
         <div
           onClick={() => {
@@ -137,14 +141,15 @@ const AddRoute = () => {
         </div>
         <div className="flex justify-center m-4">
           <textarea
+          dir="rtl"
             placeholder="הזן תיאור"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="px-4 py-2 border rounded"
+            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <CloudinaryUploader setPictures={setPictures} />
-        <div className="flex justify-center mb-2 space-x-2">
+        <div className="flex flex-col justify-center my-2 space-y-2">
           <button
             onClick={() =>
               calculateRoute(
@@ -156,7 +161,7 @@ const AddRoute = () => {
                 router
               )
             }
-            className="px-4 py-2 bg-green-500 text-white rounded"
+            className="px-4 py-2 shadow-md border-green-500 text-green-500 rounded hover:shadow-lg"
           >
             חישוב מסלול ושליחה
           </button>
@@ -170,7 +175,7 @@ const AddRoute = () => {
                 directions
               )
             }
-            className="px-4 py-2 bg-red-500 text-white rounded"
+            className="px-4 py-2 shadow-md border-red-500 text-red-500 rounded hover:shadow-lg"
           >
             איפוס מפה
           </button>
@@ -197,33 +202,37 @@ const AddRoute = () => {
       </div>
 
       {isLoaded ? (
-        <GoogleMap
-          mapContainerStyle={{ inlineSize: "100%", blockSize: "100vh" }}
-          center={center}
-          zoom={15}
-          onLoad={(map) => {
-            mapRef.current = map;
-          }}
-          onClick={(event) =>
-            handleMapClick(event, disableMapClick, setRoutePoints)
-          }
-        >
-          {routePoints.map((point, index) => (
-            <Marker key={index} position={point} />
-          ))}
-          {directions && (
-            <DirectionsRenderer
-              directions={directions}
-              options={{
-                polylineOptions: {
-                  strokeColor: "red",
-                  strokeOpacity: 0.8,
-                  strokeWeight: 5,
-                },
-              }}
-            />
-          )}
-        </GoogleMap>
+          <GoogleMap
+            mapContainerStyle={{
+              width: "100%",
+              height: "500px", // גובה מותאם אישית
+              borderRadius: "11px",
+            }}
+            center={center}
+            zoom={15}
+            onLoad={(map) => {
+              mapRef.current = map;
+            }}
+            onClick={(event) =>
+              handleMapClick(event, disableMapClick, setRoutePoints)
+            }
+          >
+            {routePoints.map((point, index) => (
+              <Marker key={index} position={point} />
+            ))}
+            {directions && (
+              <DirectionsRenderer
+                directions={directions}
+                options={{
+                  polylineOptions: {
+                    strokeColor: "red",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 5,
+                  },
+                }}
+              />
+            )}
+          </GoogleMap>
       ) : (
         <div>טעינת המפה...</div>
       )}

@@ -7,7 +7,7 @@ const cloudPresetName = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME;
 
 const CloudinaryUploader: React.FC<PictureProps> = ({ setPictures }) => {
   return (
-    <div className="flex items-center justify-center ">
+    <div className="flex items-center justify-center w-[100%] ">
       <CldUploadButton
         options={{
           multiple: true,
@@ -15,10 +15,11 @@ const CloudinaryUploader: React.FC<PictureProps> = ({ setPictures }) => {
         }}
         uploadPreset={cloudPresetName}
         onSuccessAction={(event) => handleUpload(event, setPictures)}
-        className="bg-orange-400 py-2 px-3 items-center rounded border m-2 text-white
-        hover:bg-orange-500 transition ease-in-out delay-200"
+        //   className="py-2 px-3 shadow items-center rounded m-2 text-orange-500
+        //  hover:shadow transition ease-in-out delay-200"
+        className="px-4 py-2 w-[100%] shadow-md border-orange-500 text-orange-500 rounded hover:shadow-lg"
       >
-        <span className="text-2xl">Upload Images</span>
+        <span>צרף תמונה</span>
       </CldUploadButton>
     </div>
   );

@@ -62,7 +62,9 @@ export const getUserRouteRate = async (routeId: string) => {
       route.routeId.toString() === routeId
   );
   if (!historyRoute) {
-    console.error("Route not found in user historyRoutes");
+    console.log({
+      message: "Route not found in user historyRoutes",
+    });
     return 0;
   }
 
@@ -75,10 +77,10 @@ export const getUserRouteRate = async (routeId: string) => {
 //   routeId: string,
 //   setRouteRates:( routeId: string[] )=>void,
 // ): Promise<void> => {
-//   const rates: Record<string, number> = {}; 
+//   const rates: Record<string, number> = {};
 //   for (const route of Routes) {
 //     if (filtered === 2) {
-//       rates[routeId] = (await getUserRouteRate(route._id as string)) || 0; 
+//       rates[routeId] = (await getUserRouteRate(route._id as string)) || 0;
 //     }
 //   }
 //   setRouteRates(rates);

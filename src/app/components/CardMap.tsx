@@ -77,13 +77,24 @@ const CardMap: React.FC<CardMapProps> = ({
     streetViewControl: false, // מבטל את האפשרות למעבר לתצוגת הרחוב
     fullscreenControl: true, // מבטל את כפתור המסך המלא
   };
+  
 
   return (
     <>
       <div className="flex justify-center">
+        {!isExpanded && !expanded && (
+          <button
+            onClick={() => setIsExpanded(true)}
+            className="my-2 px-4 py-2 border-slate-700 text-slate-700 font-medium text-sm rounded-lg shadow hover:border-slate-700 hover:shadow-lg transition duration-300"
+            // className="m-2 rounded-md py-2 px-4 border border-transparent text-center text-sm text-slate-700 transition-all shadow hover:shadow-lg focus:border-slate-700 focus:shadow-none active:border-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            type="button"
+          >
+            ראה עוד
+          </button>
+        )}
         <button
           onClick={calculateRoute}
-          className="mb-4  px-4 py-2 bg-blue-600 text-white font-medium text-sm rounded-lg shadow hover:bg-blue-700 hover:shadow-lg transition duration-300"
+          className="my-2 px-4 py-2 border-blue-600 text-blue-700 font-medium text-sm rounded-lg shadow hover:border-blue-700 hover:shadow-lg transition duration-300"
         >
           חישוב מסלול וזמן הליכה
         </button>
@@ -108,20 +119,18 @@ const CardMap: React.FC<CardMapProps> = ({
           />
         )}
       </GoogleMap>
-      <p>
-        הזמן הכולל להליכה: {hours} שעות, {minutes} דקות
-      </p>
-      <div className="mt-auto px-4 pb-4 pt-0 flex justify-end">
-        {!isExpanded && !expanded && (
-          <button
-            onClick={() => setIsExpanded(true)}
-            className="mt-auto rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button"
-          >
-            +
-          </button>
+      <div dir="rtl" className="h-[40px] mt-auto flex items-center">
+        {(hours !== 0 || minutes !== 0) && (
+          <p>
+            הזמן הכולל להליכה: {hours !== 0 && `${hours} שעות`}
+            {hours !== 0 && minutes !== 0 && ", "}
+            {minutes && `${minutes} דקות`}
+          </p>
         )}
-        {isExpanded && (
+      </div>
+
+      {isExpanded && (
+        <div className="mt-auto px-4 pb-4 pt-0 flex justify-end">
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             // onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
@@ -133,8 +142,8 @@ const CardMap: React.FC<CardMapProps> = ({
               />
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };
