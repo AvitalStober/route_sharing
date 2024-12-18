@@ -11,7 +11,7 @@ type Props = {
 export async function GET(request: Request, props: Props) {
   try {
     await connect();
-    const userId = await props.params;
+    const { userId } = await props.params;
 
     const user = await User.findById(userId);
     return NextResponse.json({ user: user }, { status: 200 });
@@ -20,14 +20,11 @@ export async function GET(request: Request, props: Props) {
   }
 }
 
-export async function PUT(
-  request: Request,
-  props: Props
-) {
+export async function PUT(request: Request, props: Props) {
   try {
     await connect();
 
-    const userId = await props.params;;
+    const { userId } = await props.params;
     const { userDetails } = await request.json();
 
     const user = await User.findOne({ _id: userId });

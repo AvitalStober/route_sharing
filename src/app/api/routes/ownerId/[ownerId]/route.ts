@@ -25,13 +25,10 @@ type Props = {
     ownerId: string;
   }>;
 };
-export async function GET(
-  request: Request,
-  props: Props
-) {
+export async function GET(request: Request, props: Props) {
   try {
     await connect();
-    const ownerId = await props.params;
+    const { ownerId } = await props.params;
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "1");
     const limit = parseInt(url.searchParams.get("limit") || "2");

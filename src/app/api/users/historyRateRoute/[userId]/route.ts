@@ -13,7 +13,7 @@ export async function PUT(request: Request, props: Props) {
     await connect();
 
     const { routeId, rateRoute } = await request.json();
-    const userId = await props.params;
+    const { userId } = await props.params;
 
     if (!routeId || rateRoute === undefined) {
       return NextResponse.json(
