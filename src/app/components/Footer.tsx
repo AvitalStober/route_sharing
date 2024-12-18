@@ -1,9 +1,9 @@
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import Image from "next/image";
+// import { useRouter } from "next/navigation";
 import React from "react";
 
 const Footer = () => {
-  const router = useRouter();
+  // const router = useRouter();
   return (
     <footer className="bg-gray-800 text-white py-4" dir="rtl">
       <div className="container mx-auto text-center">
@@ -30,7 +30,7 @@ const Footer = () => {
           </a>
         </div>
         {/* קישורי רשתות חברתיות */}
-        <div>
+        {/* <div>
           <p>עקבו אחרינו ב:</p>
           <div className="flex justify-center">
             <div
@@ -77,7 +77,7 @@ const Footer = () => {
             </div>
             
           </div>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
