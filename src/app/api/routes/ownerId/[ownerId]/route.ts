@@ -19,13 +19,19 @@ import { NextResponse } from "next/server";
 //     );
 //   }
 // }
+
+type Props = {
+  params: Promise<{
+    ownerId: string;
+  }>;
+};
 export async function GET(
   request: Request,
-  { params }: { params: { ownerId: string } }
+  props: Props
 ) {
   try {
     await connect();
-    const { ownerId } = await params;
+    const ownerId = await props.params;
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "1");
     const limit = parseInt(url.searchParams.get("limit") || "2");
