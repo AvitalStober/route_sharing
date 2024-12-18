@@ -2,13 +2,16 @@ import connect from "@/app/lib/DB/connectDB";
 import User from "@/app/lib/models/userModel";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { userId: string } }
-) {
+type Props = {
+  params: Promise<{
+    userId: string;
+  }>;
+};
+
+export async function GET(request: Request, props: Props) {
   try {
     await connect();
-    const { userId } = await params;
+    const userId = await props.params;
 
     const user = await User.findById(userId);
     return NextResponse.json({ user: user }, { status: 200 });
@@ -19,12 +22,12 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { userId: string } }
+  props: Props
 ) {
   try {
     await connect();
 
-    const { userId } = params;
+    const userId = await props.params;;
     const { userDetails } = await request.json();
 
     const user = await User.findOne({ _id: userId });
