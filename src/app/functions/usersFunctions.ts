@@ -49,11 +49,14 @@ export const putUserRate = async (routeId: string, rate: number) => {
       return;
     }
 
-    const userRate= await putUserRouteRate(userToken.id as string, routeId, rate);
+    const userRate = await putUserRouteRate(
+      userToken.id as string,
+      routeId,
+      rate
+    );
     return userRate;
   } catch (error) {
     console.error("Error updating user route rate:", error);
     throw new Error("Failed to update route rate");
   }
 };
-
