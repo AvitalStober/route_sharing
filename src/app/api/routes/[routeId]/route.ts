@@ -11,7 +11,7 @@ type Props = {
 export async function GET(request: Request, props: Props) {
   try {
     await connect();
-    const routeId = await props.params;
+    const { routeId } = await props.params;
 
     const routes = await Route.find({ _id: routeId });
     return NextResponse.json(routes, { status: 200 });
@@ -58,14 +58,11 @@ export async function GET(request: Request, props: Props) {
 //   }
 // }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { routeId: string } }
-) {
+export async function PUT(request: Request, props: Props) {
   try {
     await connect();
 
-    const { routeId } = params;
+    const routeId = props.params;
     const { rate: newRate, gallery } = await request.json();
     console.log(routeId, "id", newRate, "rate", gallery, "gallery");
 
