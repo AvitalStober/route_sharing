@@ -139,6 +139,11 @@ const AddressSearch = () => {
   const [initialAddress, setInitialAddress] = useState(""); // כתובת מקורית לפני שינוי
   const spanRef = useRef<HTMLSpanElement>(null);
   const setRoutes = useStore((state) => state.setRoutes);
+  const currentPage = useStore((state) => state.currentPage);
+  const setCurrentPage = useStore((state) => state.setCurrentPage);
+  const setLastPage = useStore((state) => state.setLastPage);
+  const setChangeAddress = useStore((state) => state.setChangeAddress);
+
 
   // פונקציה שתבדוק אם הכתובת תקינה
   const isValidAddress = (input: string): boolean => {
@@ -177,7 +182,8 @@ const AddressSearch = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value); // עדכון כתובת לפי הזנה חופשית של המשתמש
-    setIsSelectedFromAutocomplete(false); // אם המשתמש התחיל להקליד, לא נבחרה כתובת מתוך ההשלמה
+    setIsSelectedFromAutocomplete(false);
+    setChangeAddress(false) // אם המשתמש התחיל להקליד, לא נבחרה כתובת מתוך ההשלמה
   };
 
   // אם הכתובת שהוזנה לא חוקית, נחזיר את הכתובת המקורית
@@ -186,17 +192,22 @@ const AddressSearch = () => {
     if (!isSelectedFromAutocomplete && !isValidAddress(address)) {
       setAddress(initialAddress); // חוזר לכתובת המקורית
     } else {
-      if (address !== userAddress)
+      if (address !== userAddress) {
+        const newPage = 1;
+        setCurrentPage(newPage);
+        setChangeAddress(true)
+        setLastPage(false);
         fetchRoutesInYourArea(
           setRoutes,
-          undefined,
-          undefined,
+          currentPage,
+          setLastPage,
           undefined,
           undefined,
           address
         );
+      }
     }
-  }, [address, isSelectedFromAutocomplete, initialAddress, userAddress]);
+  }, [address, isSelectedFromAutocomplete, initialAddress]);
 
   return (
     <>

@@ -14,5 +14,11 @@ export interface StoreState {
   Routes: IRoute[];
   setRoutes: (routes: IRoute[]) => void;
   currentPage: number;
-  setCurrentPage: (currentPage: number | ((prevPage: number) => number)) => void;
+  setCurrentPage: (
+    currentPage: number | ((prevPage: number) => number)
+  ) => void;
+  lastPage: boolean;
+  setLastPage: (lastPage: boolean) => void;
+  changeAddress: boolean;
+  setChangeAddress: (changeAddress: boolean) => void;
 }

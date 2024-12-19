@@ -108,7 +108,7 @@
 // export default FilteredRoutes;
 
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   fetchHistoryRoutes,
   FetchOwnerRoutes,
@@ -125,12 +125,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 }) => {
   const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
+  const changeAddress = useStore((state) => state.changeAddress);
 
   const Routes = useStore((state) => state.Routes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
-  const [lastPage, setLastPage] = useState(false);
+  // const [lastPage, setLastPage] = useState(false);
+  const lastPage = useStore((state) => state.lastPage);
+  const setLastPage = useStore((state) => state.setLastPage);
+
   // פונקציה לעדכון הסטייט על ידי הוספת מסלולים חדשים
   const appendRoutes = (newRoutes: IRoute[]) => {
     if (newRoutes.length !== 0) {
@@ -140,7 +144,12 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   };
   // אם אין מסלולים, נטען את המסלולים הראשונים
 
-  if (Routes && Routes.length === 0 && selectedRoute === "routes") {
+  if (
+    Routes &&
+    Routes.length === 0 &&
+    selectedRoute === "routes" &&
+    !changeAddress
+  ) {
     initializeRoutes();
   }
 
@@ -155,9 +164,9 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           {/* כפתור למסלולים באזורך */}
           <div
             onClick={() => {
-              const newPage = 1; 
+              const newPage = 1;
               setCurrentPage(newPage);
-              setLastPage(false); 
+              setLastPage(false);
               fetchRoutesInYourArea(
                 setRoutes,
                 newPage,
@@ -177,14 +186,14 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           {/* כפתור להיסטוריית מסלולים */}
           <div
             onClick={() => {
-              const newPage = 1; 
+              const newPage = 1;
               setCurrentPage(newPage);
-              setLastPage(false); 
+              setLastPage(false);
               fetchHistoryRoutes(
                 setSelectedRoute,
                 setRoutes,
                 appendRoutes,
-                newPage, 
+                newPage,
                 setLastPage
               );
             }}
@@ -199,9 +208,9 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           {/* כפתור למסלולים שלי */}
           <div
             onClick={() => {
-              const newPage = 1; 
+              const newPage = 1;
               setCurrentPage(newPage);
-              setLastPage(false); 
+              setLastPage(false);
               FetchOwnerRoutes(
                 setSelectedRoute,
                 setRoutes,
