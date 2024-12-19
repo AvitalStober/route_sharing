@@ -7,7 +7,6 @@ import GoogleSignInButton from "@/app/components/ConnectionSteps/GoogleButton";
 import { loginFunction } from "@/app/services/userService";
 import { z } from "zod";
 
-const passwordSchema = z.string().min(4, "Password must be at least 4 characters long");
 
 const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +16,6 @@ const Login: React.FC = () => {
     setError(null);
     try {
       // Validate password
-      passwordSchema.parse(password);
       const token = await loginFunction(email, password);
 
       if (token) {

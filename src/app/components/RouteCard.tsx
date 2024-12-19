@@ -59,7 +59,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
               key={index}
               className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
-              <CardMap points={route.pointsArray} route={route} />
+              <CardMap points={route.pointsArray} route={route} filtered={filtered}/>
               {/* <RealtimeNavigation route={route.pointsArray} /> */}
               <Star
                 rate={

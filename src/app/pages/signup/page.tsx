@@ -6,11 +6,6 @@ import { signupFunction } from '@/app/services/userService';
 import GoogleSignInButton from '@/app/components/ConnectionSteps/GoogleButton';
 import SomeDatails from '@/app/components/ConnectionSteps/SomeDetails';
 import { useRouter } from "next/navigation";
-import { z } from 'zod';
-
-// Zod schemas for validation
-const passwordSchema = z.string().min(4, "Password must be at least 4 characters long");
-const nameSchema = z.string().min(2, "Name must be at least 2 characters long").regex(/^[A-Za-z]+$/, "Name must contain only letters");
 
 const Signup = () => {
     const router = useRouter();
@@ -22,22 +17,12 @@ const Signup = () => {
 
     const handleCompleteDetails = async (age: number, address: string) => {
         if (userData?.fullName && userData.email && userData.password) {
-            try {
-                // Validate user data
-                nameSchema.parse(userData.fullName);
-                passwordSchema.parse(userData.password);
-
-                const token = await signupFunction(userData?.fullName, userData?.email, userData?.password, address, false);
-
-                if (token) {
-                    router.push("/pages/home");
-                }
-            } catch (e) {
-                console.error("Validation error:", e);
-                // Handle the validation error
+            const token = await signupFunction(userData?.fullName, userData?.email, userData?.password, address, false);
+            if (token) {
+                router.push("/pages/home");
             }
         }
-    }
+    };
 
     return (
         <div>
@@ -52,7 +37,7 @@ const Signup = () => {
                             <GoogleSignInButton />
                         </div>
                         <p className="mt-2 text-gray-700">
-                           כבר יש לך חשבון? <a href="./login" className="text-blue-500">התחברות</a>
+                            כבר יש לך חשבון? <a href="./login" className="text-blue-500">התחברות</a>
                         </p>
                     </div>
                 </div>

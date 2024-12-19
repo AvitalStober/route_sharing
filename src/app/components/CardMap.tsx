@@ -8,6 +8,7 @@ const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
   route,
   expanded = false,
+  filtered,
 }) => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
@@ -130,6 +131,7 @@ const CardMap: React.FC<CardMapProps> = ({
               <PopUpRoute
                 onClose={() => setIsExpanded(false)}
                 routeId={route._id as Types.ObjectId}
+                filtered={filtered}
               />
             )}
           </div>
