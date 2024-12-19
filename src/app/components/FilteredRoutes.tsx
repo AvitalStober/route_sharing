@@ -108,7 +108,7 @@
 // export default FilteredRoutes;
 
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   fetchHistoryRoutes,
   FetchOwnerRoutes,
@@ -123,9 +123,11 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   selectedRoute,
   setSelectedRoute,
 }) => {
+  const currentPage = useStore((state) => state.currentPage);
+  const setCurrentPage = useStore((state) => state.setCurrentPage);
+
   const Routes = useStore((state) => state.Routes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
-  // const [Routes, setRoutes] = useState<IRoute[]>([]);
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
   const [lastPage, setLastPage] = useState(false);
@@ -142,6 +144,10 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
     initializeRoutes();
   }
 
+  useEffect(() => {
+    console.log("currentPage", currentPage);
+  }, [currentPage]);
+
   return (
     <div className="flex flex-col">
       <div className="flex m-2 relative">
@@ -149,7 +155,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           {/* כפתור למסלולים באזורך */}
           <div
             onClick={() => {
-              fetchRoutesInYourArea(setRoutes, setLastPage, appendRoutes,setSelectedRoute);
+              const newPage = 1; 
+              setCurrentPage(newPage);
+              setLastPage(false); 
+              fetchRoutesInYourArea(
+                setRoutes,
+                newPage,
+                setLastPage,
+                appendRoutes,
+                setSelectedRoute
+              );
             }}
             className={`cursor-pointer py-2 px-4 inline-block text-center ${
               selectedRoute === "routes"
@@ -162,7 +177,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           {/* כפתור להיסטוריית מסלולים */}
           <div
             onClick={() => {
-              fetchHistoryRoutes(setSelectedRoute, setRoutes, appendRoutes);
+              const newPage = 1; 
+              setCurrentPage(newPage);
+              setLastPage(false); 
+              fetchHistoryRoutes(
+                setSelectedRoute,
+                setRoutes,
+                appendRoutes,
+                newPage, 
+                setLastPage
+              );
             }}
             className={`cursor-pointer py-2 px-4 inline-block text-center ${
               selectedRoute === "history"
@@ -175,7 +199,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           {/* כפתור למסלולים שלי */}
           <div
             onClick={() => {
-              FetchOwnerRoutes(setSelectedRoute, setRoutes, appendRoutes);
+              const newPage = 1; 
+              setCurrentPage(newPage);
+              setLastPage(false); 
+              FetchOwnerRoutes(
+                setSelectedRoute,
+                setRoutes,
+                appendRoutes,
+                newPage,
+                setLastPage
+              );
             }}
             className={`cursor-pointer py-2 px-4 inline-block text-center ${
               selectedRoute === "myRoutes"
@@ -196,7 +229,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
             {!lastPage && (
               <button
                 onClick={() => {
-                  fetchRoutesInYourArea(setRoutes, setLastPage, appendRoutes);
+                  setCurrentPage((prevPage) => {
+                    const newPage = prevPage + 1;
+                    fetchRoutesInYourArea(
+                      setRoutes,
+                      newPage,
+                      setLastPage,
+                      appendRoutes
+                    );
+                    return newPage;
+                  });
                 }}
                 className="mt-4 p-2 bg-blue-500 text-white rounded"
               >
@@ -236,28 +278,52 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
         {selectedRoute === "history" && (
           <>
             <RouteCard Routes={Routes} filtered={2} />
-            <button
-              onClick={() => {
-                fetchHistoryRoutes(setSelectedRoute, setRoutes, appendRoutes);
-              }}
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
-            >
-              טען עוד מסלולים
-            </button>
+            {!lastPage && (
+              <button
+                onClick={() => {
+                  setCurrentPage((prevPage) => {
+                    const newPage = prevPage + 1;
+                    fetchHistoryRoutes(
+                      setSelectedRoute,
+                      setRoutes,
+                      appendRoutes,
+                      newPage,
+                      setLastPage
+                    );
+                    return newPage;
+                  });
+                }}
+                className="mt-4 p-2 bg-blue-500 text-white rounded"
+              >
+                טען עוד מסלולים
+              </button>
+            )}
           </>
         )}
         {/* אם נבחרו מסלולים שלי */}
         {selectedRoute === "myRoutes" && (
           <>
             <RouteCard Routes={Routes} filtered={3} />
-            <button
-              onClick={() => {
-                FetchOwnerRoutes(setSelectedRoute, setRoutes, appendRoutes);
-              }}
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
-            >
-              טען עוד מסלולים
-            </button>
+            {!lastPage && (
+              <button
+                onClick={() => {
+                  setCurrentPage((prevPage) => {
+                    const newPage = prevPage + 1;
+                    FetchOwnerRoutes(
+                      setSelectedRoute,
+                      setRoutes,
+                      appendRoutes,
+                      newPage,
+                      setLastPage
+                    );
+                    return newPage;
+                  });
+                }}
+                className="mt-4 p-2 bg-blue-500 text-white rounded"
+              >
+                טען עוד מסלולים
+              </button>
+            )}
           </>
         )}
       </div>

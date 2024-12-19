@@ -126,59 +126,53 @@ import {
   getRoutesInYourArea,
 } from "@/app/services/routeService";
 import Route from "@/app/types/routes";
-import {
-  getUserToken,
-  fetchUserById,
-  getUserAddress,
-} from "@/app/functions/usersFunctions";
+import { getUserToken, getUserAddress } from "@/app/functions/usersFunctions";
 import { fetchRouteById } from "@/app/functions/routesFunctions";
 import IRoute from "@/app/types/routes";
-
-// משתנה גלובלי לשמירת הדף הנוכחי עבור כל פונקציה
-let currentPageOwnerRoutes = 1;
-let currentPageHistoryRoutes = 1;
-let currentPageAreaRoutes = 1;
+import { getUserHistoryRoutes } from "@/app/services/userService";
 
 export const fetchHistoryRoutes = async (
   setSelectedRoute: (route: string | null) => void,
   setRoutes: (routes: Route[]) => void,
-  appendRoutes: (routes: Route[]) => void // פונקציה שתוסיף מסלולים קיימים
+  appendRoutes: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
+  currentPage: number,
+  setLastPage?: (lastPage: boolean) => void
 ): Promise<void> => {
   setSelectedRoute("history");
-
-  const user = await fetchUserById();
+  const user = await getUserToken();
   if (!user) {
     console.error("User not found");
     return;
   }
-
-  const userRoutes = user.historyRoutes.slice(
-    (currentPageHistoryRoutes - 1) * 10,
-    currentPageHistoryRoutes * 10
+  const { userHistory, lastPage } = await getUserHistoryRoutes(
+    user.id,
+    currentPage
   );
   const historyRoutes: Route[] = [];
-
-  for (const historyRoute of userRoutes) {
-    const routeId = historyRoute.routeId;
-    const route: Route | undefined = await fetchRouteById(routeId.toString());
-    if (route) {
-      historyRoutes.push(route);
+  if (userHistory) {
+    for (const historyRoute of userHistory) {
+      const routeId = historyRoute.routeId;
+      const route: Route | undefined = await fetchRouteById(routeId.toString());
+      if (route) {
+        historyRoutes.push(route);
+      }
     }
   }
 
-  if (currentPageHistoryRoutes === 1) {
+  if (currentPage === 1) {
     setRoutes(historyRoutes);
   } else {
     appendRoutes(historyRoutes);
   }
-
-  currentPageHistoryRoutes++;
+  if (setLastPage) setLastPage(lastPage);
 };
 
 export const FetchOwnerRoutes = async (
   setSelectedRoute: (route: string | null) => void,
   setRoutes: (routes: Route[]) => void,
-  appendRoutes: (routes: Route[]) => void // פונקציה שתוסיף מסלולים קיימים
+  appendRoutes: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
+  currentPage: number,
+  setLastPage?: (lastPage: boolean) => void
 ): Promise<void> => {
   setSelectedRoute("myRoutes");
   const userToken = getUserToken();
@@ -188,19 +182,15 @@ export const FetchOwnerRoutes = async (
   }
 
   try {
-    const response = await getRoutesByOwnerId(
-      userToken.id,
-      currentPageOwnerRoutes
-    );
-    const { routes, currentPage } = response;
+    const response = await getRoutesByOwnerId(userToken.id, currentPage);
+    const { routes, lastPage } = response;
 
-    if (currentPageOwnerRoutes === 1) {
+    if (currentPage === 1) {
       setRoutes(routes);
     } else {
       appendRoutes(routes);
     }
-
-    currentPageOwnerRoutes = currentPage + 1;
+    if (setLastPage) setLastPage(lastPage);
   } catch (error) {
     console.error("Error fetching user routes:", error);
   }
@@ -208,6 +198,7 @@ export const FetchOwnerRoutes = async (
 
 export const fetchRoutesInYourArea = async (
   setRoutes: (routes: Route[]) => void,
+  currentPage: number,
   setLastPage?: (lastPage: boolean) => void,
   appendRoutes?: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
   setSelectedRoute?: (route: string | null) => void,
@@ -215,24 +206,18 @@ export const fetchRoutesInYourArea = async (
 ): Promise<void> => {
   if (setSelectedRoute) setSelectedRoute("routes");
   try {
+    debugger;
     let data: { routes: IRoute[]; lastPage: boolean };
     const userTokenFromStorage = localStorage.getItem("userToken");
     if (userTokenFromStorage) {
       if (!areaAddress) {
         const address = await getUserAddress();
-        data = await getRoutesInYourArea(
-          address as string,
-          currentPageAreaRoutes
-        );
+        data = await getRoutesInYourArea(address as string, currentPage);
       } else {
-        currentPageAreaRoutes = 1;
-        data = await getRoutesInYourArea(
-          areaAddress as string,
-          currentPageAreaRoutes
-        );
+        data = await getRoutesInYourArea(areaAddress as string, currentPage);
       }
       if (data && data.routes) {
-        if (currentPageAreaRoutes === 1) {
+        if (currentPage === 1) {
           setRoutes(data.routes);
         } else if (appendRoutes) {
           appendRoutes(data.routes);
@@ -240,32 +225,31 @@ export const fetchRoutesInYourArea = async (
       }
 
       if (setLastPage) setLastPage(data.lastPage);
-      currentPageAreaRoutes++;
     }
   } catch (error) {
     console.error(error);
   }
 };
 
-export const fetchRoutesByChoosingArea = async (
-  setRoutes: (routes: Route[]) => void,
-  appendRoutes: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
-  routesInChosenArea: Route[]
-): Promise<void> => {
-  try {
-    const paginatedRoutes = routesInChosenArea.slice(
-      (currentPageAreaRoutes - 1) * 10,
-      currentPageAreaRoutes * 10
-    );
+// export const fetchRoutesByChoosingArea = async (
+//   setRoutes: (routes: Route[]) => void,
+//   appendRoutes: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
+//   routesInChosenArea: Route[]
+// ): Promise<void> => {
+//   try {
+//     const paginatedRoutes = routesInChosenArea.slice(
+//       (currentPageAreaRoutes - 1) * 10,
+//       currentPageAreaRoutes * 10
+//     );
 
-    if (currentPageAreaRoutes === 1) {
-      setRoutes(paginatedRoutes);
-    } else {
-      appendRoutes(paginatedRoutes);
-    }
+//     if (currentPageAreaRoutes === 1) {
+//       setRoutes(paginatedRoutes);
+//     } else {
+//       appendRoutes(paginatedRoutes);
+//     }
 
-    currentPageAreaRoutes++;
-  } catch (error) {
-    console.error(error);
-  }
-};
+//     currentPageAreaRoutes++;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };

@@ -45,12 +45,11 @@ export const getRoutesById = async (routeId: string) => {
 // };
 export const getRoutesByOwnerId = async (
   ownerId: string | undefined,
-  page: number = 1,
-  limit: number = 2
+  page: number
 ) => {
   try {
     const response = await axios.get(
-      `${url}/api/routes/ownerId/${ownerId}?page=${page}&limit=${limit}`
+      `${url}/api/routes/ownerId/${ownerId}?page=${page}`
     );
     return response.data;
   } catch (error) {

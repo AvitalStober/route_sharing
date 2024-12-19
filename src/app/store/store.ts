@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { StoreState } from "../types/storeState";
-import {fetchRoutesInYourArea} from "@/app/functions/filteredRoutesFunctions"
+import { fetchRoutesInYourArea } from "@/app/functions/filteredRoutesFunctions";
 
 const useStore = create<StoreState>((set) => ({
   token: null,
@@ -8,10 +8,19 @@ const useStore = create<StoreState>((set) => ({
   clearToken: () => set({ token: null }),
   Routes: [],
   setRoutes: (routes) => set({ Routes: routes }),
+  currentPage: 1,
+  setCurrentPage: (page) => {
+    set((state) => ({
+      currentPage:
+        typeof page === "function"
+          ? (page as (prev: number) => number)(state.currentPage)
+          : page,
+    }));
+  },
 
   initializeRoutes: async () => {
     const setRoutes = useStore.getState().setRoutes;
-    await fetchRoutesInYourArea(setRoutes);
+    await fetchRoutesInYourArea(setRoutes, 1);
   },
 }));
 

@@ -1,4 +1,7 @@
-import { addHistoryRoute } from "@/app/services/userService";
+import {
+  addHistoryRoute,
+  // getUserHistoryRoutes,
+} from "@/app/services/userService";
 import {
   fetchUserById,
   getUserToken,
@@ -7,7 +10,7 @@ import {
 import { editRoutes } from "../services/routeService";
 import { Types } from "mongoose";
 
-export const addRouteToHistoryRoute = (routeId: string) => {
+export const addRouteToHistoryRoute = async (routeId: string) => {
   const userToken = getUserToken();
 
   if (!userToken) {
@@ -15,7 +18,7 @@ export const addRouteToHistoryRoute = (routeId: string) => {
     return;
   }
 
-  addHistoryRoute(userToken.id, routeId)
+  await addHistoryRoute(userToken.id, routeId)
     .then(() => {
       console.log(`Route ${routeId} successfully added to history.`);
     })
@@ -57,14 +60,14 @@ export const getUserRouteRate = async (routeId: string) => {
     console.error("User not found");
     return 0;
   }
+
   const historyRoute = user.historyRoutes.find(
-    (route: { routeId: Types.ObjectId; rateRoute: number }) =>
-      route.routeId.toString() === routeId
+    (route: { routeId: Types.ObjectId; rateRoute: number }) => {
+      return route.routeId.toString() === routeId;
+    }
   );
   if (!historyRoute) {
-    console.log({
-      message: "Route not found in user historyRoutes",
-    });
+    console.log("Route not found in user historyRoutes");
     return 0;
   }
 

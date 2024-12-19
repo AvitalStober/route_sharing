@@ -10,8 +10,10 @@ import {
 import Star from "@/app/components/Star";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import IRoute from "../types/routes";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
+  const router = useRouter();
   const [selectedRatings, setSelectedRatings] = useState<{
     [routeId: string]: number;
   }>({});
@@ -20,13 +22,19 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     {}
   );
 
+  const handleClick = (routeId: string) => {
+    router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
+  };
+
   const fetchRates = async () => {
     const rates: Record<string, number> = {};
+    const localRoutes: IRoute[] = [];
     if (Routes) {
       for (const route of Routes) {
         if (filtered === 2) {
           rates[route._id as string] =
             (await getUserRouteRate(route._id as string)) || 0;
+          localRoutes.push(route);
         }
       }
       setRouteRates(rates);
@@ -37,9 +45,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     if (filtered === 2) {
       fetchRates();
     }
-  }, [filtered, Routes]);
-
-  const router = useRouter();
+  }, [filtered]);
 
   const handleStarClickInternal = async (routeId: string, new_rate: number) => {
     await handleStarClick(
@@ -65,7 +71,11 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
               {filtered === 1 && (
                 <div dir="rtl" className="mt-2">
                   <button
-                    onClick={() => addRouteToHistoryRoute(route._id as string)}
+                    onClick={() => {
+                      addRouteToHistoryRoute(route._id as string);
+                      handleClick(route._id as string)
+                      // router.push("/pages/RealtimeNavigation");
+                    }}
                     className={`px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800`}
                   >
                     בחירת מסלול

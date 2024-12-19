@@ -168,8 +168,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Script from "next/script";
+import RealtimeNavigationProps from "@/app/types/props/RealtimeNavigationProps"
 
-const RealtimeNavigation = () => {
+const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
+  waypoints = []
+}) => {
   const mapContainerRef = useRef<HTMLDivElement>(null); // שמירת רפרנס לקונטיינר של המפה
   const [, setGoogleMap] = useState<google.maps.Map | null>(null); // שמירת אובייקט המפה
   const [, setDirectionsService] =
@@ -180,20 +183,20 @@ const RealtimeNavigation = () => {
   const [instructions, setInstructions] = useState<string>(""); // הנחיות ניווט
 
   // רשימת נקודות (waypoints) במסלול
-  const waypoints = [
-    { lat: 31.283473943711826, lng: 34.80692328741589 },
-    { lat: 31.253240274324877, lng: 34.76785391840664 },
-    { lat: 31.322120716747207, lng: 34.633356568908404 },
-    { lat: 31.357306341200307, lng: 34.63294494003394 },
-    { lat: 31.42998601600043, lng: 34.56840026433961 },
-    { lat: 31.417104918536843, lng: 34.57161399162095 },
+  // const waypoints = [
+  //   { lat: 31.283473943711826, lng: 34.80692328741589 },
+  //   { lat: 31.253240274324877, lng: 34.76785391840664 },
+  //   { lat: 31.322120716747207, lng: 34.633356568908404 },
+  //   { lat: 31.357306341200307, lng: 34.63294494003394 },
+  //   { lat: 31.42998601600043, lng: 34.56840026433961 },
+  //   { lat: 31.417104918536843, lng: 34.57161399162095 },
 
     // { lat: 32.064873, lng: 34.792394 },
     // { lat: 32.061245, lng: 34.789543 },
     // { lat: 32.065678, lng: 34.795123 },
     // { lat: 32.067234, lng: 34.790567 },
     // { lat: 32.059876, lng: 34.79489 },
-  ];
+  // ];
 
   useEffect(() => {
     if (window.google && mapContainerRef.current) {

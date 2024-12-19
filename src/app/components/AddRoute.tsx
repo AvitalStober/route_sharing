@@ -17,10 +17,8 @@ import {
 import { getUserAddress } from "../functions/usersFunctions";
 
 const AddRoute = () => {
-  // route/user information
   const [description, setDescription] = useState("");
   const [pictures, setPictures] = useState<string[]>([]);
-  // route details
   const [address, setAddress] = useState(""); // לשמור את הכתובת
   const mapRef = useRef<google.maps.Map | null>(null); // ה-ref של המפה
   const autocompleteRef = useRef<HTMLInputElement | null>(null); // ה-ref עבור ה-input של הכתובת

@@ -26,26 +26,24 @@ type Props = {
   }>;
 };
 export async function GET(request: Request, props: Props) {
+  const LIMIT = 2;
   try {
     await connect();
     const { ownerId } = await props.params;
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "1");
-    const limit = parseInt(url.searchParams.get("limit") || "2");
-    const skip = (page - 1) * limit;
-
-    console.log("page", page, "limit", limit);
-
+    const skip = (page - 1) * LIMIT;
+    console.log("page owner", page);
+    
     const routes = await Route.find({ ownerId: ownerId })
       .skip(skip)
-      .limit(limit);
+      .limit(LIMIT);
 
     const totalCount = await Route.countDocuments({ ownerId: ownerId });
     return NextResponse.json(
       {
         routes,
-        totalPages: Math.ceil(totalCount / limit),
-        currentPage: page,
+        lastPage: Math.ceil(totalCount / LIMIT) <= page,
       },
       { status: 200 }
     );

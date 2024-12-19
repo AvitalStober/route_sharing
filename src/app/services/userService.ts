@@ -14,7 +14,6 @@ export const signupFunction = async (
   address: string,
   googleUser: boolean
 ): Promise<IUser | null> => {
-
   return await axios
     .post(`${url}/api/signup`, {
       fullName,
@@ -95,24 +94,26 @@ export const getUserById = async (userId: string) => {
   }
 };
 
+export const getUserHistoryRoutes = async (userId: string, page: number) => {
+  try {
+    const response = await axios.get(
+      `${url}/api/users/historyRoutes/${userId}?page=${page}`
+    );
+    console.log("response", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user history routes:", error);
+  }
+};
+
 export const addHistoryRoute = async (userId: string, routeId: string) => {
   try {
-    const response = await fetch(`/api/users`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId, routeId }),
+    const response = await axios.put(`${url}/api/users`, {
+      userId,
+      routeId,
     });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      return data; // החזרת התשובה (אם צריך להשתמש בה מאוחר יותר)
-    } else {
-      console.error("Error adding route:", data.message);
-      throw new Error(data.message); // טיפול בשגיאה
-    }
+    console.log("response", response.data);
+    return response.data;
   } catch (error) {
     console.error("An error occurred:", error);
     throw new Error("Failed to add route");

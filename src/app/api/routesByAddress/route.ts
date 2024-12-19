@@ -33,6 +33,7 @@ export async function POST(request: Request) {
   try {
     const { address, page = 1 } = await request.json();
     const skip = (page - 1) * LIMIT;
+    console.log("page address", page);
 
     if (!address) {
       return NextResponse.json(
