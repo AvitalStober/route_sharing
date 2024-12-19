@@ -206,7 +206,6 @@ export const fetchRoutesInYourArea = async (
 ): Promise<void> => {
   if (setSelectedRoute) setSelectedRoute("routes");
   try {
-    debugger;
     let data: { routes: IRoute[]; lastPage: boolean };
     const userTokenFromStorage = localStorage.getItem("userToken");
     if (userTokenFromStorage) {

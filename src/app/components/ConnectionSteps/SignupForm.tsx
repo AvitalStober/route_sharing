@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import SignUpFormProps from "@/app/types/props/SignUpFormProps";
@@ -7,7 +7,7 @@ import { z } from 'zod';
 const emailSchema = z
   .string()
   .email("כתובת אימייל שגויה");
-  
+
 const passwordSchema = z
   .string()
   .min(6, "סיסמא חייבת להכיל לפחות 6 תוים")
@@ -42,20 +42,18 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
       onContinue(fullName, email, password);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setErrorMessage(error.errors[0].message);
+        const fieldError = error.errors[0].path[0]; // Get the field name (e.g., "email", "password")
+        setErrorMessage(`${error.errors[0].message}`);
       } else {
         setErrorMessage("An unexpected error occurred.");
       }
     }
-
   };
 
   return (
     <form dir="rtl" className="space-y-4" onSubmit={handleSubmit}>
       <fieldset className="border border-gray-300 p-2 rounded-lg">
-        <legend className="text-md font-medium text-gray-700 px-2">
-          שם מלא
-        </legend>
+        <legend className="text-md font-medium text-gray-700 px-2">שם מלא</legend>
         <input
           id="fullName"
           type="text"
@@ -64,15 +62,13 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
           required
           className="focus:outline-none focus:border-none w-full bg-none"
         />
-        <div>
-        {errorMessage && errorMessage.includes("Name") && (
-          <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
-        )}
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
-        </label>
+      </fieldset>
+      {errorMessage && errorMessage.includes("שם") && (
+        <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
+      )}
+
+      <fieldset className="border border-gray-300 p-2 rounded-lg">
+        <legend className="text-md font-medium text-gray-700 px-2">אימייל</legend>
         <input
           id="email"
           type="email"
@@ -81,14 +77,13 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
           required
           className="focus:outline-none focus:border-none w-full"
         />
-        {errorMessage && errorMessage.includes("Invalid email") && (
-          <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
-        )}
-      </div>
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-          Password
-        </label>
+      </fieldset>
+      {errorMessage && errorMessage.includes("כתובת אימייל") && (
+        <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
+      )}
+
+      <fieldset className="border border-gray-300 p-2 rounded-lg">
+        <legend className="text-md font-medium text-gray-700 px-2">סיסמא</legend>
         <input
           id="password"
           type="password"
@@ -97,17 +92,17 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
           required
           className="focus:outline-none focus:border-none w-full"
         />
-        {errorMessage && errorMessage.includes("Password") && (
-          <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
-        )}
-      </div>
+      </fieldset>
+      {errorMessage && errorMessage.includes("סיסמא") && (
+        <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
+      )}
+
       <button
         type="submit"
         className="w-full px-4 py-2 font-semibold text-black border-2 border-blue-400 rounded-md hover:shadow-md focus:outline-none focus:ring-offset-2 flex items-center justify-center"
       >
         המשך
       </button>
-      </fieldset>
     </form>
   );
 };
