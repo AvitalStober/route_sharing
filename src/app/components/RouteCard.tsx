@@ -66,14 +66,18 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
               key={index}
               className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             >
-              <CardMap points={route.pointsArray} route={route} />
+              <CardMap
+                points={route.pointsArray}
+                route={route}
+                filtered={filtered}
+              />
 
               {filtered === 1 && (
                 <div dir="rtl" className="mt-2">
                   <button
                     onClick={() => {
                       addRouteToHistoryRoute(route._id as string);
-                      handleClick(route._id as string)
+                      handleClick(route._id as string);
                       // router.push("/pages/RealtimeNavigation");
                     }}
                     className={`px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800`}

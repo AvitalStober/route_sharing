@@ -8,6 +8,7 @@ const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
   route,
   expanded = false,
+  filtered,
 }) => {
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
@@ -69,15 +70,14 @@ const CardMap: React.FC<CardMapProps> = ({
 
   // הגדרת אפשרויות המפה
   const mapOptions: google.maps.MapOptions = {
-    disableDefaultUI: true,  // מבטל את כל ה-UI של המפה (כפתורים, סרגל זום)
-    zoomControl: false,      // מבטל את כפתור הגדלה/הקטנה
-    scrollwheel: false,      // מבטל את האפשרות לשלוט בזום על ידי גלילת עכבר
-    draggable: false,        // מבטל את האפשרות לגרור את המפה
-    mapTypeControl: false,   // מבטל את אפשרות החלפת סוג המפה (לוויין, מפה רגילה)
+    disableDefaultUI: true, // מבטל את כל ה-UI של המפה (כפתורים, סרגל זום)
+    zoomControl: false, // מבטל את כפתור הגדלה/הקטנה
+    scrollwheel: false, // מבטל את האפשרות לשלוט בזום על ידי גלילת עכבר
+    draggable: false, // מבטל את האפשרות לגרור את המפה
+    mapTypeControl: false, // מבטל את אפשרות החלפת סוג המפה (לוויין, מפה רגילה)
     streetViewControl: false, // מבטל את האפשרות למעבר לתצוגת הרחוב
     fullscreenControl: true, // מבטל את כפתור המסך המלא
   };
-  
 
   return (
     <>
@@ -104,7 +104,7 @@ const CardMap: React.FC<CardMapProps> = ({
         mapContainerStyle={mapContainerStyle}
         center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
         zoom={12}
-        options={mapOptions}  // הוספת האפשרויות למפה
+        options={mapOptions} // הוספת האפשרויות למפה
       >
         {directions && (
           <DirectionsRenderer
@@ -139,6 +139,7 @@ const CardMap: React.FC<CardMapProps> = ({
               <PopUpRoute
                 onClose={() => setIsExpanded(false)}
                 routeId={route._id as Types.ObjectId}
+                filtered={filtered}
               />
             )}
           </div>
@@ -149,9 +150,6 @@ const CardMap: React.FC<CardMapProps> = ({
 };
 
 export default CardMap;
-
-
-
 
 // import React, { useState } from "react";
 // import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
@@ -205,7 +203,7 @@ export default CardMap;
 //         (position) => {
 //           const { latitude, longitude } = position.coords;
 //           const userLocation = { lat: latitude, lng: longitude };
-  
+
 //           // הוספת המיקום הנוכחי לנקודות
 //           points.unshift(userLocation); // הוספת כנקודת מוצא
 //           calculateRoute(userLocation); // חישוב המסלול עם המיקום הנוכחי
@@ -223,7 +221,6 @@ export default CardMap;
 //       alert("הדפדפן שלך לא תומך במיקום גיאוגרפי.");
 //     }
 //   };
-  
 
 //   const calculateRoute = (userLocation: google.maps.LatLngLiteral) => {
 //     // אם אין מספיק נקודות למסלול
@@ -330,18 +327,6 @@ export default CardMap;
 // };
 
 // export default CardMap;
-
-
-
-
-
-
-
-
-
-
-
-
 
 // קוד מעודכן עם הוספת מיקום נוכחי למסלול בתנאי שהוא בטווח של קילומטר
 

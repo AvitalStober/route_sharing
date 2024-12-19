@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import Star from "./Star";
-import Image from 'next/image';
+import Image from "next/image";
 import CloudinaryUploader from "./CloudinaryUploader";
 import { editRoutes } from "../services/routeService";
 import IRoute from "../types/routes";
 import { fetchRouteById } from "../functions/routesFunctions";
 import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
 
-
-const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
+const PopUpRoute: React.FC<PopUpRouteProps> = ({
+  onClose,
+  routeId,
+  filtered,
+}) => {
   const [pictures, setPictures] = useState<string[]>([]);
   const [route, setRoute] = useState<IRoute>();
   useEffect(() => {
     async function fetchRoute() {
       const newRoute = await fetchRouteById(routeId.toString());
-      
+
       if (newRoute) {
         setRoute(newRoute);
         setPictures(newRoute.gallery);
@@ -27,7 +30,11 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
     async function func() {
       if (route && pictures && pictures.length > route.gallery.length) {
         // Edit route when pictures are updated
-        const response = await editRoutes(routeId.toString(), undefined, pictures);
+        const response = await editRoutes(
+          routeId.toString(),
+          undefined,
+          pictures
+        );
         setRoute(response);
         setPictures(response.gallery);
       }
@@ -44,11 +51,16 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
         X
       </button>
       <h2 className="text-2xl font-bold mb-4">פרטי מסלול</h2>
-      {!route  ? (
+      {!route ? (
         <p>Loading...</p> // טקסט טעינה כדי למנוע תקלות
       ) : (
         <>
-          <CardMap points={route.pointsArray} route={route} expanded={true}/>
+          <CardMap
+            points={route.pointsArray}
+            route={route}
+            expanded={true}
+            filtered={filtered}
+          />
           <Star rate={route.rate} filtered={1} />
           <p>{route.description}</p>
           {pictures && pictures.length > 0 && (
@@ -67,7 +79,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
               ))}
             </div>
           )}
-          <CloudinaryUploader setPictures={setPictures} />
+          {filtered !== 1 && <CloudinaryUploader setPictures={setPictures} />}
         </>
       )}
     </div>
