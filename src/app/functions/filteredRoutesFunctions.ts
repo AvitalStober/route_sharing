@@ -198,7 +198,7 @@ export const FetchOwnerRoutes = async (
 
 export const fetchRoutesInYourArea = async (
   setRoutes: (routes: Route[]) => void,
-  currentPage: number,
+  currentPage: number | undefined,
   setLastPage?: (lastPage: boolean) => void,
   appendRoutes?: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
   setSelectedRoute?: (route: string | null) => void,
@@ -212,9 +212,9 @@ export const fetchRoutesInYourArea = async (
     if (userTokenFromStorage) {
       if (!areaAddress) {
         const address = await getUserAddress();
-        data = await getRoutesInYourArea(address as string, currentPage);
+        data = await getRoutesInYourArea(address as string, currentPage!);
       } else {
-        data = await getRoutesInYourArea(areaAddress as string, currentPage);
+        data = await getRoutesInYourArea(areaAddress as string, currentPage!);
       }
       if (data && data.routes) {
         if (currentPage === 1) {
