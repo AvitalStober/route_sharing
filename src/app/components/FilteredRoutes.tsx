@@ -145,7 +145,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   }
 
   useEffect(() => {
-    console.log("currentPage", currentPage);
   }, [currentPage]);
 
   return (

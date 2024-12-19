@@ -6,6 +6,11 @@ import { generateToken } from "@/app/functions/tokenFunction";
 import Auth from "@/app/lib/models/authModel";
 
 export async function POST(request: Request) {
+  const response = NextResponse.json({ message: 'Success' });
+  response.headers.set('Access-Control-Allow-Origin', 'https://route-sharing-bsd7-git-main-avitals-projects.vercel.app');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
   try {
     const { email, password } = await request.json();
 

@@ -99,7 +99,6 @@ export const getUserHistoryRoutes = async (userId: string, page: number) => {
     const response = await axios.get(
       `${url}/api/users/historyRoutes/${userId}?page=${page}`
     );
-    console.log("response", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user history routes:", error);
@@ -112,7 +111,6 @@ export const addHistoryRoute = async (userId: string, routeId: string) => {
       userId,
       routeId,
     });
-    console.log("response", response.data);
     return response.data;
   } catch (error) {
     console.error("An error occurred:", error);

@@ -33,7 +33,6 @@ export async function GET(request: Request, props: Props) {
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "1");
     const skip = (page - 1) * LIMIT;
-    console.log("page owner", page);
     
     const routes = await Route.find({ ownerId: ownerId })
       .skip(skip)
