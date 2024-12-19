@@ -5,8 +5,14 @@ import { Client } from "@googlemaps/google-maps-services-js";
 
 // הגדרת הלקוח של גוגל מפס
 const googleMaps = new Client({});
+const LIMIT = 2;
 
-function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+function calculateDistance(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+): number {
   const R = 6371e3; // רדיוס כדור הארץ במטרים
   const toRad = (x: number) => (x * Math.PI) / 180;
 
@@ -25,7 +31,9 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
 
 export async function POST(request: Request) {
   try {
-    const { address } = await request.json();
+    const { address, page = 1 } = await request.json();
+    const skip = (page - 1) * LIMIT;
+    console.log("page address", page);
 
     if (!address) {
       return NextResponse.json(
@@ -48,10 +56,12 @@ export async function POST(request: Request) {
     const allRoutes = await Routes.find();
 
     const nearbyRoutes = allRoutes.filter((route) =>
-      route.pointsArray.every((point: { lat: number; lng: number }) =>
-        calculateDistance(lat, lng, point.lat, point.lng) <= 3000
+      route.pointsArray.every(
+        (point: { lat: number; lng: number }) =>
+          calculateDistance(lat, lng, point.lat, point.lng) <= 3000
       )
     );
+    const totalPages = Math.ceil(nearbyRoutes.length / LIMIT);
 
     if (!nearbyRoutes.length) {
       return NextResponse.json(
@@ -60,7 +70,13 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ routes: nearbyRoutes }, { status: 200 });
+    return NextResponse.json(
+      {
+        routes: nearbyRoutes.slice(skip, skip + LIMIT),
+        lastPage: totalPages <= page,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     const err = error as Error;
     return NextResponse.json(

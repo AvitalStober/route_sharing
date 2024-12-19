@@ -1,5 +1,3 @@
-import { LatLngLiteral } from "leaflet";
-export interface RealtimeNavigationProps{
-    route:LatLngLiteral[];
-  }
-  
+export default interface CardMapProps {
+  waypoints: { lat: number; lng: number }[];
+}

@@ -13,6 +13,22 @@ export const getUserToken = (): {
   return userTokenFromStorage ? JSON.parse(userTokenFromStorage) : null;
 };
 
+export const getUserAddress = async () => {
+  try {
+    const user: User | undefined = await fetchUserById();
+
+    if (!user) {
+      // throw new Error("User not found");
+      console.error("user not found");
+      return;
+    }
+    return user.address;
+  } catch (error) {
+    console.error("Error fetching user address:", error);
+    return null;
+  }
+};
+
 export const fetchUserById = async () => {
   try {
     const userToken = getUserToken();
@@ -24,20 +40,6 @@ export const fetchUserById = async () => {
     return user;
   } catch (error) {
     console.error("Error fetching user data:", error);
-  }
-};
-
-export const getUserAddress = async () => {
-  try {
-    const user: User | undefined = await fetchUserById();
-    if (!user) {
-      throw new Error("User not found");
-    }
-
-    return user.address;
-  } catch (error) {
-    console.error("Error fetching user address:", error);
-    return null;
   }
 };
 

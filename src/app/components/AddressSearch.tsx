@@ -126,14 +126,13 @@
 // השלמה אוטומטית של גוגל-מפס
 import React, { useEffect, useState, useRef } from "react";
 import MapLoader from "./MapLoader";
-import { getUserAddress } from "@/app/functions/usersFunctions";
 import useStore from "@/app/store/store";
 import { fetchRoutesInYourArea } from "../functions/filteredRoutesFunctions";
 
 const AddressSearch = () => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
   const [userAddress, setUserAddress] = useState(""); // כתובת שכותב המשתמש
-  const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
+  const [errors, setErrors] = useState<{ address?: string }>({});
   const [inputWidth, setInputWidth] = useState(200); // רוחב ההזנה של השדה
   const [isSelectedFromAutocomplete, setIsSelectedFromAutocomplete] =
     useState(false); // דגל האם הכתובת נבחרה מההשלמה
@@ -153,16 +152,20 @@ const AddressSearch = () => {
   };
 
   useEffect(() => {
+    const userTokenFromStorage = localStorage.getItem("userToken");
     const fetchAddress = async () => {
+      const { getUserAddress } = await import("@/app/functions/usersFunctions");
+
       const fetchedAddress = await getUserAddress();
       if (fetchedAddress) {
         setUserAddress(fetchedAddress);
-        setAddress(fetchedAddress); // הצגת כתובת אם קיימת
+        if (address == "") setAddress(fetchedAddress); // הצגת כתובת אם קיימת
         setInitialAddress(fetchedAddress); // שמירת הכתובת המקורית
       }
     };
-
-    fetchAddress();
+    if (userTokenFromStorage) {
+      fetchAddress();
+    }
   }, []);
 
   useEffect(() => {
@@ -184,9 +187,16 @@ const AddressSearch = () => {
       setAddress(initialAddress); // חוזר לכתובת המקורית
     } else {
       if (address !== userAddress)
-        fetchRoutesInYourArea(setRoutes, undefined, address);
+        fetchRoutesInYourArea(
+          setRoutes,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          address
+        );
     }
-  }, [address, isSelectedFromAutocomplete, initialAddress, setRoutes, userAddress]);
+  }, [address, isSelectedFromAutocomplete, initialAddress, userAddress]);
 
   return (
     <>

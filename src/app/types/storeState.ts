@@ -13,4 +13,6 @@ export interface StoreState {
   clearToken: () => void;
   Routes: IRoute[];
   setRoutes: (routes: IRoute[]) => void;
+  currentPage: number;
+  setCurrentPage: (currentPage: number | ((prevPage: number) => number)) => void;
 }

@@ -35,7 +35,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
         {Routes.map((route, index) => (
           <div
             key={index}
-            className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            className="max-w-md min-w-[500px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <CardMap points={route.pointsArray} route={route} filtered={filtered}/>
             <p>rate: {route.rate}</p>

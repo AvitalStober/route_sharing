@@ -2,13 +2,17 @@ import connect from "@/app/lib/DB/connectDB";
 import User from "@/app/lib/models/userModel";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { userId: string } }
-) {
+type Props = {
+  params: Promise<{
+    userId: string;
+  }>;
+};
+
+export async function GET(request: Request, props: Props) {
   try {
-    const { userId } = await params;
     await connect();
+    const { userId } = await props.params;
+
     const user = await User.findById(userId);
     return NextResponse.json({ user: user }, { status: 200 });
   } catch (error) {
@@ -16,22 +20,16 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { userId: string } }
-) {
+export async function PUT(request: Request, props: Props) {
   try {
     await connect();
 
-    const { userId } = params; 
-    const { userDetails } = await request.json(); 
+    const { userId } = await props.params;
+    const { userDetails } = await request.json();
 
     const user = await User.findOne({ _id: userId });
     if (!user) {
-      return NextResponse.json(
-        { error: "Route not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Route not found" }, { status: 404 });
     }
 
     user.fullName = userDetails.fullName;

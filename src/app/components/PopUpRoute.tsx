@@ -27,11 +27,9 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) =
   }, []);
   useEffect(() => {
     async function func() {
-      console.log(pictures);
       if (route && pictures && pictures.length > route.gallery.length) {
         // Edit route when pictures are updated
         const response = await editRoutes(routeId.toString(), undefined, pictures);
-        console.log(response, "response");
         setRoute(response);
         setPictures(response.gallery);
       }
