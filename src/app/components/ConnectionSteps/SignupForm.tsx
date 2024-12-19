@@ -42,7 +42,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
       onContinue(fullName, email, password);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const fieldError = error.errors[0].path[0]; // Get the field name (e.g., "email", "password")
         setErrorMessage(`${error.errors[0].message}`);
       } else {
         setErrorMessage("An unexpected error occurred.");

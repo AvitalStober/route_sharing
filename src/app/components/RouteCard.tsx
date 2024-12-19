@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/props/‎RouteCardProps";
 import {
-  addRouteToHistoryRoute,
   handleStarClick,
   getUserRouteRate,
 } from "@/app/functions/cardsFunctions";
@@ -21,10 +20,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [routeRates, setRouteRates] = useState<{ [routeId: string]: number }>(
     {}
   );
-
-  const handleClick = (routeId: string) => {
-    router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
-  };
 
   const fetchRates = async () => {
     const rates: Record<string, number> = {};
