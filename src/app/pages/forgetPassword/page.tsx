@@ -240,7 +240,7 @@ const ForgetPassword = () => {
             } else {
                 setError("קוד אימות שגוי, נסה שנית");
             }
-        } catch (err) {
+        } catch  {
             setError("An error occurred. Please try again.");
         } finally {
             setLoading(false);
