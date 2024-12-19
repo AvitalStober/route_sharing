@@ -8,7 +8,6 @@ import { Token } from "../types/storeState";
 // const url = "https://route-sharing-bsd7.vercel.app";
 const url = "https://route-sharing-bsd7-git-mergeproject-avitals-projects.vercel.app";
 
-
 export const signupFunction = async (
   fullName: string,
   email: string,
