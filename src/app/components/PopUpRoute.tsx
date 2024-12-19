@@ -9,13 +9,15 @@ import { fetchRouteById } from "../functions/routesFunctions";
 import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
 
 
-const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
+const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) => {
   const [pictures, setPictures] = useState<string[]>([]);
   const [route, setRoute] = useState<IRoute>();
+  console.log("popup",filtered);
+  
   useEffect(() => {
     async function fetchRoute() {
       const newRoute = await fetchRouteById(routeId.toString());
-      
+
       if (newRoute) {
         setRoute(newRoute);
         setPictures(newRoute.gallery);
@@ -44,12 +46,12 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
         X
       </button>
       <h2 className="text-2xl font-bold mb-4">פרטי מסלול</h2>
-      {!route  ? (
+      {!route ? (
         <p>Loading...</p> // טקסט טעינה כדי למנוע תקלות
       ) : (
         <>
-          <CardMap points={route.pointsArray} route={route} expanded={true}/>
-          <Star rate={route.rate} filtered={1} />
+          <CardMap points={route.pointsArray} route={route} expanded={true} filtered={filtered}/>
+          <Star rate={route.rate} filtered={1} onClick={() => console.log("pres")} />
           <p>{route.description}</p>
           {pictures && pictures.length > 0 && (
             <div className="flex flex-wrap gap-4 items-center">
@@ -67,7 +69,9 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId }) => {
               ))}
             </div>
           )}
-          <CloudinaryUploader setPictures={setPictures} />
+          {filtered !== 1 &&
+            <CloudinaryUploader setPictures={setPictures} />
+          }
         </>
       )}
     </div>
