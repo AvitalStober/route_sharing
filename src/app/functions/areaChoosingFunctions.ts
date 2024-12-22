@@ -83,11 +83,34 @@ export const resetMap = (
 export const displayPoints = async (
   setRoutes: (routes: Route[]) => void,
   setIsAreaChoosing: React.Dispatch<React.SetStateAction<boolean>>,
-  areaPoints: google.maps.LatLngLiteral[]
+  areaPoints: google.maps.LatLngLiteral[],
+  currentPage: number | undefined,
+  appendRoutes: (routes: Route[]) => void,
+  setLastPage: (lastPage: boolean) => void
 ) => {
-  const inMyArea = await getRoutesInChosenArea(areaPoints);
-  setRoutes(inMyArea.routes);
-  setIsAreaChoosing(false);
+  try {
+    let data: { routes: Route[]; lastPage: boolean };
+    // eslint-disable-next-line prefer-const
+    data = await getRoutesInChosenArea(areaPoints, currentPage);
+    debugger;
+    if (data && data.routes) {
+      if (currentPage === 1) {
+        setRoutes(data.routes);
+      } else if (appendRoutes) {
+        appendRoutes(data.routes);
+      }
+    } else {
+      setRoutes([]);
+    }
+    if (setLastPage)
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      data.lastPage !== undefined
+        ? setLastPage(data.lastPage)
+        : setLastPage(true);
+    setIsAreaChoosing(false);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // פונקציה להמיר כתובת לנקודות ציון

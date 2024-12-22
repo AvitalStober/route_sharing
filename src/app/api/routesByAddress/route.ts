@@ -69,6 +69,7 @@ export async function POST(request: Request) {
         { status: 210 }
       );
     }
+    console.log(nearbyRoutes.length);
 
     return NextResponse.json(
       {

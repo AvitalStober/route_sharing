@@ -19,6 +19,6 @@ export interface StoreState {
   ) => void;
   lastPage: boolean;
   setLastPage: (lastPage: boolean) => void;
-  changeAddress: boolean;
-  setChangeAddress: (changeAddress: boolean) => void;
+  changeAddress: string;
+  setChangeAddress: (changeAddress: string) => void;
 }

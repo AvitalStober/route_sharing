@@ -1,10 +1,9 @@
 import axios from "axios";
 import PartialRoute from "../types/props/RouteAddingProps";
 
-// const url = "http://localhost:3000";
+const url = "http://localhost:3000";
 // const url = "https://route-sharing-bsd7.vercel.app";
-const url = "https://route-sharing-bsd7-git-mergeproject-avitals-projects.vercel.app";
-
+// const url = "https://route-sharing-bsd7-git-mergeproject-avitals-projects.vercel.app";
 
 export const addRoute = async (newRoute: PartialRoute) => {
   try {
@@ -91,11 +90,13 @@ export const getRoutesInChosenArea = async (
   polygonPoints: {
     lat: number;
     lng: number;
-  }[]
+  }[],
+  page: number | undefined
 ) => {
   try {
     const response = await axios.post(`${url}/api/routesByArea`, {
       polygonPoints,
+      page,
     });
     return response.data;
   } catch (error) {

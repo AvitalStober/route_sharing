@@ -148,7 +148,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
     Routes &&
     Routes.length === 0 &&
     selectedRoute === "routes" &&
-    !changeAddress
+    changeAddress==""
   ) {
     initializeRoutes();
   }
@@ -244,7 +244,9 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
                       setRoutes,
                       newPage,
                       setLastPage,
-                      appendRoutes
+                      appendRoutes,
+                      undefined,
+                      changeAddress
                     );
                     return newPage;
                   });
