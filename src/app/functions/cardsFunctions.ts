@@ -1,6 +1,5 @@
 import {
   addHistoryRoute,
-  // getUserHistoryRoutes,
 } from "@/app/services/userService";
 import {
   fetchUserById,

@@ -14,7 +14,6 @@ import {
   Polygon,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import IRoute from "../types/routes";
 
 const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
   const [address, setAddress] = useState("");
@@ -24,21 +23,12 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
   const autocompleteRef = useRef<HTMLInputElement | null>(null);
   const [areaPoints, setAreaPoints] = useState<google.maps.LatLngLiteral[]>([]);
 
-  const Routes = useStore((state) => state.Routes);
   const setRoutes = useStore((state) => state.setRoutes);
   const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setLastPage = useStore((state) => state.setLastPage);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
-  setChangeAddress(address);
 
-  const changeAddress = useStore((state) => state.changeAddress);
-  const appendRoutes = (newRoutes: IRoute[]) => {
-    if (newRoutes.length !== 0) {
-      const newArray: IRoute[] = [...Routes, ...newRoutes];
-      setRoutes(newArray);
-    }
-  };
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY || "",
     libraries: ["geometry", "places"],
@@ -132,20 +122,18 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
         </button>
         <button
           onClick={() => {
-            debugger;
             const newPage = 1;
             setCurrentPage(newPage);
             {
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              changeAddress &&
-                displayPoints(
-                  setRoutes,
-                  setIsAreaChoosing,
-                  areaPoints,
-                  currentPage,
-                  appendRoutes,
-                  setLastPage
-                );
+              displayPoints(
+                setRoutes,
+                newPage,
+                setLastPage,
+                areaPoints,
+                setIsAreaChoosing,
+                setChangeAddress,
+                address,
+              );
             }
           }}
           disabled={areaPoints.length < 3} // הכפתור מושבת אם יש פחות מ-3 נקודות

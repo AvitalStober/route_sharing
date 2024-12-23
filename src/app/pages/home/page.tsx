@@ -165,7 +165,7 @@ const Page = () => {
             className="flex flex-col md:flex-row justify-around gap-4"
           >
             {/* רכיבי שדה הכתובת, שינוי פרופיל ובחירת אזור */}
-            {selectedRoute === "routes" && (
+            {(selectedRoute === "routes" || selectedRoute === "chosenArea") && (
               <div className="flex flex-col border-l-2 p-2 md:gap-4 md:flex-row">
                 <div className="flex flex-col w-[300px] md:w-auto gap-4">
                   <AddressSearch />
