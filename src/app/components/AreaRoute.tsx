@@ -24,7 +24,6 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
   const [areaPoints, setAreaPoints] = useState<google.maps.LatLngLiteral[]>([]);
 
   const setRoutes = useStore((state) => state.setRoutes);
-  const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setLastPage = useStore((state) => state.setLastPage);
   const setChangeAddress = useStore((state) => state.setChangeAddress);

@@ -11,22 +11,28 @@ import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
 import LoadRoutes from "./LoadRoutes";
 import LoadMoreButton from "./LoadMoreButton";
 import { displayPoints } from "../functions/areaChoosingFunctions";
+import IRoute from "../types/routes";
 
 const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   selectedRoute,
   setSelectedRoute,
 }) => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
-  const currentPage = useStore((state) => state.currentPage);
+  const setChangeAddress = useStore((state) => state.setChangeAddress);
   const changeAddress = useStore((state) => state.changeAddress);
   const Routes = useStore((state) => state.Routes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
   const setRoutes = useStore((state) => state.setRoutes);
   const lastPage = useStore((state) => state.lastPage);
   const setLastPage = useStore((state) => state.setLastPage);
-  const setChangeAddress = useStore((state) => state.setChangeAddress);
+  type FetchFunction = (
+    setRoutes: (routes: IRoute[]) => void,
+    currentPage: number,
+    setLastPage?: (lastPage: boolean) => void,
+    areaAddress?: string
+  ) => Promise<void>;
 
-  const handleLoadRoutes = (fetchFunction: Function, label: string) => {
+  const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
     return () => {
       const newPage = 1;
       setCurrentPage(newPage);
@@ -35,6 +41,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
       fetchFunction(setRoutes, newPage, setLastPage);
     };
   };
+
   // אם אין מסלולים, נטען את המסלולים הראשונים
   useEffect(() => {
     if (
@@ -130,7 +137,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
             <RouteCard Routes={Routes} filtered={1} />
             {!lastPage && (
               <button
-              
                 onClick={(event) => {
                   event.preventDefault();
                   setCurrentPage((prevPage) => {

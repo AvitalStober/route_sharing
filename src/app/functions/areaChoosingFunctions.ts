@@ -1,7 +1,6 @@
 import Route from "@/app/types/routes";
 import { getRoutesInChosenArea } from "../services/routeService";
 import { appendRoutes } from "./routesFunctions";
-import useStore from "@/app/store/store";
 
 export function isPointInsidePolygon(
   point: { lat: number; lng: number },
