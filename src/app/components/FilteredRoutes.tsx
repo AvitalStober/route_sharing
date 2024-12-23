@@ -142,16 +142,18 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
       setRoutes(newArray);
     }
   };
+  
+  useEffect(() => {
   // אם אין מסלולים, נטען את המסלולים הראשונים
-
-  if (
-    Routes &&
-    Routes.length === 0 &&
-    selectedRoute === "routes" &&
-    changeAddress==""
-  ) {
-    initializeRoutes();
-  }
+    if (
+      Routes &&
+      Routes.length === 0 &&
+      selectedRoute === "routes" &&
+      changeAddress.length === 0
+    ) {
+      initializeRoutes();
+    }
+  }, []);
 
   useEffect(() => {
     console.log("currentPage", currentPage);
