@@ -9,6 +9,8 @@ import {
   fetchRoutesInYourArea,
 } from "../functions/filteredRoutesFunctions";
 import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
+import LoadRoutes from "./LoadRoutes";
+import { FetchFunction } from "../types/FetchFunction";
 
 const SideBar: React.FC<FilteredRoutesProps> = ({
   setSelectedRoute,
@@ -31,6 +33,16 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   };
   //   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
   const router = useRouter();
+
+  const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
+    return () => {
+      const newPage = 1;
+      setCurrentPage(newPage);
+      setLastPage(false);
+      setSelectedRoute(label);
+      fetchFunction(setRoutes, newPage, setLastPage);
+    };
+  };
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("האם אתה בטוח שברצונך להתנתק?");
@@ -76,7 +88,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           <ul className="mt-3">
             <li className="cursor-pointer">
               {/* כפתור למסלולים שלי */}
-              <div
+              {/* <div
                 onClick={() => {
                   const newPage = 1;
                   setCurrentPage(newPage);
@@ -109,6 +121,27 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   />
                 </svg>
                 <span>מסלולים שלי</span>
+              </div> */}
+              <div className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-[18px] h-[18px]"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"
+                  />
+                </svg>
+                <LoadRoutes
+                  label="מסלולים שלי"
+                  selectedRoute="myRoutes"
+                  onClick={handleLoadRoutes(FetchOwnerRoutes, "myRoutes")}
+                />
               </div>
             </li>
             <li className="cursor-pointer">
@@ -150,7 +183,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           <ul className="mt-3">
             <li className="cursor-pointer">
               {/* כפתור למסלולים באזורך */}
-              <div
+              {/* <div
                 onClick={() => {
                   const newPage = 1;
                   setCurrentPage(newPage);
@@ -188,6 +221,32 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   />
                 </svg>
                 <span>מסלולים באזורך</span>
+              </div> */}
+              <div className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-[18px] h-[18px]"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                  />
+                </svg>
+                <LoadRoutes
+                  label="מסלולים באזורך"
+                  selectedRoute="routes"
+                  onClick={handleLoadRoutes(fetchRoutesInYourArea, "routes")}
+                />
               </div>
             </li>
             <li className="cursor-pointer">
@@ -218,7 +277,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
             </li>
             <li className="cursor-pointer">
               {/* כפתור להיסטוריית מסלולים */}
-              <div
+              {/* <div
                 onClick={() => {
                   const newPage = 1;
                   setCurrentPage(newPage);
@@ -254,6 +313,30 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   </g>
                 </svg>
                 <span>צפה בהיסטוריה</span>
+              </div> */}
+              <div className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  className="w-[18px] h-[18px]"
+                  viewBox="0 0 510 510"
+                >
+                  <g fillOpacity=".9">
+                    <path
+                      d="M255 0C114.75 0 0 114.75 0 255s114.75 255 255 255 255-114.75 255-255S395.25 0 255 0zm0 459c-112.2 0-204-91.8-204-204S142.8 51 255 51s204 91.8 204 204-91.8 204-204 204z"
+                      data-original="#000000"
+                    />
+                    <path
+                      d="M267.75 127.5H229.5v153l132.6 81.6 20.4-33.15-114.75-68.85z"
+                      data-original="#000000"
+                    />
+                  </g>
+                </svg>
+                <LoadRoutes
+                  label="צפה בהסטוריה"
+                  selectedRoute="history"
+                  onClick={handleLoadRoutes(fetchHistoryRoutes, "history")}
+                />
               </div>
             </li>
           </ul>

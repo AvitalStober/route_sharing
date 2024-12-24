@@ -9,7 +9,6 @@ export async function POST(request: Request) {
   try {
     const { polygonPoints, page } = await request.json();
     const skip = (page - 1) * LIMIT;
-    console.log("page address", page);
 
     if (
       !polygonPoints ||

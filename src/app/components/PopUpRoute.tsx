@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import Star from "./Star";
@@ -12,8 +13,6 @@ import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
 const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) => {
   const [pictures, setPictures] = useState<string[]>([]);
   const [route, setRoute] = useState<IRoute>();
-  console.log("popup",filtered);
-  
   useEffect(() => {
     async function fetchRoute() {
       const newRoute = await fetchRouteById(routeId.toString());

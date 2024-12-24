@@ -78,7 +78,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
                     onClick={() => {
                       addRouteToHistoryRoute(route._id as string);
                       handleClick(route._id as string);
-                      // router.push("/pages/RealtimeNavigation");
                     }}
                     className={`px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800`}
                   >

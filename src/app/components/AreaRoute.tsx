@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+
 import useStore from "@/app/store/store";
 import AreaRouteProps from "../types/props/AreaRouteProps";
 import {
@@ -14,7 +15,6 @@ import {
   Polygon,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import IRoute from "../types/routes";
 
 const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
   const [address, setAddress] = useState("");
@@ -24,21 +24,11 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
   const autocompleteRef = useRef<HTMLInputElement | null>(null);
   const [areaPoints, setAreaPoints] = useState<google.maps.LatLngLiteral[]>([]);
 
-  const Routes = useStore((state) => state.Routes);
   const setRoutes = useStore((state) => state.setRoutes);
-  const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setLastPage = useStore((state) => state.setLastPage);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
-  setChangeAddress(address);
 
-  const changeAddress = useStore((state) => state.changeAddress);
-  const appendRoutes = (newRoutes: IRoute[]) => {
-    if (newRoutes.length !== 0) {
-      const newArray: IRoute[] = [...Routes, ...newRoutes];
-      setRoutes(newArray);
-    }
-  };
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY || "",
     libraries: ["geometry", "places"],
@@ -70,45 +60,42 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
             className=" p-2 rounded outline-none"
           />
         </div>
-        {/* כפתורי שליטה */}
-        <div className="flex justify-center space-x-2">
-          <button
-            onClick={() => {
-              resetMap(setAreaPoints);
-            }}
-            className="px-4 bg-red-500 border hover:border-red-500 hover:bg-white hover:text-red-500 hover:font-bold text-white rounded-xl"
-          >
-            איפוס מפה
-          </button>
-          <button
-            onClick={() => {
-              debugger;
-              const newPage = 1;
-              setCurrentPage(newPage);
-              {
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                changeAddress &&
-                  displayPoints(
-                    setRoutes,
-                    setIsAreaChoosing,
-                    areaPoints,
-                    currentPage,
-                    appendRoutes,
-                    setLastPage
-                  );
-              }
-            }}
-            disabled={areaPoints.length < 3} // הכפתור מושבת אם יש פחות מ-3 נקודות
-            className={`px-4 py-2 rounded-xl ${
-              areaPoints.length < 3
-                ? "bg-gray-300 text-gray-600 cursor-not-allowed" // סגנון לכפתור מושבת
-                : "bg-yellow-500 text-white cursor-pointer" // סגנון לכפתור פעיל
-            }`}
-          >
-            מציאת מסלולים
-          </button>
-        </div>
       </div>
+      {/* כפתורי שליטה */}
+      <div className="flex justify-center mb-4 space-x-2">
+        <button
+          onClick={() => resetMap(setAreaPoints)}
+          className="px-4 py-2 bg-red-500 text-white rounded"
+        >
+          איפוס מפה
+        </button>
+        <button
+          onClick={() => {
+            const newPage = 1;
+            setCurrentPage(newPage);
+            {
+              displayPoints(
+                setRoutes,
+                newPage,
+                setLastPage,
+                areaPoints,
+                setIsAreaChoosing,
+                setChangeAddress,
+                address,
+              );
+            }
+          }}
+          disabled={areaPoints.length < 3} // הכפתור מושבת אם יש פחות מ-3 נקודות
+          className={`px-4 py-2 rounded ${
+            areaPoints.length < 3
+              ? "bg-gray-300 text-gray-600 cursor-not-allowed" // סגנון לכפתור מושבת
+              : "bg-yellow-500 text-white cursor-pointer" // סגנון לכפתור פעיל
+          }`}
+        >
+          מציאת מסלולים
+        </button>
+      </div>
+
       {isLoaded ? (
         <div className="w-[60%] mb-8 border border-black rounded-xl">
           <GoogleMap

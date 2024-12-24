@@ -191,8 +191,6 @@ const AddressSearch = () => {
           setRoutes,
           currentPage,
           setLastPage,
-          undefined,
-          undefined,
           address
         );
       }
