@@ -54,26 +54,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex m-2 relative">
-        <div className="flex space-x-4">
-          {/* כפתור למסלולים באזורך */}
-         
-
-          {/* כפתור להיסטוריית מסלולים */}
-          {/* <LoadRoutes
-            label="היסטוריית מסלולים"
-            selectedRoute="history"
-            onClick={handleLoadRoutes(fetchHistoryRoutes, "history")}
-          /> */}
-          {/* כפתור למסלולים שלי */}
-          {/* <LoadRoutes
-            label="המסלולים שלי"
-            selectedRoute="myRoutes"
-            onClick={handleLoadRoutes(FetchOwnerRoutes, "myRoutes")}
-          /> */}
-        </div>
-      </div>
-
       <div>
         {/* אם נבחר מסלול "routes" */}
         {selectedRoute === "routes" && (

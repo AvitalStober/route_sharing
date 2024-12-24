@@ -28,7 +28,4 @@ const useStore = create<StoreState>((set) => ({
   },
 }));
 
-// הפעלה מידית של initializeRoutes רק אם המשתמש מחובר
-useStore.getState().initializeRoutes();
-
 export default useStore;
