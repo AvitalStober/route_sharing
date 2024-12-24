@@ -17,6 +17,10 @@ const useStore = create<StoreState>((set) => ({
           : page,
     }));
   },
+  lastPage:false,
+  setLastPage: (lastPage) => set({ lastPage }),
+  changeAddress:"",
+  setChangeAddress: (changeAddress) => set({ changeAddress }),
 
   initializeRoutes: async () => {
     const setRoutes = useStore.getState().setRoutes;

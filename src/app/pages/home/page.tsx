@@ -132,40 +132,38 @@
 
 "use client";
 import Footer from "@/app/components/Footer";
-import AddressSearch from "@/app/components/AddressSearch";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FilteredRoutes from "@/app/components/FilteredRoutes";
 import AreaRoute from "@/app/components/AreaRoute";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import SideBar from "@/app/components/SideBar";
+import AddRoute from "@/app/components/AddRoute";
 
 const Page = () => {
   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
-  const router = useRouter();
+  const [isAddRoute, setIsAddRoute] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
 
-  const handleLogout = () => {
-    const confirmLogout = window.confirm("האם אתה בטוח שברצונך להתנתק?");
-    if (confirmLogout) {
-      // מחיקת הטוקן מהסטור
-      if (typeof window === "undefined") {
-        return null;
-      }
-      localStorage.removeItem("userToken");
-      router.push("/pages/login");
-    }
-  };
+  useEffect(()=>{
+  },[])
 
   return (
     <div className="min-h-screen w-auto flex flex-col">
-      {!isAreaChoosing ? (
-        <>
-          <div
-            dir="rtl"
-            className="flex flex-col md:flex-row justify-around gap-4"
-          >
-            {/* רכיבי שדה הכתובת, שינוי פרופיל ובחירת אזור */}
-            {selectedRoute === "routes" && (
+      <SideBar
+        selectedRoute={selectedRoute}
+        setSelectedRoute={setSelectedRoute}
+        setIsAreaChoosing={setIsAreaChoosing}
+        setIsAddRoute={setIsAddRoute}
+      />
+      <div className="flex flex-col">
+        <div className="" style={{ width: `calc(100% - 250px)` }}>
+          {!isAreaChoosing && !isAddRoute ? (
+            <div>
+              <div
+                dir="rtl"
+                className="flex flex-col md:flex-row justify-around gap-4"
+              >
+                {/* רכיבי שדה הכתובת, שינוי פרופיל ובחירת אזור */}
+                {/* {selectedRoute === "routes" && (
               <div className="flex flex-col border-l-2 p-2 md:gap-4 md:flex-row">
                 <div className="flex flex-col w-[300px] md:w-auto gap-4">
                   <AddressSearch />
@@ -194,21 +192,27 @@ const Page = () => {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
 
-            {/* המסלולים המוצגים */}
-            <div dir="ltr" className="w-full md:w-auto mb-3">
-              <FilteredRoutes
-                selectedRoute={selectedRoute}
-                setSelectedRoute={setSelectedRoute}
-              />
+                {/* המסלולים המוצגים */}
+                <div dir="ltr" className="w-full md:w-auto mb-3">
+                  <FilteredRoutes
+                    selectedRoute={selectedRoute}
+                    setSelectedRoute={setSelectedRoute}
+                    setIsAreaChoosing={setIsAreaChoosing}
+                    setIsAddRoute={setIsAddRoute}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          ) : isAreaChoosing ? (
+            <AreaRoute setIsAreaChoosing={setIsAreaChoosing} />
+          ) : (
+            <AddRoute setIsAddRoute={setIsAddRoute} />
+          )}
           <Footer />
-        </>
-      ) : (
-        <AreaRoute setIsAreaChoosing={setIsAreaChoosing} />
-      )}
+        </div>
+      </div>
     </div>
   );
 };

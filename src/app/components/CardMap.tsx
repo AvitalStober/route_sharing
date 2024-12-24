@@ -20,7 +20,11 @@ const CardMap: React.FC<CardMapProps> = ({
   const [isExpanded, setIsExpanded] = useState<boolean>();
 
   // הגדרת סגנון המפה
-  const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
+  const mapContainerStyle = {
+    inlineSize: "100%",
+    blockSize: "250px",
+    borderRadius: "11px",
+  };
   // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
@@ -70,15 +74,14 @@ const CardMap: React.FC<CardMapProps> = ({
 
   // הגדרת אפשרויות המפה
   const mapOptions: google.maps.MapOptions = {
-    disableDefaultUI: true,  // מבטל את כל ה-UI של המפה (כפתורים, סרגל זום)
-    zoomControl: false,      // מבטל את כפתור הגדלה/הקטנה
-    scrollwheel: false,      // מבטל את האפשרות לשלוט בזום על ידי גלילת עכבר
-    draggable: false,        // מבטל את האפשרות לגרור את המפה
-    mapTypeControl: false,   // מבטל את אפשרות החלפת סוג המפה (לוויין, מפה רגילה)
+    disableDefaultUI: true, // מבטל את כל ה-UI של המפה (כפתורים, סרגל זום)
+    zoomControl: false, // מבטל את כפתור הגדלה/הקטנה
+    scrollwheel: false, // מבטל את האפשרות לשלוט בזום על ידי גלילת עכבר
+    draggable: false, // מבטל את האפשרות לגרור את המפה
+    mapTypeControl: false, // מבטל את אפשרות החלפת סוג המפה (לוויין, מפה רגילה)
     streetViewControl: false, // מבטל את האפשרות למעבר לתצוגת הרחוב
     fullscreenControl: true, // מבטל את כפתור המסך המלא
   };
-  
 
   return (
     <>
@@ -101,25 +104,27 @@ const CardMap: React.FC<CardMapProps> = ({
         </button>
       </div>
 
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
-        zoom={12}
-        options={mapOptions}  // הוספת האפשרויות למפה
-      >
-        {directions && (
-          <DirectionsRenderer
-            directions={directions}
-            options={{
-              polylineOptions: {
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-              },
-            }}
-          />
-        )}
-      </GoogleMap>
+      <div className="mb-2 border border-black rounded-xl">
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
+          zoom={12}
+          options={mapOptions} // הוספת האפשרויות למפה
+        >
+          {directions && (
+            <DirectionsRenderer
+              directions={directions}
+              options={{
+                polylineOptions: {
+                  strokeColor: "#FF0000",
+                  strokeOpacity: 0.8,
+                  strokeWeight: 2,
+                },
+              }}
+            />
+          )}
+        </GoogleMap>
+      </div>
       <div dir="rtl" className="h-[40px] mt-auto flex items-center">
         {(hours !== 0 || minutes !== 0) && (
           <p>
@@ -151,9 +156,6 @@ const CardMap: React.FC<CardMapProps> = ({
 };
 
 export default CardMap;
-
-
-
 
 // import React, { useState } from "react";
 // import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
@@ -207,7 +209,7 @@ export default CardMap;
 //         (position) => {
 //           const { latitude, longitude } = position.coords;
 //           const userLocation = { lat: latitude, lng: longitude };
-  
+
 //           // הוספת המיקום הנוכחי לנקודות
 //           points.unshift(userLocation); // הוספת כנקודת מוצא
 //           calculateRoute(userLocation); // חישוב המסלול עם המיקום הנוכחי
@@ -225,7 +227,6 @@ export default CardMap;
 //       alert("הדפדפן שלך לא תומך במיקום גיאוגרפי.");
 //     }
 //   };
-  
 
 //   const calculateRoute = (userLocation: google.maps.LatLngLiteral) => {
 //     // אם אין מספיק נקודות למסלול
@@ -332,18 +333,6 @@ export default CardMap;
 // };
 
 // export default CardMap;
-
-
-
-
-
-
-
-
-
-
-
-
 
 // קוד מעודכן עם הוספת מיקום נוכחי למסלול בתנאי שהוא בטווח של קילומטר
 

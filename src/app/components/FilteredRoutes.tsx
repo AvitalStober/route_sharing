@@ -108,7 +108,7 @@
 // export default FilteredRoutes;
 
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   fetchHistoryRoutes,
   FetchOwnerRoutes,
@@ -125,12 +125,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 }) => {
   const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
+  const changeAddress = useStore((state) => state.changeAddress);
 
   const Routes = useStore((state) => state.Routes);
   const initializeRoutes = useStore((state) => state.initializeRoutes);
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
-  const [lastPage, setLastPage] = useState(false);
+  // const [lastPage, setLastPage] = useState(false);
+  const lastPage = useStore((state) => state.lastPage);
+  const setLastPage = useStore((state) => state.setLastPage);
+
   // פונקציה לעדכון הסטייט על ידי הוספת מסלולים חדשים
   const appendRoutes = (newRoutes: IRoute[]) => {
     if (newRoutes.length !== 0) {
@@ -140,7 +144,12 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   };
   // אם אין מסלולים, נטען את המסלולים הראשונים
 
-  if (Routes && Routes.length === 0 && selectedRoute === "routes") {
+  if (
+    Routes &&
+    Routes.length === 0 &&
+    selectedRoute === "routes" &&
+    changeAddress == ""
+  ) {
     initializeRoutes();
   }
 
@@ -149,14 +158,13 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex m-2 relative">
+      {/* <div className="flex m-2 relative">
         <div className="flex space-x-4">
-          {/* כפתור למסלולים באזורך */}
           <div
             onClick={() => {
-              const newPage = 1; 
+              const newPage = 1;
               setCurrentPage(newPage);
-              setLastPage(false); 
+              setLastPage(false);
               fetchRoutesInYourArea(
                 setRoutes,
                 newPage,
@@ -173,17 +181,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           >
             מסלולים באזורך
           </div>
-          {/* כפתור להיסטוריית מסלולים */}
           <div
             onClick={() => {
-              const newPage = 1; 
+              const newPage = 1;
               setCurrentPage(newPage);
-              setLastPage(false); 
+              setLastPage(false);
               fetchHistoryRoutes(
                 setSelectedRoute,
                 setRoutes,
                 appendRoutes,
-                newPage, 
+                newPage,
                 setLastPage
               );
             }}
@@ -195,12 +202,11 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           >
             הסטוריית מסלולים
           </div>
-          {/* כפתור למסלולים שלי */}
           <div
             onClick={() => {
-              const newPage = 1; 
+              const newPage = 1;
               setCurrentPage(newPage);
-              setLastPage(false); 
+              setLastPage(false);
               FetchOwnerRoutes(
                 setSelectedRoute,
                 setRoutes,
@@ -218,7 +224,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
             מסלולים שלי
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div>
         {/* אם נבחר מסלול "routes" */}
@@ -234,7 +240,9 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
                       setRoutes,
                       newPage,
                       setLastPage,
-                      appendRoutes
+                      appendRoutes,
+                      undefined,
+                      changeAddress
                     );
                     return newPage;
                   });
@@ -244,33 +252,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
                 טען עוד מסלולים
               </button>
             )}
-
-            <div>
-              <div className="py-2 text-blue-600">
-                <svg
-                  className="w-8 h-8"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="xMidYMid"
-                >
-                  <g transform="translate(50,50)">
-                    <g transform="scale(0.7)">
-                      <circle cx="0" cy="0" r="50" fill="currentColor"></circle>
-                      <circle cx="0" cy="-28" r="15" fill="white">
-                        <animateTransform
-                          attributeName="transform"
-                          type="rotate"
-                          dur="1s"
-                          repeatCount="indefinite"
-                          keyTimes="0;1"
-                          values="0 0 0;360 0 0"
-                        ></animateTransform>
-                      </circle>
-                    </g>
-                  </g>
-                </svg>
-              </div>
-            </div>
           </>
         )}
         {/* אם נבחרה היסטוריית מסלולים */}

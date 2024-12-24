@@ -200,7 +200,7 @@ export const fetchRoutesInYourArea = async (
   setRoutes: (routes: Route[]) => void,
   currentPage: number | undefined,
   setLastPage?: (lastPage: boolean) => void,
-  appendRoutes?: (routes: Route[]) => void, // פונקציה שתוסיף מסלולים קיימים
+  appendRoutes?: (routes: Route[]) => void,
   setSelectedRoute?: (route: string | null) => void,
   areaAddress?: string
 ): Promise<void> => {
@@ -215,15 +215,22 @@ export const fetchRoutesInYourArea = async (
       } else {
         data = await getRoutesInYourArea(areaAddress as string, currentPage!);
       }
+      debugger;
       if (data && data.routes) {
         if (currentPage === 1) {
           setRoutes(data.routes);
         } else if (appendRoutes) {
           appendRoutes(data.routes);
         }
+      } else {
+        setRoutes([]);
       }
 
-      if (setLastPage) setLastPage(data.lastPage);
+      if (setLastPage)
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        data.lastPage !== undefined
+          ? setLastPage(data.lastPage)
+          : setLastPage(true);
     }
   } catch (error) {
     console.error(error);

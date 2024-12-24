@@ -1,4 +1,3 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { addRoute } from "../services/routeService";
 import { getUserToken } from "./usersFunctions";
 
@@ -90,7 +89,7 @@ export const calculateRoute = (
     React.SetStateAction<google.maps.DirectionsResult | null>
   >,
   setDisableMapClick: React.Dispatch<React.SetStateAction<boolean>>,
-  router: AppRouterInstance
+  setIsAddRoute: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   if (routePoints.length < 2) {
     alert("עליך לבחור לפחות שתי נקודות למסלול.");
@@ -136,7 +135,7 @@ export const calculateRoute = (
 
       setDirections(result);
       setDisableMapClick(true);
-      router.push("/pages/home");
+      setIsAddRoute(false);
     } else {
       alert("לא ניתן לחשב מסלול.");
     }

@@ -5,9 +5,14 @@ import React from "react";
 const Footer = () => {
   // const router = useRouter();
   return (
-    <footer className="bg-gray-800 text-white py-4" dir="rtl">
+    <footer
+      className="bg-gray-800 text-white py-4"
+      dir="rtl"
+    >
       <div className="container mx-auto text-center">
         <p className="text-xs">Routes Sharing &copy; כל הזכויות שמורות</p>
+        {/* פס מפריד */}
+        <hr className="border-t border-white my-4 w-3/4 mx-auto" />
         {/* קישורי מידע */}
         <div className="mt-2">
           <a
