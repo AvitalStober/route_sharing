@@ -20,7 +20,11 @@ const CardMap: React.FC<CardMapProps> = ({
   const [isExpanded, setIsExpanded] = useState<boolean>();
 
   // הגדרת סגנון המפה
-  const mapContainerStyle = { inlineSize: "100%", blockSize: "250px" };
+  const mapContainerStyle = {
+    inlineSize: "100%",
+    blockSize: "250px",
+    borderRadius: "11px",
+  };
   // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
@@ -100,25 +104,27 @@ const CardMap: React.FC<CardMapProps> = ({
         </button>
       </div>
 
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
-        zoom={12}
-        options={mapOptions} // הוספת האפשרויות למפה
-      >
-        {directions && (
-          <DirectionsRenderer
-            directions={directions}
-            options={{
-              polylineOptions: {
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-              },
-            }}
-          />
-        )}
-      </GoogleMap>
+      <div className="mb-2 border border-black rounded-xl">
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center} // אם אין נקודות, המפה תתמקד ב־{ lat: 0, lng: 0 }
+          zoom={12}
+          options={mapOptions} // הוספת האפשרויות למפה
+        >
+          {directions && (
+            <DirectionsRenderer
+              directions={directions}
+              options={{
+                polylineOptions: {
+                  strokeColor: "#FF0000",
+                  strokeOpacity: 0.8,
+                  strokeWeight: 2,
+                },
+              }}
+            />
+          )}
+        </GoogleMap>
+      </div>
       <div dir="rtl" className="h-[40px] mt-auto flex items-center">
         {(hours !== 0 || minutes !== 0) && (
           <p>

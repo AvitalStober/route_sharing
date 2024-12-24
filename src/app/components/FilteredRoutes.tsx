@@ -148,7 +148,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
     Routes &&
     Routes.length === 0 &&
     selectedRoute === "routes" &&
-    changeAddress==""
+    changeAddress == ""
   ) {
     initializeRoutes();
   }
@@ -159,9 +159,8 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex m-2 relative">
+      {/* <div className="flex m-2 relative">
         <div className="flex space-x-4">
-          {/* כפתור למסלולים באזורך */}
           <div
             onClick={() => {
               const newPage = 1;
@@ -183,7 +182,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           >
             מסלולים באזורך
           </div>
-          {/* כפתור להיסטוריית מסלולים */}
           <div
             onClick={() => {
               const newPage = 1;
@@ -205,7 +203,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
           >
             הסטוריית מסלולים
           </div>
-          {/* כפתור למסלולים שלי */}
           <div
             onClick={() => {
               const newPage = 1;
@@ -228,7 +225,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
             מסלולים שלי
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div>
         {/* אם נבחר מסלול "routes" */}
@@ -256,33 +253,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
                 טען עוד מסלולים
               </button>
             )}
-
-            <div>
-              <div className="py-2 text-blue-600">
-                <svg
-                  className="w-8 h-8"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="xMidYMid"
-                >
-                  <g transform="translate(50,50)">
-                    <g transform="scale(0.7)">
-                      <circle cx="0" cy="0" r="50" fill="currentColor"></circle>
-                      <circle cx="0" cy="-28" r="15" fill="white">
-                        <animateTransform
-                          attributeName="transform"
-                          type="rotate"
-                          dur="1s"
-                          repeatCount="indefinite"
-                          keyTimes="0;1"
-                          values="0 0 0;360 0 0"
-                        ></animateTransform>
-                      </circle>
-                    </g>
-                  </g>
-                </svg>
-              </div>
-            </div>
           </>
         )}
         {/* אם נבחרה היסטוריית מסלולים */}

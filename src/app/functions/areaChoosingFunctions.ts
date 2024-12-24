@@ -1,5 +1,64 @@
 import Route from "@/app/types/routes";
 import { getRoutesInChosenArea } from "../services/routeService";
+import { getUserAddress } from "./usersFunctions";
+
+export const initialize = async (
+  isLoaded: boolean,
+  autocompleteRef: React.MutableRefObject<HTMLInputElement | null>,
+  setAddress: React.Dispatch<React.SetStateAction<string>>,
+  setCenter: React.Dispatch<
+    React.SetStateAction<google.maps.LatLngLiteral | undefined>
+  >,
+  mapRef: React.MutableRefObject<google.maps.Map | null>
+) => {
+  if (isLoaded && autocompleteRef.current) {
+    const autocomplete = new google.maps.places.Autocomplete(
+      autocompleteRef.current
+    );
+
+    // קריאה לפונקציה אסינכרונית לקבלת כתובת המשתמש
+    const userAddress = await getUserAddress();
+    setAddress(userAddress!);
+
+    // שימוש ב-Geocoding API כדי לקבל קואורדינטות של הכתובת
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: userAddress }, (results, status) => {
+      if (status === "OK" && results && results[0].geometry.location) {
+        const location = results[0].geometry.location;
+        setCenter({
+          lat: location.lat(),
+          lng: location.lng(),
+        });
+        if (mapRef.current) {
+          mapRef.current.setZoom(15);
+        }
+      } else {
+        console.error("Geocoding failed: " + status);
+      }
+    });
+
+    // מאזין לשינויים במיקום שנבחר בתיבת החיפוש
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+
+      if (place.geometry && place.geometry.location) {
+        const location = place.geometry.location;
+        // עדכון מרכז המפה
+        setCenter({
+          lat: location.lat(),
+          lng: location.lng(),
+        });
+        // זום למיקום הנבחר
+        if (mapRef.current) {
+          mapRef.current.setZoom(15);
+        }
+        // עדכון הכתובת בתיבת החיפוש
+        const formattedAddress = place.formatted_address || ""; // אם לא נמצא, השתמש בברירת מחדל ריקה
+        setAddress(formattedAddress);
+      }
+    });
+  }
+};
 
 export function isPointInsidePolygon(
   point: { lat: number; lng: number },
