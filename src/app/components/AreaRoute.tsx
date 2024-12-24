@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { getUserAddress } from "../functions/usersFunctions";
 import useStore from "@/app/store/store";
 import AreaRouteProps from "../types/props/AreaRouteProps";
 import {

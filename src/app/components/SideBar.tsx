@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AddressSearch from "./AddressSearch";
 import { useRouter } from "next/navigation";
 import useStore from "../store/store";
@@ -11,21 +11,15 @@ import {
 import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
 
 const SideBar: React.FC<FilteredRoutesProps> = ({
-  selectedRoute,
   setSelectedRoute,
   setIsAreaChoosing,
   setIsAddRoute,
 }) => {
-  const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
-  const changeAddress = useStore((state) => state.changeAddress);
 
   const Routes = useStore((state) => state.Routes);
-  const initializeRoutes = useStore((state) => state.initializeRoutes);
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
-  // const [lastPage, setLastPage] = useState(false);
-  const lastPage = useStore((state) => state.lastPage);
   const setLastPage = useStore((state) => state.setLastPage);
 
   // פונקציה לעדכון הסטייט על ידי הוספת מסלולים חדשים

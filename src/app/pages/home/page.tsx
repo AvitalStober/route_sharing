@@ -132,19 +132,15 @@
 
 "use client";
 import Footer from "@/app/components/Footer";
-import AddressSearch from "@/app/components/AddressSearch";
 import React, { useEffect, useState } from "react";
 import FilteredRoutes from "@/app/components/FilteredRoutes";
 import AreaRoute from "@/app/components/AreaRoute";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import SideBar from "@/app/components/SideBar";
 import AddRoute from "@/app/components/AddRoute";
 
 const Page = () => {
   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
   const [isAddRoute, setIsAddRoute] = useState(false);
-  const router = useRouter();
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
 
   useEffect(()=>{

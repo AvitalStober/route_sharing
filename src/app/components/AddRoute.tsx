@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import CloudinaryUploader from "./CloudinaryUploader";
 import Image from "next/image";
 import {
@@ -35,7 +34,6 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
   // make thw map disable after calaulate route
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
 
-  const router = useRouter();
   const libraries: ("geometry" | "places")[] = ["geometry", "places"];
 
   // map loading

@@ -133,7 +133,6 @@ const AddressSearch = () => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
   const [userAddress, setUserAddress] = useState(""); // כתובת שכותב המשתמש
   const [errors, setErrors] = useState<{ address?: string }>({});
-  const [inputWidth, setInputWidth] = useState(200); // רוחב ההזנה של השדה
   const [isSelectedFromAutocomplete, setIsSelectedFromAutocomplete] =
     useState(false); // דגל האם הכתובת נבחרה מההשלמה
   const [initialAddress, setInitialAddress] = useState(""); // כתובת מקורית לפני שינוי
@@ -171,13 +170,6 @@ const AddressSearch = () => {
       fetchAddress();
     }
   }, []);
-
-  useEffect(() => {
-    if (spanRef.current) {
-      const newWidth = Math.max(spanRef.current.offsetWidth + 40, 200); // הגדרת רוחב מינימלי של 200
-      setInputWidth(newWidth);
-    }
-  }, [address]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value); // עדכון כתובת לפי הזנה חופשית של המשתמש
@@ -226,7 +218,9 @@ const AddressSearch = () => {
             dir="rtl"
             type="text"
             placeholder={address}
-            className="w-full outline-none bg-white text-sm px-5 py-3"
+            className={`w-full outline-none bg-white text-sm px-5 py-3 ${
+              errors.address ? "border-red-500" : "border-gray-300"
+            }`}
             onChange={handleInputChange}
             onFocus={(e) => {
               const autocomplete = new google.maps.places.Autocomplete(e.target);
