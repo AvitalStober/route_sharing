@@ -3,9 +3,12 @@ import connect from "@/app/lib/DB/connectDB";
 import Routes from "@/app/lib/models/routeModel";
 import { isPointInsidePolygon } from "@/app/functions/areaChoosingFunctions";
 
+const LIMIT = 2;
+
 export async function POST(request: Request) {
   try {
-    const { polygonPoints } = await request.json();
+    const { polygonPoints, page } = await request.json();
+    const skip = (page - 1) * LIMIT;
 
     if (
       !polygonPoints ||
@@ -39,13 +42,20 @@ export async function POST(request: Request) {
         { status: 210 }
       );
     }
+    const totalPages = Math.ceil(routesInsidePolygon.length / LIMIT);
 
-    return NextResponse.json({ routes: routesInsidePolygon }, { status: 200 });
+    return NextResponse.json(
+      {
+        routes: routesInsidePolygon.slice(skip, skip + LIMIT),
+        lastPage: totalPages <= page,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     const err = error as Error;
     return NextResponse.json(
       { error: true, message: "Internal server error", details: err.message },
-      { status: 500}
+      { status: 500 }
     );
   }
 }

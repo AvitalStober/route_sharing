@@ -89,11 +89,13 @@ export const getRoutesInChosenArea = async (
   polygonPoints: {
     lat: number;
     lng: number;
-  }[]
+  }[],
+  page: number | undefined
 ) => {
   try {
     const response = await axios.post(`${url}/api/routesByArea`, {
       polygonPoints,
+      page,
     });
     return response.data;
   } catch (error) {

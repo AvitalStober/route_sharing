@@ -1,5 +1,6 @@
 import Route from "@/app/types/routes";
 import { getRoutesInChosenArea } from "../services/routeService";
+import { appendRoutes } from "./routesFunctions";
 
 export function isPointInsidePolygon(
   point: { lat: number; lng: number },
@@ -82,12 +83,46 @@ export const resetMap = (
 
 export const displayPoints = async (
   setRoutes: (routes: Route[]) => void,
-  setIsAreaChoosing: React.Dispatch<React.SetStateAction<boolean>>,
-  areaPoints: google.maps.LatLngLiteral[]
+  currentPage: number | undefined,
+  setLastPage: (lastPage: boolean) => void,
+  areaPoints?: google.maps.LatLngLiteral[],
+  setIsAreaChoosing?: React.Dispatch<React.SetStateAction<boolean>>,
+  setChangeAddress?: (changeAddress: string) => void,
+  address?: string | undefined
 ) => {
-  const inMyArea = await getRoutesInChosenArea(areaPoints);
-  setRoutes(inMyArea.routes);
-  setIsAreaChoosing(false);
+  if (address && setChangeAddress) {
+    setChangeAddress(address);
+  }
+  try {
+    let data: { routes: Route[]; lastPage: boolean };
+    if (areaPoints) {
+      localStorage.setItem("areaPoints", JSON.stringify(areaPoints));
+      data = await getRoutesInChosenArea(areaPoints, currentPage);
+    } else {
+      const savedAreaPoints = localStorage.getItem("areaPoints");
+      const parsedAreaPoints = savedAreaPoints
+        ? JSON.parse(savedAreaPoints)
+        : [];
+      data = await getRoutesInChosenArea(parsedAreaPoints, currentPage);
+    }
+    if (data && data.routes) {
+      if (currentPage === 1) {
+        setRoutes(data.routes);
+      } else if (appendRoutes) {
+        appendRoutes(data.routes);
+      }
+    } else {
+      setRoutes([]);
+    }
+    if (setLastPage)
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      data.lastPage !== undefined
+        ? setLastPage(data.lastPage)
+        : setLastPage(true);
+    if (setIsAreaChoosing) setIsAreaChoosing(false);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // פונקציה להמיר כתובת לנקודות ציון

@@ -14,5 +14,16 @@ export interface StoreState {
   Routes: IRoute[];
   setRoutes: (routes: IRoute[]) => void;
   currentPage: number;
-  setCurrentPage: (currentPage: number | ((prevPage: number) => number)) => void;
+  setCurrentPage: (
+    currentPage: number | ((prevPage: number) => number)
+  ) => void;
+  lastPage: boolean;
+  setLastPage: (lastPage: boolean) => void;
+  changeAddress: string;
+  setChangeAddress: (changeAddress: string) => void;
+  // areaPoints: google.maps.LatLngLiteral[]; // מערך של נקודות על המפה
+  // setAreaPoints: (
+  //   updater: (prevPoints: google.maps.LatLngLiteral[]) => google.maps.LatLngLiteral[]
+  // ) => void; // עדכון הנקודות
+  // resetAreaPoints: () => void; // איפוס הנקודות
 }
