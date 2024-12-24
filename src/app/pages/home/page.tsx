@@ -23,7 +23,7 @@ const Page = () => {
         setIsAddRoute={setIsAddRoute}
       />
       <div className="flex flex-col">
-        <div className="" style={{ width: `calc(100% - 250px)` }}>
+        <div className="" style={{ inlineSize: `calc(100% - 250px)` }}>
           {!isAreaChoosing && !isAddRoute ? (
             <div>
               <div

@@ -6,7 +6,6 @@ import {
   addRouteToHistoryRoute,
   handleStarClick,
   getUserRouteRate,
-  addRouteToHistoryRoute,
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import { useRouter } from "next/navigation";
