@@ -2,7 +2,6 @@ import React from "react";
 import AddressSearch from "./AddressSearch";
 import { useRouter } from "next/navigation";
 import useStore from "../store/store";
-import IRoute from "../types/routes";
 import {
   fetchHistoryRoutes,
   FetchOwnerRoutes,
@@ -18,8 +17,6 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   setIsAddRoute,
 }) => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
-
-  const Routes = useStore((state) => state.Routes);
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
   const setLastPage = useStore((state) => state.setLastPage);

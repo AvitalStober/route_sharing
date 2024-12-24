@@ -10,7 +10,6 @@ import useStore from "@/app/store/store";
 import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
 import LoadMoreButton from "./LoadMoreButton";
 import { displayPoints } from "../functions/areaChoosingFunctions";
-import { FetchFunction } from "../types/FetchFunction";
 
 const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   selectedRoute,
