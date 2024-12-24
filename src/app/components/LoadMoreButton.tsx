@@ -30,3 +30,4 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
 };
 
 export default LoadMoreButton;
+

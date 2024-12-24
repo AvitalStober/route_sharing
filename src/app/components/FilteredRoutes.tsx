@@ -56,7 +56,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 
   useEffect(() => {
     if (changeAddress) {
-      console.log("הכתובת עודכנה:", changeAddress);
       setSelectedRoute("chosenArea");
     }
   }, [changeAddress]);
@@ -92,7 +91,6 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
         {selectedRoute === "routes" && (
           <>
             <RouteCard Routes={Routes} filtered={1} />
-            <p>changeAddress{changeAddress}</p>
             {!lastPage && (
               <LoadMoreButton
                 fetchFunction={fetchRoutesInYourArea}

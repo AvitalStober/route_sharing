@@ -105,7 +105,6 @@ export const displayPoints = async (
         : [];
       data = await getRoutesInChosenArea(parsedAreaPoints, currentPage);
     }
-    debugger
     if (data && data.routes) {
       if (currentPage === 1) {
         setRoutes(data.routes);
