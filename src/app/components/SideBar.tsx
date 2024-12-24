@@ -25,12 +25,12 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   const setLastPage = useStore((state) => state.setLastPage);
 
   // פונקציה לעדכון הסטייט על ידי הוספת מסלולים חדשים
-  const appendRoutes = (newRoutes: IRoute[]) => {
-    if (newRoutes.length !== 0) {
-      const newArray: IRoute[] = [...Routes, ...newRoutes];
-      setRoutes(newArray);
-    }
-  };
+  // const appendRoutes = (newRoutes: IRoute[]) => {
+  //   if (newRoutes.length !== 0) {
+  //     const newArray: IRoute[] = [...Routes, ...newRoutes];
+  //     setRoutes(newArray);
+  //   }
+  // };
   //   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
   const router = useRouter();
 

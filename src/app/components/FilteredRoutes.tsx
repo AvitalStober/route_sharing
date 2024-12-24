@@ -8,7 +8,6 @@ import {
 import RouteCard from "@/app/components/RouteCard";
 import useStore from "@/app/store/store";
 import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
-import LoadRoutes from "./LoadRoutes";
 import LoadMoreButton from "./LoadMoreButton";
 import { displayPoints } from "../functions/areaChoosingFunctions";
 import { FetchFunction } from "../types/FetchFunction";
@@ -26,15 +25,15 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   const lastPage = useStore((state) => state.lastPage);
   const setLastPage = useStore((state) => state.setLastPage);
 
-  const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
-    return () => {
-      const newPage = 1;
-      setCurrentPage(newPage);
-      setLastPage(false);
-      setSelectedRoute(label);
-      fetchFunction(setRoutes, newPage, setLastPage);
-    };
-  };
+  // const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
+  //   return () => {
+  //     const newPage = 1;
+  //     setCurrentPage(newPage);
+  //     setLastPage(false);
+  //     setSelectedRoute(label);
+  //     fetchFunction(setRoutes, newPage, setLastPage);
+  //   };
+  // };
 
   // אם אין מסלולים, נטען את המסלולים הראשונים
   useEffect(() => {
