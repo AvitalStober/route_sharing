@@ -6,6 +6,7 @@ import {
   addRouteToHistoryRoute,
   handleStarClick,
   getUserRouteRate,
+  addRouteToHistoryRoute,
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import { useRouter } from "next/navigation";
@@ -111,7 +112,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             <p className="mt-4">לא נמצאו מסלולים</p>
           </div>
         )}
-
+{/* 
         {filtered === 3 && (
           <button
             onClick={() => {
@@ -121,7 +122,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
           >
             +
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );

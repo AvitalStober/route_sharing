@@ -8,10 +8,8 @@ import {
 import RouteCard from "@/app/components/RouteCard";
 import useStore from "@/app/store/store";
 import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
-import LoadRoutes from "./LoadRoutes";
 import LoadMoreButton from "./LoadMoreButton";
 import { displayPoints } from "../functions/areaChoosingFunctions";
-import IRoute from "../types/routes";
 
 const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   selectedRoute,
@@ -25,22 +23,16 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   const setRoutes = useStore((state) => state.setRoutes);
   const lastPage = useStore((state) => state.lastPage);
   const setLastPage = useStore((state) => state.setLastPage);
-  type FetchFunction = (
-    setRoutes: (routes: IRoute[]) => void,
-    currentPage: number,
-    setLastPage?: (lastPage: boolean) => void,
-    areaAddress?: string
-  ) => Promise<void>;
 
-  const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
-    return () => {
-      const newPage = 1;
-      setCurrentPage(newPage);
-      setLastPage(false);
-      setSelectedRoute(label);
-      fetchFunction(setRoutes, newPage, setLastPage);
-    };
-  };
+  // const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
+  //   return () => {
+  //     const newPage = 1;
+  //     setCurrentPage(newPage);
+  //     setLastPage(false);
+  //     setSelectedRoute(label);
+  //     fetchFunction(setRoutes, newPage, setLastPage);
+  //   };
+  // };
 
   // אם אין מסלולים, נטען את המסלולים הראשונים
   useEffect(() => {
@@ -65,24 +57,20 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
       <div className="flex m-2 relative">
         <div className="flex space-x-4">
           {/* כפתור למסלולים באזורך */}
-          <LoadRoutes
-            label="מסלולים באזורך"
-            selectedRoute="routes"
-            onClick={handleLoadRoutes(fetchRoutesInYourArea, "routes")}
-          />
+         
 
           {/* כפתור להיסטוריית מסלולים */}
-          <LoadRoutes
+          {/* <LoadRoutes
             label="היסטוריית מסלולים"
             selectedRoute="history"
             onClick={handleLoadRoutes(fetchHistoryRoutes, "history")}
-          />
+          /> */}
           {/* כפתור למסלולים שלי */}
-          <LoadRoutes
+          {/* <LoadRoutes
             label="המסלולים שלי"
             selectedRoute="myRoutes"
             onClick={handleLoadRoutes(FetchOwnerRoutes, "myRoutes")}
-          />
+          /> */}
         </div>
       </div>
 

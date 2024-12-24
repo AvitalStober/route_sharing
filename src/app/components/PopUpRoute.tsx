@@ -2,18 +2,15 @@
 import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import Star from "./Star";
-import Image from "next/image";
+import Image from 'next/image';
 import CloudinaryUploader from "./CloudinaryUploader";
 import { editRoutes } from "../services/routeService";
 import IRoute from "../types/routes";
 import { fetchRouteById } from "../functions/routesFunctions";
 import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
 
-const PopUpRoute: React.FC<PopUpRouteProps> = ({
-  onClose,
-  routeId,
-  filtered,
-}) => {
+
+const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) => {
   const [pictures, setPictures] = useState<string[]>([]);
   const [route, setRoute] = useState<IRoute>();
   useEffect(() => {
@@ -31,11 +28,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
     async function func() {
       if (route && pictures && pictures.length > route.gallery.length) {
         // Edit route when pictures are updated
-        const response = await editRoutes(
-          routeId.toString(),
-          undefined,
-          pictures
-        );
+        const response = await editRoutes(routeId.toString(), undefined, pictures);
         setRoute(response);
         setPictures(response.gallery);
       }
@@ -56,13 +49,8 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
         <p>Loading...</p> // טקסט טעינה כדי למנוע תקלות
       ) : (
         <>
-          <CardMap
-            points={route.pointsArray}
-            route={route}
-            expanded={true}
-            filtered={filtered}
-          />
-          <Star rate={route.rate} filtered={1} />
+          <CardMap points={route.pointsArray} route={route} expanded={true} filtered={filtered}/>
+          <Star rate={route.rate} filtered={1} onClick={() => console.log("pres")} />
           <p>{route.description}</p>
           {pictures && pictures.length > 0 && (
             <div className="flex flex-wrap gap-4 items-center">
@@ -80,7 +68,9 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
               ))}
             </div>
           )}
-          {filtered !== 1 && <CloudinaryUploader setPictures={setPictures} />}
+          {filtered !== 1 &&
+            <CloudinaryUploader setPictures={setPictures} />
+          }
         </>
       )}
     </div>

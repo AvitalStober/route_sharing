@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import CloudinaryUploader from "./CloudinaryUploader";
 import Image from "next/image";
 import {
@@ -15,8 +14,9 @@ import {
   resetMap,
 } from "../functions/addRouteFunctions";
 import { getUserAddress } from "../functions/usersFunctions";
+import AddRouteProps from "../types/props/AddRouteProps";
 
-const AddRoute = () => {
+const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
   const [description, setDescription] = useState("");
   const [pictures, setPictures] = useState<string[]>([]);
   const [address, setAddress] = useState(""); // לשמור את הכתובת
@@ -34,7 +34,6 @@ const AddRoute = () => {
   // make thw map disable after calaulate route
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
 
-  const router = useRouter();
   const libraries: ("geometry" | "places")[] = ["geometry", "places"];
 
   // map loading
@@ -44,7 +43,7 @@ const AddRoute = () => {
     language: "he",
   });
 
-  useEffect(() => {    
+  useEffect(() => {
     const initializeAddress = async () => {
       // קריאה לכתובת המשתמש
       const userAddress = await getUserAddress();
@@ -116,15 +115,7 @@ const AddRoute = () => {
 
   return (
     <div className="flex items-center">
-      <div className="justify-center w-[40%]">
-        <div
-          onClick={() => {
-            router.push("/pages/home");
-          }}
-          className="cursor-pointer font-bold rounded-lg m-2 p-2 w-[40px] bg-gray-100 hover:bg-gray-200 text-center"
-        >
-          ✕
-        </div>
+      <div className="justify-center w-[40%] m-2">
         <div className="flex justify-center text-center items-center m-4 space-x-2">
           <input
             ref={autocompleteRef}
@@ -137,7 +128,7 @@ const AddRoute = () => {
         </div>
         <div className="flex justify-center m-4">
           <textarea
-          dir="rtl"
+            dir="rtl"
             placeholder="הזן תיאור"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -154,7 +145,7 @@ const AddRoute = () => {
                 pictures,
                 setDirections,
                 setDisableMapClick,
-                router
+                setIsAddRoute
               )
             }
             className="px-4 py-2 shadow-md border-green-500 text-green-500 rounded hover:shadow-lg"
@@ -196,8 +187,8 @@ const AddRoute = () => {
             ))}
         </div>
       </div>
-
       {isLoaded ? (
+        <div className="w-[50%] m-8 border border-black rounded-xl">
           <GoogleMap
             mapContainerStyle={{
               width: "100%",
@@ -229,6 +220,7 @@ const AddRoute = () => {
               />
             )}
           </GoogleMap>
+        </div>
       ) : (
         <div>טעינת המפה...</div>
       )}
