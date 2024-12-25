@@ -14,6 +14,9 @@ export const fetchHistoryRoutes = async (
   currentPage: number,
   setLastPage?: (lastPage: boolean) => void
 ): Promise<void> => {
+  debugger;
+  console.log("history");
+
   const user = await getUserToken();
   if (!user) {
     console.error("User not found");
@@ -81,7 +84,7 @@ export const fetchRoutesInYourArea = async (
   try {
     let data: { routes: IRoute[]; lastPage: boolean };
     const userTokenFromStorage = localStorage.getItem("userToken");
-    debugger
+    debugger;
     if (userTokenFromStorage) {
       if (!areaAddress) {
         const address = await getUserAddress();

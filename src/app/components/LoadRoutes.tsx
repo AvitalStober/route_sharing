@@ -11,7 +11,7 @@ const LoadRoutes: React.FC<LoadRoutesProps> = ({
         <div>
           <div
             onClick={onClick} 
-            className={`cursor-pointer py-2 px-4 inline-block text-center ${
+            className={`cursor-pointer px-4 inline-block text-center ${
               selectedRoute === label ? "border-b-4 border-slate-600 z-10" : ""
             }`}
           >
