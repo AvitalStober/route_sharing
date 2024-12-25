@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import RealtimeNavigationProps from "@/app/types/props/RealtimeNavigationProps"
+import RealtimeNavigationProps from "@/app/types/props/RealtimeNavigationProps";
 
 const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
-  waypoints = []
+  waypoints = [],
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null); // שמירת רפרנס לקונטיינר של המפה
   const [, setGoogleMap] = useState<google.maps.Map | null>(null); // שמירת אובייקט המפה
@@ -14,6 +14,7 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
     useState<google.maps.DirectionsRenderer | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0); // אינדקס הנקודה הנוכחית במסלול
   const [instructions, setInstructions] = useState<string>(""); // הנחיות ניווט
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (window.google && mapContainerRef.current) {
@@ -41,6 +42,30 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
     }
   }, []);
 
+  // const startNavigation = (
+  //   service: google.maps.DirectionsService,
+  //   renderer: google.maps.DirectionsRenderer
+  // ) => {
+  //   navigator.geolocation.watchPosition(
+  //     (position) => {
+  //       const currentLocation = {
+  //         lat: position.coords.latitude,
+  //         lng: position.coords.longitude,
+  //       };
+
+  //       updateDirections(currentLocation, service, renderer);
+  //     },
+  //     (error) => {
+  //       console.error("Error getting location", error);
+  //     },
+  //     {
+  //       enableHighAccuracy: true, // מבקש דיוק גבוה יותר
+  //       maximumAge: 0, // לא לשמור את המיקום הקודם
+  //       timeout: 50000, // הזמן המקסימלי שמחכים לפני שנכשל אם לא מצאו מיקום (במילישניות)
+  //     }
+  //   );
+  // };
+
   const startNavigation = (
     service: google.maps.DirectionsService,
     renderer: google.maps.DirectionsRenderer
@@ -52,15 +77,26 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
           lng: position.coords.longitude,
         };
 
+        setErrorMessage(null); // איפוס הודעת השגיאה במקרה של הצלחה
         updateDirections(currentLocation, service, renderer);
       },
       (error) => {
-        console.error("Error getting location", error);
+        if (error.code === error.PERMISSION_DENIED) {
+          setErrorMessage("כדי להשתמש בניווט, יש לאשר גישה למיקום שלך.");
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          setErrorMessage(
+            "לא ניתן לגשת למיקום כרגע. בדוק את ההגדרות או נסה שוב מאוחר יותר."
+          );
+        } else if (error.code === error.TIMEOUT) {
+          setErrorMessage("לא הצלחנו לאתר את המיקום שלך בזמן סביר. נסה שוב.");
+        } else {
+          setErrorMessage("אירעה שגיאה בלתי צפויה בגישה למיקום.");
+        }
       },
       {
-        enableHighAccuracy: true, // מבקש דיוק גבוה יותר
-        maximumAge: 0, // לא לשמור את המיקום הקודם
-        timeout: 50000, // הזמן המקסימלי שמחכים לפני שנכשל אם לא מצאו מיקום (במילישניות)
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 50000,
       }
     );
   };
@@ -139,6 +175,22 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
     return R * c; // מרחק בק"מ
   };
 
+  // return (
+  //   <>
+  //     <Script
+  //       src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyD3kFjuuxQTBDSd3D8aVx0YqtFxa9onxdI&libraries=places`}
+  //       strategy="beforeInteractive"
+  //     />
+  //     <div
+  //       ref={mapContainerRef}
+  //       style={{ blockSize: "80vh", inlineSize: "100%" }}
+  //     />
+  //     <div style={{ padding: "10px", backgroundColor: "#f0f0f0" }}>
+  //       <h3>הוראות ניווט:</h3>
+  //       <p>{instructions}</p>
+  //     </div>
+  //   </>
+  // );
   return (
     <>
       <Script
@@ -149,9 +201,12 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
         ref={mapContainerRef}
         style={{ blockSize: "80vh", inlineSize: "100%" }}
       />
-      <div style={{ padding: "10px", backgroundColor: "#f0f0f0" }}>
+      <div className="p-5 bg-gray-100" dir="rtl">
         <h3>הוראות ניווט:</h3>
         <p>{instructions}</p>
+        {errorMessage && (
+          <p style={{ color: "red", fontWeight: "bold" }}>{errorMessage}</p>
+        )}
       </div>
     </>
   );

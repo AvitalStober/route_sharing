@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -11,11 +11,20 @@ export default function RootLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  
+
   useEffect(() => {
     const userToken = localStorage.getItem("userToken");
-    const publicPaths = ["/pages/login", "/pages/signup", "/pages/forgetPassword", "/pages/noAccess"];
-    
+    const publicPaths = [
+      "/",
+      "/pages/login",
+      "/pages/signup",
+      "/pages/forgetPassword",
+      "/pages/noAccess",
+      "/pages/homeImage",
+    ];
+    if (pathname == "/") {
+      router.push("/pages/homeImage");
+    }
     if (userToken && pathname === "/pages/login") {
       console.log("token deleted");
       localStorage.removeItem("userToken");

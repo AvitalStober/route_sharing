@@ -14,6 +14,9 @@ export const fetchHistoryRoutes = async (
   currentPage: number,
   setLastPage?: (lastPage: boolean) => void
 ): Promise<void> => {
+  debugger;
+  console.log("history");
+
   const user = await getUserToken();
   if (!user) {
     console.error("User not found");
