@@ -3,7 +3,6 @@ import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 import PopUpRoute from "./PopUpRoute";
 import { Types } from "mongoose";
 import { CardMapProps } from "../types/props/CardMapProps";
-import { log } from "node:console";
 
 const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
