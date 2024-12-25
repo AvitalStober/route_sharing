@@ -54,7 +54,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div>
+      <div className="flex flex-col items-center">
         {/* אם נבחר מסלול "routes" */}
         {selectedRoute === "routes" && (
           <>

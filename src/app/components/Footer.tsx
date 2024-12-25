@@ -6,30 +6,30 @@ const Footer = () => {
   // const router = useRouter();
   return (
     <footer
-      className="bg-gray-800 text-white py-4"
+      className="shadow-inner shadow-blue-600 bg-blue-50 text-blue-900 py-4 mt-14"
       dir="rtl"
     >
       <div className="container mx-auto text-center">
         <p className="text-xs">Routes Sharing &copy; כל הזכויות שמורות</p>
         {/* פס מפריד */}
-        <hr className="border-t border-white my-4 w-3/4 mx-auto" />
+        <hr className="border-t border-blue-300 my-4 w-3/4 mx-auto" />
         {/* קישורי מידע */}
         <div className="mt-2">
           <a
             href="/pages/about"
-            className="text-white hover:text-gray-400 mx-2"
+            className="text-blue-900 hover:text-gray-400 mx-2"
           >
             אודותינו
           </a>
           <a
             href="/pages/privacy"
-            className="text-white hover:text-gray-400 mx-2"
+            className="text-blue-900 hover:text-gray-400 mx-2"
           >
             מדיניות פרטיות
           </a>
           <a
             href="/pages/terms"
-            className="text-white hover:text-gray-400 mx-2"
+            className="text-blue-900 hover:text-gray-400 mx-2"
           >
             תנאי שימוש
           </a>

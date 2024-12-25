@@ -22,9 +22,12 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
           return newPage;
         });
       }}
-      className="mt-4 p-2 bg-blue-500 text-white rounded"
+      className="mt-4 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
     >
       טען עוד מסלולים
+      {" "}
+      {/* ↺ */}
+      ↻
     </button>
   );
 };

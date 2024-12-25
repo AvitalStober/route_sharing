@@ -8,24 +8,25 @@ const AboutUs = () => {
   return (
     <div
       dir="rtl"
-      className="relative bg-gradient-to-b from-blue-500 to-blue-800 min-h-screen text-white"
+      // className="relative bg-gradient-to-b from-blue-50 to-blue-200 min-h-screen text-blue-400"
     >
       {/* כפתור חזרה לדף הבית */}
       <button
         onClick={() => router.push("/pages/home")}
-        className="fixed top-4 right-4 bg-white text-blue-700 font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-gray-100 transition duration-300"
+        className="fixed top-4 right-4 bg-white text-blue-400 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100 transition duration-300"
       >
+        →
         חזרה לדף הבית
       </button>
 
-      <div className="container mx-auto py-16 px-6">
+      <div className="flex flex-col justify-center items-center container mx-auto py-16 px-6">
         {/* כותרת הדף */}
-        <h1 className="text-5xl font-bold text-center mb-12">אודותינו</h1>
+        <h1 className="text-5xl text-blue-300 font-bold text-center mb-12">אודותינו</h1>
 
-        <div className="bg-white text-gray-800 rounded-lg shadow-lg p-8">
+        <div className="bg-white text-gray-800 w-[70%] rounded-lg shadow-lg p-8">
           {/* מידע על האתר */}
           <section className="mb-8">
-            <h2 className="text-3xl font-semibold text-blue-700 mb-4">
+            <h2 className="text-3xl font-semibold text-blue-400 mb-4">
               מי אנחנו
             </h2>
             <p className="text-lg leading-relaxed">
@@ -37,7 +38,7 @@ const AboutUs = () => {
 
           {/* המטרה שלנו */}
           <section className="mb-8">
-            <h2 className="text-3xl font-semibold text-blue-700 mb-4">
+            <h2 className="text-3xl font-semibold text-blue-400 mb-4">
               המטרה שלנו
             </h2>
             <p className="text-lg leading-relaxed">
@@ -49,7 +50,7 @@ const AboutUs = () => {
 
           {/* הצוות */}
           <section className="mb-8">
-            <h2 className="text-3xl font-semibold text-blue-700 mb-4">
+            <h2 className="text-3xl font-semibold text-blue-400 mb-4">
               הכירו את הצוות
             </h2>
             <p className="text-lg leading-relaxed">
@@ -60,7 +61,7 @@ const AboutUs = () => {
 
           {/* קריאה לפעולה */}
           <section>
-            <h2 className="text-3xl font-semibold text-blue-700 mb-4">
+            <h2 className="text-3xl font-semibold text-blue-400 mb-4">
               הצטרפו אלינו
             </h2>
             <p className="text-lg leading-relaxed">
@@ -70,6 +71,7 @@ const AboutUs = () => {
           </section>
         </div>
       </div>
+
     </div>
   );
 };
