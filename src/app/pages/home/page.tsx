@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/app/components/Footer";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FilteredRoutes from "@/app/components/FilteredRoutes";
 import AreaRoute from "@/app/components/AreaRoute";
 import SideBar from "@/app/components/SideBar";
