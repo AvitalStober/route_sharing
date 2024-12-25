@@ -34,7 +34,6 @@ const LandingPage = () => {
           backgroundPosition: "center",
         }}
       >
-        {/* <div className="absolute inset-0 bg-black opacity-40"></div> */}
         <h1 className="text-4xl md:text-6xl text-white shadow-lg">
           גלו את המסלול הבא שלכם
         </h1>
