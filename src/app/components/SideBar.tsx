@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import useStore from "../store/store";
 import {
@@ -19,25 +20,16 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
   const setLastPage = useStore((state) => state.setLastPage);
+  const [selectedButton, setSelectedButton] = useState("routes");
 
-  // פונקציה לעדכון הסטייט על ידי הוספת מסלולים חדשים
-  // const appendRoutes = (newRoutes: IRoute[]) => {
-  //   if (newRoutes.length !== 0) {
-  //     const newArray: IRoute[] = [...Routes, ...newRoutes];
-  //     setRoutes(newArray);
-  //   }
-  // };
-  //   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
   const router = useRouter();
 
   const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
-    return () => {
-      const newPage = 1;
-      setCurrentPage(newPage);
-      setLastPage(false);
-      setSelectedRoute(label);
-      fetchFunction(setRoutes, newPage, setLastPage);
-    };
+    const newPage = 1;
+    setCurrentPage(newPage);
+    setLastPage(false);
+    setSelectedRoute(label);
+    fetchFunction(setRoutes, newPage, setLastPage);
   };
 
   const handleLogout = () => {
@@ -60,7 +52,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           <li>
             <a
               href="javascript:void(0)"
-              className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
+              onClick={() => {
+                setSelectedButton("index")
+                router.push("/pages/homeImage");
+              }}
+              className={`text-black ${
+                selectedButton === "index"
+                  ? "bg-blue-100"
+                  : "hover:text-blue-600 hover:bg-blue-50"
+              } text-sm flex items-center rounded px-4 py-3 transition-all`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -83,42 +83,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           <h6 className="text-blue-600 text-sm font-bold px-4">ניהול</h6>
           <ul className="mt-3">
             <li className="cursor-pointer">
-              {/* כפתור למסלולים שלי */}
-              {/* <div
-                onClick={() => {
-                  const newPage = 1;
-                  setCurrentPage(newPage);
-                  setLastPage(false);
-                  FetchOwnerRoutes(
-                    setSelectedRoute,
-                    setRoutes,
-                    appendRoutes,
-                    newPage,
-                    setLastPage
-                  );
-
-                  setIsAreaChoosing(false);
-                  setIsAddRoute(false);
-                }}
-                className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
+              <div
+                className={`text-black ${
+                  selectedButton === "myRoutes"
+                    ? "bg-blue-100"
+                    : "hover:text-blue-600 hover:bg-blue-50"
+                } text-sm flex items-center rounded px-4 py-3 transition-all`}
+                onClick={() => setSelectedButton("myRoutes")}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-[18px] h-[18px] ml-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"
-                  />
-                </svg>
-                <span>מסלולים שלי</span>
-              </div> */}
-              <div className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -136,7 +108,11 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <LoadRoutes
                   label="מסלולים שלי"
                   selectedRoute="myRoutes"
-                  onClick={handleLoadRoutes(FetchOwnerRoutes, "myRoutes")}
+                  onClick={() => {
+                    handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
+                    setIsAreaChoosing(false);
+                    setIsAddRoute(false);
+                  }}
                 />
               </div>
             </li>
@@ -145,8 +121,13 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 onClick={() => {
                   setIsAreaChoosing(false);
                   setIsAddRoute(true);
+                  setSelectedButton("addRoute");
                 }}
-                className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
+                className={`text-black ${
+                  selectedButton === "addRoute"
+                    ? "bg-blue-100"
+                    : "hover:text-blue-600 hover:bg-blue-50"
+                } text-sm flex items-center rounded px-4 py-3 transition-all`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,47 +159,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           <h6 className="text-blue-600 text-sm font-bold px-4">תכנון מסלול</h6>
           <ul className="mt-3">
             <li className="cursor-pointer">
-              {/* כפתור למסלולים באזורך */}
-              {/* <div
-                onClick={() => {
-                  const newPage = 1;
-                  setCurrentPage(newPage);
-                  setLastPage(false);
-                  fetchRoutesInYourArea(
-                    setRoutes,
-                    newPage,
-                    setLastPage,
-                    appendRoutes,
-                    setSelectedRoute
-                  );
-
-                  setIsAreaChoosing(false);
-                  setIsAddRoute(false);
-                }}
-                className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
+              <div
+                className={`text-black ${
+                  selectedButton === "routes"
+                    ? "bg-blue-100"
+                    : "hover:text-blue-600 hover:bg-blue-50"
+                } text-sm flex items-center rounded px-4 py-3 transition-all`}
+                onClick={() => setSelectedButton("routes")}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-[18px] h-[18px] ml-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-                  />
-                </svg>
-                <span>מסלולים באזורך</span>
-              </div> */}
-              <div className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -241,7 +189,11 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <LoadRoutes
                   label="מסלולים באזורך"
                   selectedRoute="routes"
-                  onClick={handleLoadRoutes(fetchRoutesInYourArea, "routes")}
+                  onClick={() => {
+                    handleLoadRoutes(fetchRoutesInYourArea, "routes");
+                    setIsAreaChoosing(false);
+                    setIsAddRoute(false);
+                  }}
                 />
               </div>
             </li>
@@ -250,8 +202,13 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 onClick={() => {
                   setIsAddRoute(false);
                   setIsAreaChoosing(true);
+                  setSelectedButton("chosenArea");
                 }}
-                className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
+                className={`text-black ${
+                  selectedButton === "chosenArea"
+                    ? "bg-blue-100"
+                    : "hover:text-blue-600 hover:bg-blue-50"
+                } text-sm flex items-center rounded px-4 py-3 transition-all`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -272,45 +229,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
               </div>
             </li>
             <li className="cursor-pointer">
-              {/* כפתור להיסטוריית מסלולים */}
-              {/* <div
-                onClick={() => {
-                  const newPage = 1;
-                  setCurrentPage(newPage);
-                  setLastPage(false);
-                  fetchHistoryRoutes(
-                    setSelectedRoute,
-                    setRoutes,
-                    appendRoutes,
-                    newPage,
-                    setLastPage
-                  );
-
-                  setIsAreaChoosing(false);
-                  setIsAddRoute(false);
-                }}
-                className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
+              <div
+                className={`text-black ${
+                  selectedButton === "history"
+                    ? "bg-blue-100"
+                    : "hover:text-blue-600 hover:bg-blue-50"
+                } text-sm flex items-center rounded px-4 py-3 transition-all`}
+                onClick={() => setSelectedButton("history")}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  className="w-[18px] h-[18px] ml-4"
-                  viewBox="0 0 510 510"
-                >
-                  <g fillOpacity=".9">
-                    <path
-                      d="M255 0C114.75 0 0 114.75 0 255s114.75 255 255 255 255-114.75 255-255S395.25 0 255 0zm0 459c-112.2 0-204-91.8-204-204S142.8 51 255 51s204 91.8 204 204-91.8 204-204 204z"
-                      data-original="#000000"
-                    />
-                    <path
-                      d="M267.75 127.5H229.5v153l132.6 81.6 20.4-33.15-114.75-68.85z"
-                      data-original="#000000"
-                    />
-                  </g>
-                </svg>
-                <span>צפה בהיסטוריה</span>
-              </div> */}
-              <div className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -329,9 +255,13 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   </g>
                 </svg>
                 <LoadRoutes
-                  label="צפה בהסטוריה"
+                  label="צפה בהיסטוריה"
                   selectedRoute="history"
-                  onClick={handleLoadRoutes(fetchHistoryRoutes, "history")}
+                  onClick={() => {
+                    handleLoadRoutes(fetchHistoryRoutes, "history");
+                    setIsAreaChoosing(false);
+                    setIsAddRoute(false);
+                  }}
                 />
               </div>
             </li>
@@ -344,8 +274,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           <ul className="mt-3">
             <li className="cursor-pointer">
               <div
-                onClick={() => router.push("/pages/editUser")}
-                className="text-black hover:text-blue-600 text-sm flex items-center hover:bg-blue-50 rounded px-4 py-3 transition-all"
+                onClick={() => {
+                  setSelectedButton("editProfile");
+                  router.push("/pages/editUser");
+                }}
+                className={`text-black ${
+                  selectedButton === "editProfile"
+                    ? "bg-blue-100"
+                    : "hover:text-blue-600 hover:bg-blue-50"
+                } text-sm flex items-center rounded px-4 py-3 transition-all`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
