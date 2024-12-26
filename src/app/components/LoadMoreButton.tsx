@@ -9,17 +9,11 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
   setCurrentPage,
   changeAddress,
 }) => {
-  // const setFilterAddress = useStore((state) => state.setFilterAddress);
-
-  // const handleClick = () => {
-  //   setFilterAddress(true); 
-  // };
   const setFilterAddress = useStore((state) => state.setFilterAddress);
-  setFilterAddress(false);
   return (
     <button
       onClick={() => {
-       
+        setFilterAddress(false);
         setCurrentPage((prevPage) => {
           const newPage = prevPage + 1;
           fetchFunction(setRoutes, newPage, setLastPage, changeAddress);
