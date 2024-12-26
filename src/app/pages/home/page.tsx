@@ -205,7 +205,7 @@ const Page = () => {
             )} */}
 
                 {/* המסלולים המוצגים */}
-                <div dir="ltr" className="w-full md:w-auto mb-3">
+                <div className="w-full md:w-auto mb-3">
                   <FilteredRoutes
                     selectedRoute={selectedRoute}
                     setSelectedRoute={setSelectedRoute}
