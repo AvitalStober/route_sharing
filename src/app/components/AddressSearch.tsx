@@ -141,7 +141,6 @@ const AddressSearch = () => {
   const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setLastPage = useStore((state) => state.setLastPage);
-  const changeAddress = useStore((state) => state.changeAddress);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
   const setFilterAddress = useStore((state) => state.setFilterAddress);
 
