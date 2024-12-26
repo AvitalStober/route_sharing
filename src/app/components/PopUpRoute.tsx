@@ -50,7 +50,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) =
       ) : (
         <>
           <CardMap points={route.pointsArray} route={route} expanded={true} filtered={filtered}/>
-          <Star rate={route.rate} filtered={1} onClick={() => console.log("pres")} />
+          <Star rate={route.rate} filtered={1} />
           <p>{route.description}</p>
           {pictures && pictures.length > 0 && (
             <div className="flex flex-wrap gap-4 items-center">

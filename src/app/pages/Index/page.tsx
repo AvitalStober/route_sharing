@@ -12,7 +12,6 @@ const LandingPage = () => {
   const router = useRouter();
 
   const handleNavigation = () => {
-    console.log("login");
     router.push("/pages/login"); 
   };
 

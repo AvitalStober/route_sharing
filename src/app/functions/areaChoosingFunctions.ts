@@ -149,6 +149,7 @@ export const displayPoints = async (
   setChangeAddress?: (changeAddress: string) => void,
   address?: string | undefined
 ) => {
+  debugger;
   if (address && setChangeAddress) {
     setChangeAddress(address);
   }

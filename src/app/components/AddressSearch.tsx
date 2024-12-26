@@ -141,7 +141,9 @@ const AddressSearch = () => {
   const currentPage = useStore((state) => state.currentPage);
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setLastPage = useStore((state) => state.setLastPage);
+  const changeAddress = useStore((state) => state.changeAddress);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
+  const setFilterAddress = useStore((state) => state.setFilterAddress);
 
   // פונקציה שתבדוק אם הכתובת תקינה
   const isValidAddress = (input: string): boolean => {
@@ -187,6 +189,7 @@ const AddressSearch = () => {
         const newPage = 1;
         setCurrentPage(newPage);
         setChangeAddress(address);
+        setFilterAddress(true);
         fetchRoutesInYourArea(
           setRoutes,
           currentPage,
@@ -242,26 +245,7 @@ const AddressSearch = () => {
             </svg>
           </button>
         </div>
-        {/* <input
-          id="address"
-          value={address} // הצגת הכתובת במשתנה address
-          placeholder="הזן כתובת"
-          style={{
-            inlineSize: `${inputWidth}px`,
-            textAlign: "right", // יישור טקסט לימין
-          }}
-          classNameName={`mt-1 block px-4 py-2 border ${
-            errors.address ? "border-red-500" : "border-gray-300"
-          } rounded-md`}
-          onFocus={(e) => {
-            const autocomplete = new google.maps.places.Autocomplete(e.target);
-            autocomplete.addListener("place_changed", () => {
-              const place = autocomplete.getPlace();
-              handlePlaceSelect(place.formatted_address || ""); // עדכון הכתובת הנבחרת
-            });
-          }}
-          onChange={handleInputChange} // עדכון הכתובת בזמן שהמשתמש מקליד
-        /> */}
+       
       </MapLoader>
     </>
   );

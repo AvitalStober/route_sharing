@@ -23,31 +23,27 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   const setRoutes = useStore((state) => state.setRoutes);
   const lastPage = useStore((state) => state.lastPage);
   const setLastPage = useStore((state) => state.setLastPage);
-
-  // const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
-  //   return () => {
-  //     const newPage = 1;
-  //     setCurrentPage(newPage);
-  //     setLastPage(false);
-  //     setSelectedRoute(label);
-  //     fetchFunction(setRoutes, newPage, setLastPage);
-  //   };
-  // };
+  const filterAddress = useStore((state) => state.filterAddress);
 
   // אם אין מסלולים, נטען את המסלולים הראשונים
   useEffect(() => {
-    if (
-      Routes &&
-      Routes.length === 0 &&
-      selectedRoute === "routes" &&
-      changeAddress.length === 0
-    ) {
-      initializeRoutes();
-    }
-  }, []);
+    const fetchData = async () => {
+      if (
+        Routes &&
+        Routes.length === 0 &&
+        selectedRoute === "routes" &&
+        changeAddress.length === 0
+      ) {
+        initializeRoutes();
+      }
+    };
+    fetchData();
+  }, [Routes, selectedRoute, changeAddress]);
 
   useEffect(() => {
-    if (changeAddress) {
+    if (filterAddress) {
+      setSelectedRoute("routes");
+    } else if (changeAddress) {
       setSelectedRoute("chosenArea");
     }
   }, [changeAddress]);
@@ -119,9 +115,9 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
                     return newPage;
                   });
                 }}
-                className="mt-4 p-2 bg-blue-500 text-white rounded"
+                className="mt-4 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
               >
-                טען עוד מסלולים
+                טען עוד מסלולים {/* ↺ */}↻
               </button>
             )}
           </>

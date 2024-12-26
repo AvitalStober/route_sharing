@@ -30,9 +30,11 @@
     "next-auth": "^4.24.10",
     "next-cloudinary": "^6.16.0",
     "nodemailer": "^6.9.16",
+    "odometer": "^0.4.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-autocomplete": "^2.7.3",
+    "react-icons": "^5.4.0",
     "react-leaflet": "^4.2.1",
     "zod": "^3.23.8",
     "zustand": "^5.0.1"
