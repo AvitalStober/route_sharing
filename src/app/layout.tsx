@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import "./globals.css";
+import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -37,7 +38,13 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>{children}
+        <Script
+          src="https://cdn.enable.co.il/licenses/enable-L352538x9gw76prm-1224-66858/init.js"
+          
+        >
+        </Script>
+      </body>
     </html>
   );
 }
