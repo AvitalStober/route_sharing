@@ -46,7 +46,7 @@ const CardMap: React.FC<CardMapProps> = ({
       })),
       travelMode: google.maps.TravelMode.WALKING,
     };
-    debugger
+
     directionsService.route(request, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK && result) {
         calculateWalkingTime(result);
@@ -66,7 +66,6 @@ const CardMap: React.FC<CardMapProps> = ({
     route.legs.forEach((leg) => {
       totalTimeInSeconds += leg.duration!.value;
     });
-    debugger
     const calculatedHours = Math.floor(totalTimeInSeconds / 3600); // שעות
     const calculatedMinutes = Math.floor((totalTimeInSeconds % 3600) / 60); // דקות
 
@@ -76,10 +75,6 @@ const CardMap: React.FC<CardMapProps> = ({
 
   // הגדרת אפשרויות המפה
   const mapOptions: google.maps.MapOptions = {
-    disableDefaultUI: true, // מבטל את כל ה-UI של המפה (כפתורים, סרגל זום)
-    zoomControl: false, // מבטל את כפתור הגדלה/הקטנה
-    scrollwheel: false, // מבטל את האפשרות לשלוט בזום על ידי גלילת עכבר
-    draggable: false, // מבטל את האפשרות לגרור את המפה
     mapTypeControl: false, // מבטל את אפשרות החלפת סוג המפה (לוויין, מפה רגילה)
     streetViewControl: false, // מבטל את האפשרות למעבר לתצוגת הרחוב
     fullscreenControl: true, // מבטל את כפתור המסך המלא
