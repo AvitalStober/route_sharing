@@ -41,7 +41,7 @@ export default function RootLayout({
       <body>{children}
         <Script
           src="https://cdn.enable.co.il/licenses/enable-L352538x9gw76prm-1224-66858/init.js"
-          
+          strategy="afterInteractive"
         >
         </Script>
       </body>
