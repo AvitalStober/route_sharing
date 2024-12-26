@@ -59,9 +59,9 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
 
   return (
     <div className="m-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {Array.isArray(Routes) && Routes.length > 0 ? (
-          Routes.map((route, index) => (
+      {Array.isArray(Routes) && Routes.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Routes.map((route, index) => (
             <div
               key={index}
               className="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -97,32 +97,29 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
                 }
               />
             </div>
-          ))
-        ) : (
-          <div className="w-full text-center items-center p-4 text-red-500 font-semibold bg-red-100 border border-red-400 rounded">
-            <Image
-              src={
-                "https://res.cloudinary.com/dltlyphap/image/upload/v1734356075/young-man-got-lost-in-the-forest-guy-scratching-vector-22538521_hfcg15.jpg"
-              }
-              alt={"no routes available"}
-              width={500}
-              height={500}
-            />
-            <p className="mt-4">לא נמצאו מסלולים</p>
-          </div>
-        )}
-{/* 
-        {filtered === 3 && (
-          <button
-            onClick={() => {
-              router.push("/pages/addRoute");
-            }}
-            className={`m-4 px-6 py-3 text-6xl text-center font-bold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-80 bg-blue-500 bg-opacity-75 text-white hover:bg-blue-600 hover:bg-opacity-80`}
-          >
-            +
-          </button>
-        )} */}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className="flex flex-col  mt-8 text-center justify-center items-center p-4 font-mono font-semibold border  rounded"
+          //  text-red-500 bg-red-100 border-red-400
+        >
+          <p className="text-xl">
+            לא נמצאו מסלולים התואמים לחיפוש שלך. <br />
+            זו ההזדמנות שלך להוסיף מסלול חדש ולשתף אותו עם כולם!
+          </p>
+
+          <Image
+            src={
+              "https://res.cloudinary.com/dltlyphap/image/upload/v1735199623/33075775_isometric_businessman_with_magnifying_glass_analyze_circle_footstep-1024x1024-removebg-preview_ml81fh.png"
+            }
+            alt={"no routes available"}
+            width={350}
+            height={350}
+          />
+          {/* <p className="m-2">לא נמצאו מסלולים</p> */}
+        </div>
+      )}
     </div>
   );
 };

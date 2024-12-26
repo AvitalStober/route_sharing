@@ -53,9 +53,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
     }
   };
   return (
-    <div>
-      <nav className="bg-white shadow-lg h-screen fixed top-0 right-0 min-w-[250px] py-5 px-4 font-[sans-serif] overflow-auto">
-        <AddressSearch />
+    <div className="">
+      <nav className="bg-white shadow-lg h-screen fixed top-0 right-0 min-w-[250px] px-4 font-[sans-serif]">
+        {/* <AddressSearch /> */}
 
         <ul dir="rtl" className="mt-3">
           <li>

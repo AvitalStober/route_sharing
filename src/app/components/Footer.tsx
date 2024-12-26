@@ -6,7 +6,7 @@ const Footer = () => {
   // const router = useRouter();
   return (
     <footer
-      className="shadow-inner shadow-blue-600 bg-blue-50 text-blue-900 py-4 mt-14"
+      className="shadow-inner shadow-blue-200 bg-blue-50 text-blue-900 py-4 mt-14"
       dir="rtl"
     >
       <div className="container mx-auto text-center">

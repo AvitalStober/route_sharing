@@ -13,24 +13,15 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
       onClick={() => {
         setCurrentPage((prevPage) => {
           const newPage = prevPage + 1;
-          fetchFunction(
-            setRoutes,
-            newPage,
-            setLastPage,
-            changeAddress 
-          );
+          fetchFunction(setRoutes, newPage, setLastPage, changeAddress);
           return newPage;
         });
       }}
-      className="mt-4 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
+      className="mt-6 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
     >
-      טען עוד מסלולים
-      {" "}
-      {/* ↺ */}
-      ↻
+      {/* ↺ */}↻ טען עוד מסלולים
     </button>
   );
 };
 
 export default LoadMoreButton;
-

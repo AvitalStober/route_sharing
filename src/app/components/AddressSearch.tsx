@@ -211,7 +211,7 @@ const AddressSearch = () => {
         >
           {address}
         </span>
-        <div className="flex rounded-full border-2 border-blue-300 overflow-hidden max-w-52 mx-auto font-[sans-serif]">
+        <div className="flex rounded-full border-2 border-gray-400 overflow-hidden max-w-52 mx-auto font-[sans-serif]">
           <input
             dir="rtl"
             type="text"
@@ -230,7 +230,7 @@ const AddressSearch = () => {
           />
           <button
             type="button"
-            className="flex items-center justify-center bg-blue-300 hover:bg-blue-400 px-3"
+            className="flex items-center justify-center bg-gray-400 hover:bg-gray-600 px-3"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
