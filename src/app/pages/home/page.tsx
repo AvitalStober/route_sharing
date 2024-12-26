@@ -220,16 +220,8 @@ const Page = () => {
           ) : (
             <AddRoute setIsAddRoute={setIsAddRoute} />
           )}
+          <Footer />
         </div>
-      </div>
-      <SideBar
-        selectedRoute={selectedRoute}
-        setSelectedRoute={setSelectedRoute}
-        setIsAreaChoosing={setIsAreaChoosing}
-        setIsAddRoute={setIsAddRoute}
-      />
-      <div className="col-span-1">
-        <Footer />
       </div>
     </div>
   );
