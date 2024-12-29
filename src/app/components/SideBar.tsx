@@ -50,7 +50,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
 
   return (
     <div>
-      <nav className="bg-white shadow-lg h-screen fixed top-0 right-0 min-w-[250px] py-5 px-4 font-[sans-serif] overflow-auto">
+      <nav className="bg-white shadow-lg h-screen py-5 fixed top-0 right-0 min-w-[250px] px-4 font-[sans-serif] overflow-y-scroll max-h-[calc(100vh-50px)]">
         <div
           onClick={() => {
             setSelectedButton("routes");
@@ -73,7 +73,6 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 setIsAddRoute(false);
                 setIsAreaChoosing(false);
                 setIsEditUser(false);
-
                 setSelectedRoute("");
                 setChangeAddress("");
               }}
