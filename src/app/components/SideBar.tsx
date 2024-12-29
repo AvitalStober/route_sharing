@@ -58,6 +58,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
             setIsHomePage(false);
             setIsAddRoute(false);
             setIsAreaChoosing(false);
+            setIsEditUser(false);
           }}
         >
           <AddressSearch />
@@ -71,8 +72,10 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 setIsHomePage(true);
                 setIsAddRoute(false);
                 setIsAreaChoosing(false);
+                setIsEditUser(false);
+
                 setSelectedRoute("");
-                setChangeAddress("")
+                setChangeAddress("");
               }}
               className={`text-black ${
                 selectedButton === "index"
@@ -132,7 +135,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     setIsAddRoute(false);
                     setIsEditUser(false);
                     setIsHomePage(false);
-                    setChangeAddress("")
+                    setChangeAddress("");
                   }}
                 />
               </div>
@@ -145,7 +148,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsHomePage(false);
                   setIsEditUser(false);
                   setSelectedButton("addRoute");
-                  setChangeAddress("")
+                  setChangeAddress("");
                 }}
                 className={`text-black ${
                   selectedButton === "addRoute"
@@ -290,7 +293,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
                     setIsHomePage(false);
-                  setChangeAddress("")
+                    setChangeAddress("");
                     setIsEditUser(false);
                   }}
                 />

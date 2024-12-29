@@ -64,7 +64,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) =
       bg-white shadow-lg p-6 overflow-y-auto z-50 
       transition-transform duration-[500ms] transform 
       ${isVisible ? "translate-x-0" : "translate-x-full"}
-      sm:w-full md:w-2/3 lg:w-1/3`}
+      sm:w-full md:w-2/3 lg:w-1/2 mt-20`}
     >
       <button
         onClick={handleClose}
@@ -72,7 +72,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) =
       >
         X
       </button>
-      <h2 className="text-2xl font-bold mb-4">פרטי מסלול</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">פרטי מסלול</h2>
       {!route ? (
         <p>Loading...</p>
       ) : (
