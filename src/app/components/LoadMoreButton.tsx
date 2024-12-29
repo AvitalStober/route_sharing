@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { LoadMoreButtonProps } from "../types/props/LoadMoreButtonProps";
 import useStore from "../store/store";
 
@@ -10,7 +10,6 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
   changeAddress,
 }) => {
   const setFilterAddress = useStore((state) => state.setFilterAddress);
-  const setChangeAddress = useStore((state) => state.setChangeAddress);
 
   return (
     <button
