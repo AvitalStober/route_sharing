@@ -5,23 +5,23 @@ const url = "http://localhost:3000";
 
 // פונקציה להוספת קילומטרים
 export const addDistance = async (meter: number) => {
-    try {
-        const response = await axios.post(`${url}/api/distance`, {
-            metersToAdd: meter,
-        });
-        return response.data;
-    } catch (error) {
-        console.error("Error adding kilometers:", error);
-    }
+  try {
+    const response = await axios.post(`${url}/api/distance`, {
+      metersToAdd: meter,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding kilometers:", error);
+  }
 };
 
 // פונקציה לשליפת סך הקילומטרים
-export const getmeter = async () => {
-    try {
-        const response = await axios.get(`${url}/api/distance`);
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching meters:", error);
-    }
+export const getMeter = async () => {
+  try {
+    const response = await axios.get(`${url}/api/distance`);
+    console.log("response.data", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching meters:", error);
+  }
 };
-

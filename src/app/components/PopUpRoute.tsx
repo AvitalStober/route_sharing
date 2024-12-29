@@ -1,15 +1,20 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import Star from "./Star";
-import Image from 'next/image';
+import Image from "next/image";
 import CloudinaryUploader from "./CloudinaryUploader";
 import { editRoutes } from "../services/routeService";
 import IRoute from "../types/routes";
 import { fetchRouteById } from "../functions/routesFunctions";
 import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
+import { IoClose } from "react-icons/io5";
 
-const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) => {
+const PopUpRoute: React.FC<PopUpRouteProps> = ({
+  onClose,
+  routeId,
+  filtered,
+}) => {
   const [pictures, setPictures] = useState<string[]>([]);
   const [route, setRoute] = useState<IRoute>();
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -32,7 +37,11 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) =
   useEffect(() => {
     async function func() {
       if (route && pictures && pictures.length > route.gallery.length) {
-        const response = await editRoutes(routeId.toString(), undefined, pictures);
+        const response = await editRoutes(
+          routeId.toString(),
+          undefined,
+          pictures
+        );
         setRoute(response);
         setPictures(response.gallery);
       }
@@ -64,24 +73,32 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) =
       bg-white shadow-lg p-6 overflow-y-auto z-50 
       transition-transform duration-[500ms] transform 
       ${isVisible ? "translate-x-0" : "translate-x-full"}
-      sm:w-full md:w-2/3 lg:w-1/2 mt-20`}
+      sm:w-full md:w-2/3 lg:w-1/2 pt-20`}
     >
-      <button
-        onClick={handleClose}
-        className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-      >
-        X
-      </button>
-      <h2 className="text-2xl font-bold mb-4 text-center">פרטי מסלול</h2>
+      <div className="flex flex-row justify-between items-center w-full  mb-4">
+        <div
+          onClick={handleClose}
+          aria-label="Toggle Sidebar"
+          className="cursor-pointer"
+        >
+          <IoClose size={24} />
+        </div>
+        <h2 className="font-bold text-center flex-grow">פרטי מסלול</h2>
+      </div>
       {!route ? (
         <p>Loading...</p>
       ) : (
         <>
-          <CardMap points={route.pointsArray} route={route} expanded={true} filtered={filtered}/>
+          <CardMap
+            points={route.pointsArray}
+            route={route}
+            expanded={true}
+            filtered={filtered}
+          />
           <Star rate={route.rate} filtered={1} />
           <p>{route.description}</p>
           {pictures && pictures.length > 0 && (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center pt-10">
               <div
                 className="relative w-[300px] h-[200px] overflow-hidden"
                 onMouseEnter={() => setIsHovered(true)}
@@ -100,15 +117,17 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({ onClose, routeId, filtered }) =
                 {pictures.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-3 h-3 mx-1 rounded-full ${index === currentImageIndex ? 'bg-blue-500' : 'bg-gray-400'}`}
+                    className={`w-3 h-3 mx-1 rounded-full ${
+                      index === currentImageIndex
+                        ? "bg-blue-500"
+                        : "bg-gray-400"
+                    }`}
                   />
                 ))}
               </div>
             </div>
           )}
-          {filtered !== 1 &&
-            <CloudinaryUploader setPictures={setPictures} />
-          }
+          {filtered !== 1 && <CloudinaryUploader setPictures={setPictures} />}
         </>
       )}
     </div>

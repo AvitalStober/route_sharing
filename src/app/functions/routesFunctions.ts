@@ -2,6 +2,7 @@ import Route from "@/app/types/routes";
 import { getCountOfRoutes, getRoutesById } from "../services/routeService";
 import IRoute from "@/app/types/routes";
 import useStore from "@/app/store/store";
+import { getMeter } from "../services/distanceService";
 
 export const appendRoutes = (newRoutes: IRoute[]) => {
   const state = useStore.getState(); 
@@ -28,5 +29,15 @@ export const fetchCountOfRoutes = async () => {
     return routesCounter;
   } catch (error) {
     console.error("Error getting routes counter:", error);
+  }
+};
+
+export const fetchCountOfKilometers = async () => {
+  try {
+    const kilometersCounter = await getMeter();
+    
+    return (kilometersCounter.totalKilometers)/1000;
+  } catch (error) {
+    console.error("Error getting kilometers counter:", error);
   }
 };

@@ -1,7 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { fetchCountOfUsers } from "@/app/functions/usersFunctions";
-import { fetchCountOfRoutes } from "@/app/functions/routesFunctions";
+import {
+  fetchCountOfKilometers,
+  fetchCountOfRoutes,
+} from "@/app/functions/routesFunctions";
 import { FaUser, FaRoute, FaWalking } from "react-icons/fa";
 import { CounterProps } from "@/app/types/props/CounterProps";
 
@@ -39,14 +42,17 @@ const Counter: React.FC<CounterProps> = ({ target, duration, icon, label }) => {
 const HomePage: React.FC = () => {
   const [usersCount, setUsersCount] = useState<number>(0);
   const [routesCount, setRoutesCount] = useState<number>(0);
+  const [kilometersCount, setKilometersCount] = useState<number>(0);
   const animationDuration = 2000;
 
   useEffect(() => {
     const fetchData = async () => {
       const users = await fetchCountOfUsers();
       const routes = await fetchCountOfRoutes();
+      const kilometers = await fetchCountOfKilometers();
       setUsersCount(users);
       setRoutesCount(routes);
+      setKilometersCount(kilometers as number);
     };
 
     fetchData();
@@ -68,7 +74,7 @@ const HomePage: React.FC = () => {
           label="מסלולים ששותפו"
         />
         <Counter
-          target={routesCount * 2}
+          target={kilometersCount}
           duration={animationDuration}
           icon={<FaWalking />}
           label="קילומטרים שהלכו"
