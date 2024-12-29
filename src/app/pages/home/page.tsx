@@ -105,7 +105,6 @@ import SideBar from "@/app/components/SideBar";
 import AddRoute from "@/app/components/AddRoute";
 import { FaBars } from "react-icons/fa"; // אייקון של 3 פסים
 import { IoClose } from "react-icons/io5"; // אייקון של סגירה
-import AddressSearch from "@/app/components/AddressSearch";
 import EditUser from "@/app/components/EditUser";
 
 const Page = () => {

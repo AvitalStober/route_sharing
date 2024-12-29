@@ -16,11 +16,10 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const userToken = getUserToken();
-  const router = useRouter();
 
-  const uploadedData = JSON.parse(
-    localStorage.getItem("uploadedImage") || "{}"
-  );
+  // const uploadedData = JSON.parse(
+  //   localStorage.getItem("uploadedImage") || "{}"
+  // );
 
   useEffect(() => {
     const fetchUser = async () => {
