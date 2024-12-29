@@ -4,7 +4,6 @@ import User from "@/app/types/users";
 import { getUserById, putUserDetails } from "../services/userService";
 import { getUserToken } from "../functions/usersFunctions";
 import MapLoader from "./MapLoader";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import EditUserProps from "../types/props/EditUserProps";
 
