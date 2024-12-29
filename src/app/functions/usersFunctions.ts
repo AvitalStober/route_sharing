@@ -1,9 +1,10 @@
 import User from "@/app/types/users";
 import {
-  getCountOfUsers,
+  getAllUsers,
   getUserById,
   putUserRouteRate,
 } from "../services/userService";
+import { TopUser } from "../types/topUser";
 
 export const getUserToken = (): {
   id: string;
@@ -69,9 +70,23 @@ export const putUserRate = async (routeId: string, rate: number) => {
 
 export const fetchCountOfUsers = async () => {
   try {
-    const usersCounter = await getCountOfUsers();
-    return usersCounter;
+    const usersCounter = await getAllUsers();
+    return usersCounter.length;
   } catch (error) {
     console.error("Error getting users:", error);
   }
+};
+
+export const getTopUsers = async (): Promise<TopUser[]> => {
+  const users: User[] = await getAllUsers();
+  const topUsers: TopUser[] = [];
+
+  users.forEach(user => {
+      const score = user.historyRoutes.length;
+      topUsers.push({ name: user.fullName, numRoute: score });
+      topUsers.sort((a, b) => b.numRoute - a.numRoute);
+      if (topUsers.length > 3) topUsers.pop();
+  });
+
+  return topUsers;
 };

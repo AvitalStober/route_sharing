@@ -34,7 +34,6 @@ const AddressSearch = () => {
   };
 
   useEffect(() => {
-    debugger;
     if (changeAddress === "") {
       console.log("changeAddress", changeAddress);
       setAddress(changeAddress);

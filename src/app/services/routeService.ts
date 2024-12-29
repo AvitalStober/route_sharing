@@ -97,7 +97,7 @@ export const editRoutes = async (
   }
 };
 
-export const getCountOfRoutes = async () => {
+export const getAllRoutes = async () => {
   try {
     const response = await axios.get(`${url}/api/routes`);
     return response.data;

@@ -107,7 +107,7 @@ export async function GET() {
   try {
     await connect();
     const users = await User.find();
-    if (users) return NextResponse.json(users.length, { status: 200 });
+    if (users) return NextResponse.json(users, { status: 200 });
     else
       return NextResponse.json({ error: "users not found" }, { status: 500 });
   } catch (error) {

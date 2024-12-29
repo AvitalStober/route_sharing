@@ -35,7 +35,7 @@ export async function GET() {
     await connect();
     const routes = await Route.find();
 
-    if (routes) return NextResponse.json(routes.length, { status: 200 });
+    if (routes) return NextResponse.json(routes, { status: 200 });
     else
       return NextResponse.json({ error: "routes not found" }, { status: 500 });
   } catch (error) {

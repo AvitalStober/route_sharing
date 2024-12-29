@@ -75,7 +75,7 @@ export const loginFunction = async (
     });
 };
 
-export const getCountOfUsers = async () => {
+export const getAllUsers = async () => {
   try {
     const response = await axios.get(`${url}/api/users`);
     return response.data;
