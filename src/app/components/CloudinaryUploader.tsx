@@ -11,7 +11,8 @@ const CloudinaryUploader: React.FC<PictureProps> = ({ setPictures }) => {
       <CldUploadButton
         options={{
           multiple: true,
-          sources: ["local", "url", "unsplash", "camera"],
+          sources: ["local"],
+          resourceType: "image",
         }}
         uploadPreset={cloudPresetName}
         onSuccessAction={(event) => handleUpload(event, setPictures)}

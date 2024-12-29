@@ -10,11 +10,13 @@ import {
 import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
 import LoadRoutes from "./LoadRoutes";
 import { FetchFunction } from "../types/FetchFunction";
+import AddressSearch from "./AddressSearch";
 
 const SideBar: React.FC<FilteredRoutesProps> = ({
   setSelectedRoute,
   setIsAreaChoosing,
   setIsAddRoute,
+  setIsEditUser,
 }) => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setRoutes = useStore((state) => state.setRoutes);
@@ -43,17 +45,18 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
       router.push("/pages/login");
     }
   };
+
   return (
     <div className="">
-      <nav className="bg-white shadow-lg h-screen fixed top-0 right-0 min-w-[250px] px-4 font-[sans-serif]">
-        {/* <AddressSearch /> */}
+      <nav className="bg-white shadow-lg h-screen py-5 fixed top-0 right-0 min-w-[250px] px-4 font-[sans-serif] overflow-y-scroll max-h-[calc(100vh-50px)]">
+        <AddressSearch />
 
         <ul dir="rtl" className="mt-3">
           <li>
             <a
               href="javascript:void(0)"
               onClick={() => {
-                setSelectedButton("index")
+                setSelectedButton("index");
                 router.push("/pages/homeImage");
               }}
               className={`text-black ${
@@ -112,6 +115,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
+                    setIsEditUser(false);
                   }}
                 />
               </div>
@@ -121,6 +125,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 onClick={() => {
                   setIsAreaChoosing(false);
                   setIsAddRoute(true);
+                  setIsEditUser(false);
                   setSelectedButton("addRoute");
                 }}
                 className={`text-black ${
@@ -193,6 +198,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     handleLoadRoutes(fetchRoutesInYourArea, "routes");
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
+                    setIsEditUser(false);
                   }}
                 />
               </div>
@@ -202,6 +208,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 onClick={() => {
                   setIsAddRoute(false);
                   setIsAreaChoosing(true);
+                  setIsEditUser(false);
                   setSelectedButton("chosenArea");
                 }}
                 className={`text-black ${
@@ -261,6 +268,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     handleLoadRoutes(fetchHistoryRoutes, "history");
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
+                    setIsEditUser(false);
                   }}
                 />
               </div>
@@ -276,7 +284,8 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
               <div
                 onClick={() => {
                   setSelectedButton("editProfile");
-                  router.push("/pages/editUser");
+                  // router.push("/pages/editUser");
+                  setIsEditUser(true);
                 }}
                 className={`text-black ${
                   selectedButton === "editProfile"

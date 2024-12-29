@@ -12,6 +12,9 @@ export const handleUpload = (
     "secure_url" in result.info
   ) {
     const imageUrl = result.info.secure_url;
+    // const publicId = result.info.public_id; 
+
+    // localStorage.setItem('uploadedImage', JSON.stringify({ publicId, imageUrl }));
     setPictures((prevInfo: string[]) => [...prevInfo, imageUrl]);
   } else {
     console.error("Failed to upload image. Result info is invalid.");

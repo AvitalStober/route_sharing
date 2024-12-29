@@ -5,8 +5,10 @@ import { getUserById, putUserDetails } from "../services/userService";
 import { getUserToken } from "../functions/usersFunctions";
 import MapLoader from "./MapLoader";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import EditUserProps from "../types/props/EditUserProps";
 
-const EditUser = () => {
+const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,6 +17,10 @@ const EditUser = () => {
 
   const userToken = getUserToken();
   const router = useRouter();
+
+  const uploadedData = JSON.parse(
+    localStorage.getItem("uploadedImage") || "{}"
+  );
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -49,7 +55,8 @@ const EditUser = () => {
     const userToUpdate = { fullName, email, address };
     // Submit the form (example placeholder)
     putUserDetails(userToken!.id, userToUpdate);
-    router.push('/pages/home');
+    // router.push("/pages/home");
+    setIsEditUser(false);
   };
 
   const handlePlaceSelect = (selectedAddress: string) => {
@@ -61,60 +68,58 @@ const EditUser = () => {
   }
 
   return (
-    <div>
+    <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow-md rounded-lg">
+      <Image
+        src="https://res.cloudinary.com/dltlyphap/image/upload/v1733825852/user_crv80f.png"
+        height={70}
+        width={70}
+        alt="profil edit"
+        className="place-self-center"
+      />
       <form className="space-y-4" onSubmit={handleSubmit}>
-        <div>
-          <label
-            htmlFor="fullName"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Full Name
-          </label>
+        <fieldset dir="rtl" className="border border-gray-300 p-2 rounded-lg">
+          <legend className="text-md font-medium text-gray-700 px-2">
+            שם מלא
+          </legend>
           <input
             id="fullName"
             type="text"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
-            className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="focus:outline-none focus:border-none w-full bg-none"
           />
-          {errors.fullName && (
-            <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
-          )}
-        </div>
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email
-          </label>
+        </fieldset>
+        {errors.fullName && (
+          <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+        )}
+        <fieldset dir="rtl" className="border border-gray-300 p-2 rounded-lg">
+          <legend className="text-md font-medium text-gray-700 px-2">
+            אימייל
+          </legend>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="focus:outline-none focus:border-none w-full bg-none"
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-          )}
-        </div>
-        <div>
-          <label
-            htmlFor="address"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Address
-          </label>
+        </fieldset>
+        {errors.email && (
+          <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+        )}
+        <fieldset dir="rtl" className="border border-gray-300 p-2 rounded-lg">
+          <legend className="text-md font-medium text-gray-700 px-2">
+            כתובת
+          </legend>
           <MapLoader>
             <input
               id="address"
               placeholder="address"
               value={address}
               onChange={(e) => setAddress(e.target.value)} // הוספנו את ה-onChange
-              className={`mt-1 block w-full px-4 py-2 border ${
+              className={`focus:outline-none focus:border-none w-full bg-none ${
                 errors.address ? "border-red-500" : "border-gray-300"
               } rounded-md`}
               onFocus={(e) => {
@@ -128,16 +133,15 @@ const EditUser = () => {
               }}
             />
           </MapLoader>
-
-          {errors.address && (
-            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
-          )}
-        </div>
+        </fieldset>
+        {errors.address && (
+          <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+        )}
         <button
           type="submit"
           className="w-full py-2 px-4 bg-blue-600 text-white rounded-md"
         >
-          Submit
+          שליחה
         </button>
       </form>
     </div>

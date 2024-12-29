@@ -3,4 +3,5 @@ export interface FilteredRoutesProps {
   setSelectedRoute: React.Dispatch<React.SetStateAction<string | null>>;
   setIsAreaChoosing: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAddRoute: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsEditUser: React.Dispatch<React.SetStateAction<boolean>>;
 }

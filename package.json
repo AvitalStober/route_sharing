@@ -39,6 +39,7 @@
     "zustand": "^5.0.1"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "^1.0.8",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/leaflet": "^1.9.15",
