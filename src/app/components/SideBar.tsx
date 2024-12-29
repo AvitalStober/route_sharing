@@ -22,6 +22,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
   const setLastPage = useStore((state) => state.setLastPage);
+  const setChangeAddress = useStore((state) => state.setChangeAddress);
   const [selectedButton, setSelectedButton] = useState("index");
 
   const router = useRouter();
@@ -48,7 +49,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   return (
     <div>
       <nav className="bg-white shadow-lg h-screen fixed top-0 right-0 min-w-[250px] py-5 px-4 font-[sans-serif] overflow-auto">
-        <div onClick={() => setSelectedButton("routes")}>
+        <div
+          onClick={() => {
+            setSelectedButton("routes");
+            setSelectedRoute("routes");
+            setIsHomePage(false);
+            setIsAddRoute(false);
+            setIsAreaChoosing(false);
+          }}
+        >
           <AddressSearch />
         </div>
 
@@ -57,9 +66,11 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
             <div
               onClick={() => {
                 setSelectedButton("index");
-                setIsHomePage(true)
-                setIsAddRoute(false)
-                setIsAreaChoosing(false)
+                setIsHomePage(true);
+                setIsAddRoute(false);
+                setIsAreaChoosing(false);
+                setSelectedRoute("");
+                setChangeAddress("")
               }}
               className={`text-black ${
                 selectedButton === "index"
@@ -118,6 +129,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
                     setIsHomePage(false);
+                    setChangeAddress("")
                   }}
                 />
               </div>
@@ -129,6 +141,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsAddRoute(true);
                   setIsHomePage(false);
                   setSelectedButton("addRoute");
+                  setChangeAddress("")
                 }}
                 className={`text-black ${
                   selectedButton === "addRoute"
@@ -271,6 +284,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
                     setIsHomePage(false);
+                  setChangeAddress("")
                   }}
                 />
               </div>

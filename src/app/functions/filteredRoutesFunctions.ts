@@ -81,7 +81,6 @@ export const fetchRoutesInYourArea = async (
   try {
     let data: { routes: IRoute[]; lastPage: boolean };
     const userTokenFromStorage = localStorage.getItem("userToken");
-    debugger;
     if (userTokenFromStorage) {
       if (!areaAddress) {
         const address = await getUserAddress();

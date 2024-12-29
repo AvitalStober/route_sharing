@@ -1,17 +1,27 @@
 "use client";
 import Footer from "@/app/components/Footer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FilteredRoutes from "@/app/components/FilteredRoutes";
 import AreaRoute from "@/app/components/AreaRoute";
 import SideBar from "@/app/components/SideBar";
 import AddRoute from "@/app/components/AddRoute";
 import HomePage from "../homePage/page";
+import useStore from "@/app/store/store";
 
 const Page = () => {
   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
   const [isAddRoute, setIsAddRoute] = useState(false);
   const [isHomePage, setIsHomePage] = useState(true);
   const [selectedRoute, setSelectedRoute] = useState<string | null>("routes");
+  const filterAddress = useStore((state) => state.filterAddress);
+
+  useEffect(() => {
+    if (filterAddress === true) {
+      setIsAddRoute(false);
+      setIsAreaChoosing(false);
+      setIsHomePage(false);
+    }
+  }, [filterAddress]);
 
   return (
     <div className="min-h-screen grid grid-rows-[1fr_auto] grid-cols-[1fr_250px]">

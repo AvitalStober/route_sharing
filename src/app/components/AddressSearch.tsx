@@ -1,126 +1,3 @@
-// "use client";
-// // תיבת חיפוש להזנת כתובת
-// // השלמה אוטומטית של גוגל-מפס
-// import React, { useEffect, useState } from "react";
-// import MapLoader from "./MapLoader";
-// import { getUserAddress } from "@/app/functions/usersFunctions";
-
-// const AddressSearch = () => {
-//   const [address, setAddress] = useState("");
-//   const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
-
-//   const handlePlaceSelect = (address: string) => {
-//     setAddress(address);
-//     setErrors((prev) => ({ ...prev, address: undefined }));
-//   };
-
-//   useEffect(() => {
-//     const fetchAddress = async () => {
-//       const address = await getUserAddress();
-//       if (address) {
-//         setAddress(address);
-//       }
-//     };
-
-//     fetchAddress();
-//   }, []);
-
-//   return (
-//     <>
-//       <MapLoader>
-//         <input
-//           id="address"
-//           placeholder={address}
-//           classNameName={`mt-1 block w-full px-4 py-2 border ${
-//             errors.address ? "border-red-500" : "border-gray-300"
-//           } rounded-md`}
-//           onFocus={(e) => {
-//             const autocomplete = new google.maps.places.Autocomplete(e.target);
-//             autocomplete.addListener("place_changed", () => {
-//               const place = autocomplete.getPlace();
-//               handlePlaceSelect(place.formatted_address || "");
-//             });
-//           }}
-//         />
-//       </MapLoader>
-//     </>
-//   );
-// };
-
-// export default AddressSearch;
-
-// "use client";
-// // תיבת חיפוש להזנת כתובת
-// // השלמה אוטומטית של גוגל-מפס
-// import React, { useEffect, useState, useRef } from "react";
-// import MapLoader from "./MapLoader";
-// import { getUserAddress } from "@/app/functions/usersFunctions";
-
-// const AddressSearch = () => {
-//   const [address, setAddress] = useState("");
-//   const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
-//   const [inputWidth, setInputWidth] = useState(200);
-//   const spanRef = useRef<HTMLSpanElement>(null);
-
-//   const handlePlaceSelect = (address: string) => {
-//     setAddress(address);
-//     setErrors((prev) => ({ ...prev, address: undefined }));
-//   };
-
-//   useEffect(() => {
-//     const fetchAddress = async () => {
-//       const fetchedAddress = await getUserAddress();
-//       if (fetchedAddress) {
-//         setAddress(fetchedAddress);
-//       }
-//     };
-
-//     fetchAddress();
-//   }, []);
-
-//   useEffect(() => {
-//     if (spanRef.current) {
-//       const newWidth = spanRef.current.offsetWidth + 40; // מוסיפים padding
-//       setInputWidth(newWidth);
-//     }
-//   }, [address]);
-
-//   return (
-//     <>
-//       <MapLoader>
-//         {/* Span לחישוב רוחב הטקסט */}
-//         <span
-//           ref={spanRef}
-//           style={{
-//             visibility: "hidden",
-//             position: "absolute",
-//             whiteSpace: "nowrap",
-//           }}
-//         >
-//           {address}
-//         </span>
-//         <input
-//           id="address"
-//           placeholder={address}
-//           style={{ inlineSize: `${inputWidth}px` }}
-//           classNameName={`mt-1 block px-4 py-2 border ${
-//             errors.address ? "border-red-500" : "border-gray-300"
-//           } rounded-md`}
-//           onFocus={(e) => {
-//             const autocomplete = new google.maps.places.Autocomplete(e.target);
-//             autocomplete.addListener("place_changed", () => {
-//               const place = autocomplete.getPlace();
-//               handlePlaceSelect(place.formatted_address || "");
-//             });
-//           }}
-//         />
-//       </MapLoader>
-//     </>
-//   );
-// };
-
-// export default AddressSearch;
-
 "use client";
 // תיבת חיפוש להזנת כתובת
 // השלמה אוטומטית של גוגל-מפס
@@ -142,6 +19,7 @@ const AddressSearch = () => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setLastPage = useStore((state) => state.setLastPage);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
+  const changeAddress = useStore((state) => state.changeAddress);
   const setFilterAddress = useStore((state) => state.setFilterAddress);
 
   // פונקציה שתבדוק אם הכתובת תקינה
@@ -154,6 +32,14 @@ const AddressSearch = () => {
     setErrors((prev) => ({ ...prev, address: undefined })); // איפוס שגיאות
     setIsSelectedFromAutocomplete(true); // הצבעה על כך שהכתובת נבחרה מתוך ההשלמה
   };
+
+  useEffect(() => {
+    debugger;
+    if (changeAddress === "") {
+      console.log("changeAddress", changeAddress);
+      setAddress(changeAddress);
+    }
+  }, [changeAddress, setChangeAddress]);
 
   useEffect(() => {
     const userTokenFromStorage = localStorage.getItem("userToken");
@@ -173,7 +59,8 @@ const AddressSearch = () => {
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value); // עדכון כתובת לפי הזנה חופשית של המשתמש
+    setChangeAddress(e.target.value);
+    // עדכון כתובת לפי הזנה חופשית של המשתמש
     setIsSelectedFromAutocomplete(false); // אם המשתמש התחיל להקליד, לא נבחרה כתובת מתוך ההשלמה
   };
 
@@ -182,19 +69,14 @@ const AddressSearch = () => {
     // אם הכתובת לא תקינה, נזין בחזרה את הכתובת המקורית
     if (!isSelectedFromAutocomplete && !isValidAddress(address)) {
       setAddress(initialAddress); // חוזר לכתובת המקורית
-      setChangeAddress("");
+      // setChangeAddress("");
     } else {
-      if (address !== userAddress) {
+      if (address !== userAddress && isSelectedFromAutocomplete) {
         const newPage = 1;
         setCurrentPage(newPage);
         setChangeAddress(address);
         setFilterAddress(true);
-        fetchRoutesInYourArea(
-          setRoutes,
-          currentPage,
-          setLastPage,
-          address
-        );
+        fetchRoutesInYourArea(setRoutes, currentPage, setLastPage, address);
       }
     }
   }, [address, isSelectedFromAutocomplete, initialAddress]);
@@ -211,25 +93,48 @@ const AddressSearch = () => {
             whiteSpace: "nowrap",
           }}
         >
-          {address}
+          {/* {address} */}
         </span>
         <div className="flex rounded-full border-2 border-blue-300 overflow-hidden max-w-52 mx-auto font-[sans-serif]">
-          <input
+          {/* <input
             dir="rtl"
-            type="text"
+            type="text" 
+            // placeholder={changeAddress === "" ? initialAddress : address}
             placeholder={address}
             className={`w-full outline-none bg-white text-sm px-5 py-3 ${
               errors.address ? "border-red-500" : "border-gray-300"
             }`}
             onChange={handleInputChange}
             onFocus={(e) => {
-              const autocomplete = new google.maps.places.Autocomplete(e.target);
+              const autocomplete = new google.maps.places.Autocomplete(
+                e.target
+              );
               autocomplete.addListener("place_changed", () => {
                 const place = autocomplete.getPlace();
                 handlePlaceSelect(place.formatted_address || ""); // עדכון הכתובת הנבחרת
               });
             }}
+          /> */}
+          <input
+            dir="rtl"
+            type="text"
+            value={changeAddress === "" ? initialAddress : changeAddress} // תנאי לבחירת הערך
+            // placeholder={changeAddress === "" ? initialAddress : changeAddress}
+            className={`w-full outline-none bg-white text-sm px-5 py-3 ${
+              errors.address ? "border-red-500" : "border-gray-300"
+            }`}
+            onChange={handleInputChange} // עדכון ה-state בעת שינוי
+            onFocus={(e) => {
+              const autocomplete = new google.maps.places.Autocomplete(
+                e.target
+              );
+              autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                handlePlaceSelect(place.formatted_address || "");
+              });
+            }}
           />
+
           <button
             type="button"
             className="flex items-center justify-center bg-blue-300 hover:bg-blue-400 px-3"
@@ -244,7 +149,6 @@ const AddressSearch = () => {
             </svg>
           </button>
         </div>
-       
       </MapLoader>
     </>
   );
