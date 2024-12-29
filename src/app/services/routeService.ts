@@ -96,3 +96,13 @@ export const editRoutes = async (
     console.error("Error updating route:", error);
   }
 };
+
+export const getCountOfRoutes = async () => {
+  try {
+    const response = await axios.get(`${url}/api/routes`);
+    return response.data;
+  } catch (error) {
+    console.error("Error get routes length:", error);
+    throw error;
+  }
+};

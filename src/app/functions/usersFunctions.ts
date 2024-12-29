@@ -1,5 +1,9 @@
 import User from "@/app/types/users";
-import { getUserById, putUserRouteRate } from "../services/userService";
+import {
+  getCountOfUsers,
+  getUserById,
+  putUserRouteRate,
+} from "../services/userService";
 
 export const getUserToken = (): {
   id: string;
@@ -60,5 +64,14 @@ export const putUserRate = async (routeId: string, rate: number) => {
   } catch (error) {
     console.error("Error updating user route rate:", error);
     throw new Error("Failed to update route rate");
+  }
+};
+
+export const fetchCountOfUsers = async () => {
+  try {
+    const usersCounter = await getCountOfUsers();
+    return usersCounter;
+  } catch (error) {
+    console.error("Error getting users:", error);
   }
 };

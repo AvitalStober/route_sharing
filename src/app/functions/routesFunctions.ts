@@ -1,5 +1,5 @@
 import Route from "@/app/types/routes";
-import { getRoutesById } from "../services/routeService";
+import { getCountOfRoutes, getRoutesById } from "../services/routeService";
 import IRoute from "@/app/types/routes";
 import useStore from "@/app/store/store";
 
@@ -19,5 +19,14 @@ export const fetchRouteById = async (routeId: string) => {
     return route;
   } catch (error) {
     console.error("Error fetching route data:", error);
+  }
+};
+
+export const fetchCountOfRoutes = async () => {
+  try {
+    const routesCounter = await getCountOfRoutes();
+    return routesCounter;
+  } catch (error) {
+    console.error("Error getting routes counter:", error);
   }
 };

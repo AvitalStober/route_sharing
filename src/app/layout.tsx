@@ -21,10 +21,10 @@ export default function RootLayout({
       "/pages/signup",
       "/pages/forgetPassword",
       "/pages/noAccess",
-      "/pages/homeImage",
+      "/pages/Index",
     ];
     if (pathname == "/") {
-      router.push("/pages/homeImage");
+      router.push("/pages/Index");
     }
     if (userToken && pathname === "/pages/login") {
       console.log("token deleted");

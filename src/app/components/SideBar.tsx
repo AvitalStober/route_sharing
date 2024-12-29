@@ -16,13 +16,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   setSelectedRoute,
   setIsAreaChoosing,
   setIsAddRoute,
+  setIsHomePage,
   setIsEditUser,
 }) => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setRoutes = useStore((state) => state.setRoutes);
   // סטייט חדש עבור רשימת המסלולים
   const setLastPage = useStore((state) => state.setLastPage);
-  const [selectedButton, setSelectedButton] = useState("routes");
+  const setChangeAddress = useStore((state) => state.setChangeAddress);
+  const [selectedButton, setSelectedButton] = useState("index");
 
   const router = useRouter();
 
@@ -47,17 +49,30 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   };
 
   return (
-    <div className="">
-      <nav className="bg-white shadow-lg h-screen py-5 fixed top-0 right-0 min-w-[250px] px-4 font-[sans-serif] overflow-y-scroll max-h-[calc(100vh-50px)]">
-        <AddressSearch />
+    <div>
+      <nav className="bg-white shadow-lg h-screen fixed top-0 right-0 min-w-[250px] py-5 px-4 font-[sans-serif] overflow-auto">
+        <div
+          onClick={() => {
+            setSelectedButton("routes");
+            setSelectedRoute("routes");
+            setIsHomePage(false);
+            setIsAddRoute(false);
+            setIsAreaChoosing(false);
+          }}
+        >
+          <AddressSearch />
+        </div>
 
         <ul dir="rtl" className="mt-3">
-          <li>
-            <a
-              href="javascript:void(0)"
+          <li className="cursor-pointer">
+            <div
               onClick={() => {
                 setSelectedButton("index");
-                router.push("/pages/homeImage");
+                setIsHomePage(true);
+                setIsAddRoute(false);
+                setIsAreaChoosing(false);
+                setSelectedRoute("");
+                setChangeAddress("")
               }}
               className={`text-black ${
                 selectedButton === "index"
@@ -77,7 +92,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 />
               </svg>
               <span>ראשי</span>
-            </a>
+            </div>
           </li>
         </ul>
 
@@ -116,6 +131,8 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
                     setIsEditUser(false);
+                    setIsHomePage(false);
+                    setChangeAddress("")
                   }}
                 />
               </div>
@@ -125,8 +142,10 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 onClick={() => {
                   setIsAreaChoosing(false);
                   setIsAddRoute(true);
+                  setIsHomePage(false);
                   setIsEditUser(false);
                   setSelectedButton("addRoute");
+                  setChangeAddress("")
                 }}
                 className={`text-black ${
                   selectedButton === "addRoute"
@@ -198,6 +217,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     handleLoadRoutes(fetchRoutesInYourArea, "routes");
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
+                    setIsHomePage(false);
                     setIsEditUser(false);
                   }}
                 />
@@ -209,6 +229,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsAddRoute(false);
                   setIsAreaChoosing(true);
                   setIsEditUser(false);
+                  setIsHomePage(false);
                   setSelectedButton("chosenArea");
                 }}
                 className={`text-black ${
@@ -268,6 +289,8 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     handleLoadRoutes(fetchHistoryRoutes, "history");
                     setIsAreaChoosing(false);
                     setIsAddRoute(false);
+                    setIsHomePage(false);
+                  setChangeAddress("")
                     setIsEditUser(false);
                   }}
                 />

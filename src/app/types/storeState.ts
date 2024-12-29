@@ -21,9 +21,6 @@ export interface StoreState {
   setLastPage: (lastPage: boolean) => void;
   changeAddress: string;
   setChangeAddress: (changeAddress: string) => void;
-  // areaPoints: google.maps.LatLngLiteral[]; // מערך של נקודות על המפה
-  // setAreaPoints: (
-  //   updater: (prevPoints: google.maps.LatLngLiteral[]) => google.maps.LatLngLiteral[]
-  // ) => void; // עדכון הנקודות
-  // resetAreaPoints: () => void; // איפוס הנקודות
+  filterAddress: boolean;
+  setFilterAddress: (filterAddress: boolean) => void;
 }
