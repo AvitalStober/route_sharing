@@ -65,7 +65,7 @@ export const getUserRouteRate = async (routeId: string) => {
   );
   if (!historyRoute) {
     console.error("Route not found in user historyRoutes");
-    return;
+    return 0;
   }
 
   return historyRoute.rateRoute;

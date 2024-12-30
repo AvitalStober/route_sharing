@@ -109,7 +109,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("myRoutes")}
+                onClick={() => {
+                  setSelectedButton("myRoutes");
+                  handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
+                  setIsAreaChoosing(false);
+                  setIsAddRoute(false);
+                  setIsEditUser(false);
+                  setIsHomePage(false);
+                  setChangeAddress("");
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,18 +133,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"
                   />
                 </svg>
-                <LoadRoutes
-                  label="מסלולים שלי"
-                  selectedRoute="myRoutes"
-                  onClick={() => {
-                    handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
-                    setIsAreaChoosing(false);
-                    setIsAddRoute(false);
-                    setIsEditUser(false);
-                    setIsHomePage(false);
-                    setChangeAddress("");
-                  }}
-                />
+                <LoadRoutes label="מסלולים שלי" selectedRoute="myRoutes" />
               </div>
             </li>
             <li className="cursor-pointer">
@@ -191,7 +188,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("routes")}
+                onClick={() => {
+                  setSelectedButton("routes");
+                  handleLoadRoutes(fetchRoutesInYourArea, "routes");
+                  setIsAreaChoosing(false);
+                  setIsAddRoute(false);
+                  setIsHomePage(false);
+                  setIsEditUser(false);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -215,13 +219,12 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <LoadRoutes
                   label="מסלולים באזורך"
                   selectedRoute="routes"
-                  onClick={() => {
-                    handleLoadRoutes(fetchRoutesInYourArea, "routes");
-                    setIsAreaChoosing(false);
-                    setIsAddRoute(false);
-                    setIsHomePage(false);
-                    setIsEditUser(false);
-                  }}
+                  // onClick={() => {
+                  //   setIsAreaChoosing(false);
+                  //   setIsAddRoute(false);
+                  //   setIsHomePage(false);
+                  //   setIsEditUser(false);
+                  // }}
                 />
               </div>
             </li>
@@ -265,7 +268,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("history")}
+                onClick={() => {
+                  setSelectedButton("history");
+                  handleLoadRoutes(fetchHistoryRoutes, "history");
+                  setIsAreaChoosing(false);
+                  setIsAddRoute(false);
+                  setIsHomePage(false);
+                  setChangeAddress("");
+                  setIsEditUser(false);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -284,18 +295,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     />
                   </g>
                 </svg>
-                <LoadRoutes
-                  label="צפה בהיסטוריה"
-                  selectedRoute="history"
-                  onClick={() => {
-                    handleLoadRoutes(fetchHistoryRoutes, "history");
-                    setIsAreaChoosing(false);
-                    setIsAddRoute(false);
-                    setIsHomePage(false);
-                    setChangeAddress("");
-                    setIsEditUser(false);
-                  }}
-                />
+                <LoadRoutes label="צפה בהיסטוריה" selectedRoute="history" />
               </div>
             </li>
           </ul>
