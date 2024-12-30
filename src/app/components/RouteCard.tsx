@@ -134,18 +134,14 @@ import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/props/‎RouteCardProps";
 import {
-  addRouteToHistoryRoute,
   handleStarClick,
   getUserRouteRate,
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import IRoute from "../types/routes";
-import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
-  const router = useRouter();
   const [selectedRatings, setSelectedRatings] = useState<{
     [routeId: string]: number;
   }>({});
@@ -154,9 +150,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     {}
   );
 
-  const handleClick = (routeId: string) => {
-    router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
-  };
 
   const fetchRates = async () => {
     const rates: Record<string, number> = {};
@@ -193,7 +186,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     <div className="m-4 w-full">
       {Array.isArray(Routes) && Routes.length > 0 ? (
         <div className="flex flex-wrap gap-6 justify-center">
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> */}
+          {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> */}
           {Routes.map((route, index) => (
             <div
               key={index}
@@ -205,20 +198,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
                 filtered={filtered}
               />
               <div className="flex flex-row items-center justify-between">
-                {filtered === 1 && (
-                  <div dir="rtl" className="m-2">
-                    <button
-                      onClick={() => {
-                        addRouteToHistoryRoute(route._id as string);
-                        handleClick(route._id as string);
-                        calcKMAndUpdate(route.pointsArray);
-                      }}
-                      className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
-                    >
-                      בחירת מסלול
-                    </button>
-                  </div>
-                )}
+               
                 <Star
                   rate={
                     filtered === 2
@@ -235,6 +215,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
           ))}
         </div>
       ) : (
+        // אין מסלולים זמינים
         <div className="flex flex-col mt-8 text-center justify-center items-center p-4 font-mono font-semibold border rounded">
           <p className="text-xl">
             לא נמצאו מסלולים התואמים לחיפוש שלך. <br />

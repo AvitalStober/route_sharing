@@ -3,6 +3,9 @@ import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 import PopUpRoute from "./PopUpRoute";
 import { Types } from "mongoose";
 import { CardMapProps } from "../types/props/CardMapProps";
+import { addRouteToHistoryRoute } from "../functions/cardsFunctions";
+import { calcKMAndUpdate } from "../functions/googleMapsFunction";
+import { useRouter } from "next/navigation";
 
 const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
@@ -19,6 +22,7 @@ const CardMap: React.FC<CardMapProps> = ({
   //לפופאפ
   const [isExpanded, setIsExpanded] = useState<boolean>();
 
+  const router = useRouter();
   // הגדרת סגנון המפה
   const mapContainerStyle = {
     inlineSize: "100%",
@@ -58,7 +62,6 @@ const CardMap: React.FC<CardMapProps> = ({
   };
 
   const calculateWalkingTime = (result: google.maps.DirectionsResult) => {
-
     let totalTimeInSeconds = 0;
 
     const route = result.routes[0];
@@ -79,6 +82,10 @@ const CardMap: React.FC<CardMapProps> = ({
     streetViewControl: false, // מבטל את האפשרות למעבר לתצוגת הרחוב
     fullscreenControl: true, // מבטל את כפתור המסך המלא
   };
+  
+  const handleClick = (routeId: string) => {
+    router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
+  };
 
   useEffect(() => {
     calculateRoute();
@@ -89,12 +96,28 @@ const CardMap: React.FC<CardMapProps> = ({
       <div className="flex justify-center">
         {!isExpanded && !expanded && (
           <>
+            {/* כפתור בחירת מסלול */}
+            {filtered === 1 && (
+              <div dir="rtl" className="m-2">
+                <button
+                  onClick={() => {
+                    addRouteToHistoryRoute(route!._id as string);
+                    handleClick(route!._id as string);
+                    calcKMAndUpdate(route!.pointsArray);
+                  }}
+                  className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
+                >
+                 צא לדרך🚶‍♂️
+                </button>
+              </div>
+            )}
+            {/* ראה עוד */}
             <button
               onClick={() => setIsExpanded(true)}
               className="my-2 px-4 py-2 border-slate-700 text-slate-700 font-medium text-sm rounded-lg shadow hover:border-slate-700 hover:shadow-lg transition duration-300"
               type="button"
             >
-              ראה עוד
+              מידע נוסף 👀 
             </button>
           </>
         )}
@@ -135,7 +158,7 @@ const CardMap: React.FC<CardMapProps> = ({
         <div className="mt-auto px-4 pb-4 pt-0 flex justify-end">
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          // onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
+            // onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
           >
             {route && (
               <PopUpRoute
@@ -152,4 +175,3 @@ const CardMap: React.FC<CardMapProps> = ({
 };
 
 export default CardMap;
-
