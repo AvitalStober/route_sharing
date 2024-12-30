@@ -145,7 +145,6 @@ import IRoute from "../types/routes";
 import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
-  const router = useRouter();
   const [selectedRatings, setSelectedRatings] = useState<{
     [routeId: string]: number;
   }>({});
@@ -153,10 +152,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [routeRates, setRouteRates] = useState<{ [routeId: string]: number }>(
     {}
   );
-
-  const handleClick = (routeId: string) => {
-    router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
-  };
 
   const fetchRates = async () => {
     const rates: Record<string, number> = {};
@@ -205,7 +200,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
                 filtered={filtered}
               />
               <div className="flex flex-row items-center justify-between">
-                {filtered === 1 && (
+                {/* {filtered === 1 && (
                   <div dir="rtl" className="m-2">
                     <button
                       onClick={() => {
@@ -218,7 +213,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
                       בחירת מסלול
                     </button>
                   </div>
-                )}
+                )} */}
                 <Star
                   rate={
                     filtered === 2
