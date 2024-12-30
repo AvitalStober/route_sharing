@@ -16,7 +16,6 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
       onClick={() => {
         setFilterAddress(false);
         setCurrentPage((prevPage) => {
-          debugger
           const newPage = prevPage + 1;
           fetchFunction(setRoutes, newPage, setLastPage, changeAddress);
           return newPage;

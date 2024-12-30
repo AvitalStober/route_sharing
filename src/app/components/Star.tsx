@@ -12,15 +12,25 @@ const Star: React.FC<StarProps> = ({ rate, filtered, onClick }) => {
   const starsArray = Array(5).fill("empty");
   if (filtered !== 2 && rate) {
     // אם filtered !== 2, חישוב דירוג רגיל
-    starsArray.splice(0, Math.floor(rate), ...Array(Math.floor(rate)).fill("full")); // כוכבים מלאים
-    if (rate % 1 >= 0.3 && rate % 1 < 0.8) starsArray[Math.floor(rate)] = "half"; // כוכב חצי
+    starsArray.splice(
+      0,
+      Math.floor(rate),
+      ...Array(Math.floor(rate)).fill("full")
+    ); // כוכבים מלאים
+    if (rate % 1 >= 0.3 && rate % 1 < 0.8)
+      starsArray[Math.floor(rate)] = "half"; // כוכב חצי
   } else if (filtered === 2 && hoveredRate !== null && rate === 0) {
     // צביעה זמנית לפי מה שנבחר
     starsArray.splice(0, hoveredRate, ...Array(hoveredRate).fill("full"));
   } else if (filtered === 2 && selectedRate !== null && rate === 0) {
     // צביעה לפי הבחירה הסופית
     starsArray.splice(0, selectedRate, ...Array(selectedRate).fill("full"));
-  } else if (filtered === 2 && rate !== null && typeof rate === "number" && rate >= 0) {
+  } else if (
+    filtered === 2 &&
+    rate !== null &&
+    typeof rate === "number" &&
+    rate >= 0
+  ) {
     const fullStars = Math.floor(rate);
     const validFullStars = Math.min(fullStars, starsArray.length); // לוודא שאין חיתוך מעבר לאורך המערך
     starsArray.splice(0, validFullStars, ...Array(validFullStars).fill("full"));
@@ -31,7 +41,11 @@ const Star: React.FC<StarProps> = ({ rate, filtered, onClick }) => {
       {starsArray.map((type, index) => (
         <div
           key={index}
-          className={`inline-block ${rate !== 0 && filtered === 2 ? "cursor-not-allowed" : "hover:cursor-pointer"}`}
+          className={`inline-block ${
+            rate !== 0 && filtered === 2
+              ? "cursor-not-allowed"
+              : "hover:cursor-pointer"
+          }`}
           onMouseEnter={() => {
             if (filtered === 2 && rate === 0) setHoveredRate(index + 1); // שינוי זמני של דירוג בעת מעבר עם העכבר
           }}
