@@ -1,4 +1,4 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+// import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 // import { calculateDistance } from "./routesFunctions";
 
 export const startNavigation = (
