@@ -70,8 +70,7 @@ export const loginFunction = async (
       return response.data;
     })
     .catch((error) => {
-      console.error("Login error:", error.response?.data || error.message);
-      return null;
+      console.log("Login error:", error.response?.data || error.message);
     });
 };
 

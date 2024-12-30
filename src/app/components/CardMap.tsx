@@ -3,6 +3,7 @@ import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 import PopUpRoute from "./PopUpRoute";
 import { Types } from "mongoose";
 import { CardMapProps } from "../types/props/CardMapProps";
+import { calculateRoute } from "../functions/cardsFunctions";
 
 const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
@@ -28,51 +29,6 @@ const CardMap: React.FC<CardMapProps> = ({
   // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
-  const calculateRoute = () => {
-    console.log("enter");
-
-    if (points.length < 2) {
-      alert("עליך לבחור לפחות שתי נקודות למסלול.");
-      return;
-    }
-
-    const directionsService = new google.maps.DirectionsService();
-    const request: google.maps.DirectionsRequest = {
-      origin: points[0],
-      destination: points[points.length - 1],
-      waypoints: points.slice(1, -1).map((point) => ({
-        location: point,
-        stopover: true,
-      })),
-      travelMode: google.maps.TravelMode.WALKING,
-    };
-
-    directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK && result) {
-        calculateWalkingTime(result);
-        setDirections(result);
-      } else {
-        alert("לא ניתן לחשב מסלול");
-      }
-    });
-  };
-
-  const calculateWalkingTime = (result: google.maps.DirectionsResult) => {
-
-    let totalTimeInSeconds = 0;
-
-    const route = result.routes[0];
-
-    route.legs.forEach((leg) => {
-      totalTimeInSeconds += leg.duration!.value;
-    });
-    const calculatedHours = Math.floor(totalTimeInSeconds / 3600); // שעות
-    const calculatedMinutes = Math.floor((totalTimeInSeconds % 3600) / 60); // דקות
-
-    setHours(calculatedHours);
-    setMinutes(calculatedMinutes);
-  };
-
   // הגדרת אפשרויות המפה
   const mapOptions: google.maps.MapOptions = {
     mapTypeControl: false, // מבטל את אפשרות החלפת סוג המפה (לוויין, מפה רגילה)
@@ -81,7 +37,7 @@ const CardMap: React.FC<CardMapProps> = ({
   };
 
   useEffect(() => {
-    calculateRoute();
+    calculateRoute(points, setDirections, setHours, setMinutes);
   }, [minutes]);
 
   return (
@@ -141,7 +97,7 @@ const CardMap: React.FC<CardMapProps> = ({
         <div className="mt-auto px-4 pb-4 pt-0 flex justify-end">
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          // onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
+            // onClick={() => setIsExpanded(false)} // סגירה בלחיצה מחוץ לפופאפ
           >
             {route && (
               <PopUpRoute
@@ -158,4 +114,3 @@ const CardMap: React.FC<CardMapProps> = ({
 };
 
 export default CardMap;
-

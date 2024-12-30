@@ -16,8 +16,6 @@ import {
 import { CounterProps } from "@/app/types/props/CounterProps";
 import { TopUser } from "@/app/types/topUser";
 import { TopRoute } from "@/app/types/topRoutes";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
 import Star from "@/app/components/Star";
 
 const Counter: React.FC<CounterProps> = ({ target, duration, icon, label }) => {
@@ -61,15 +59,13 @@ const RecommendedRouteCard = ({
   return (
     <div className="w-60 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl shadow-lg p-6 flex flex-col items-center space-y-4">
       <div className="text-white text-3xl">
-        <FaMapMarkedAlt className="text-green-200 text-3xl mb-2" />
+        <FaMapMarkedAlt className="text-white  text-3xl mb-2" />
       </div>
-      {/* שימוש בקומפוננטת Star להצגת הדירוג */}
       <Star rate={rate} filtered={1} onClick={undefined} />
       <div className="text-white text-sm text-center">{description}</div>
     </div>
   );
 };
-
 
 const ActiveUserCard = ({
   username,
@@ -88,13 +84,13 @@ const ActiveUserCard = ({
     </div>
   );
 };
+
 const HomePage: React.FC = () => {
   const [usersCount, setUsersCount] = useState<number>(0);
   const [routesCount, setRoutesCount] = useState<number>(0);
   const [kilometersCount, setKilometersCount] = useState<number>(0);
   const [topUsers, setTopUsers] = useState<TopUser[]>([]);
   const [recommendedRoutes, setRecommendedRoutes] = useState<TopRoute[]>([]);
-
   const animationDuration = 2000;
 
   useEffect(() => {
@@ -106,7 +102,6 @@ const HomePage: React.FC = () => {
       setRoutesCount(routes);
       setKilometersCount(kilometers as number);
     };
-
     fetchData();
   }, []);
 
@@ -119,7 +114,6 @@ const HomePage: React.FC = () => {
         console.error("Failed to fetch top users:", error);
       }
     };
-
     fetchTopUsers();
   }, []);
 
@@ -132,7 +126,6 @@ const HomePage: React.FC = () => {
         console.error("Failed to fetch top routes:", error);
       }
     };
-
     fetchTopRoutes();
   }, []);
 
@@ -160,34 +153,41 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Active Users Section */}
-      <div className="text-2xl font-bold text-gray-800 text-center">
-        המשתמשים הכי פעילים
-      </div>
-      <div
-        className="flex flex-wrap justify-center gap-10 mt-12 text-center"
-        dir="rtl"
-      >
-        {topUsers.map((user, index) => (
-          <ActiveUserCard
-            key={index}
-            username={user.name as string}
-            activities={user.numRoute}
-          />
-        ))}
+      <div className="animate-fadeInUp delay-100">
+        <div className="text-2xl font-bold text-gray-800 text-center">
+          המשתמשים הכי פעילים
+        </div>
+        <div
+          className="flex flex-wrap justify-center gap-10 mt-12 text-center"
+          dir="rtl"
+        >
+          {topUsers.map((user, index) => (
+            <ActiveUserCard
+              key={index}
+              username={user.name as string}
+              activities={user.numRoute}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Recommended Routes Section */}
-      <div className="text-2xl font-bold text-gray-800 text-center">
-        מסלולים מומלצים
-      </div>
-      <div className="flex flex-wrap justify-center gap-10 mt-12 text-center">
-        {recommendedRoutes.map((route, index) => (
-          <RecommendedRouteCard
-            key={index}
-            rate={route.rate}
-            description={route.description}
-          />
-        ))}
+      <div className="animate-fadeInUp delay-100">
+        <div className="text-2xl font-bold text-gray-800 text-center animate-fadeInUp delay-100">
+          מסלולים מומלצים
+        </div>
+        <div
+          className="flex flex-wrap justify-center gap-10 mt-12 text-center animate-fadeInUp"
+          dir="rtl"
+        >
+          {recommendedRoutes.map((route, index) => (
+            <RecommendedRouteCard
+              key={index}
+              rate={route.rate}
+              description={route.description}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

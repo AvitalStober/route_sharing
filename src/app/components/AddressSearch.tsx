@@ -5,6 +5,11 @@ import React, { useEffect, useState, useRef } from "react";
 import MapLoader from "./MapLoader";
 import useStore from "@/app/store/store";
 import { fetchRoutesInYourArea } from "../functions/filteredRoutesFunctions";
+import {
+  handleInputChange,
+  handlePlaceSelect,
+  isValidAddress,
+} from "../functions/addressSearch";
 
 const AddressSearch = () => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
@@ -21,17 +26,6 @@ const AddressSearch = () => {
   const setChangeAddress = useStore((state) => state.setChangeAddress);
   const changeAddress = useStore((state) => state.changeAddress);
   const setFilterAddress = useStore((state) => state.setFilterAddress);
-
-  // פונקציה שתבדוק אם הכתובת תקינה
-  const isValidAddress = (input: string): boolean => {
-    return input.trim().length > 0; // חוקים בסיסיים - כתובת לא ריקה
-  };
-
-  const handlePlaceSelect = (selectedAddress: string) => {
-    setAddress(selectedAddress); // עדכון הכתובת הנבחרת
-    setErrors((prev) => ({ ...prev, address: undefined })); // איפוס שגיאות
-    setIsSelectedFromAutocomplete(true); // הצבעה על כך שהכתובת נבחרה מתוך ההשלמה
-  };
 
   useEffect(() => {
     if (changeAddress === "") {
@@ -57,18 +51,10 @@ const AddressSearch = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChangeAddress(e.target.value);
-    // עדכון כתובת לפי הזנה חופשית של המשתמש
-    setIsSelectedFromAutocomplete(false); // אם המשתמש התחיל להקליד, לא נבחרה כתובת מתוך ההשלמה
-  };
-
-  // אם הכתובת שהוזנה לא חוקית, נחזיר את הכתובת המקורית
   useEffect(() => {
     // אם הכתובת לא תקינה, נזין בחזרה את הכתובת המקורית
     if (!isSelectedFromAutocomplete && !isValidAddress(address)) {
       setAddress(initialAddress); // חוזר לכתובת המקורית
-      // setChangeAddress("");
     } else {
       if (address !== userAddress && isSelectedFromAutocomplete) {
         const newPage = 1;
@@ -95,41 +81,32 @@ const AddressSearch = () => {
           {/* {address} */}
         </span>
         <div className="flex rounded-full border-2 border-blue-300 overflow-hidden max-w-52 mx-auto font-[sans-serif]">
-          {/* <input
-            dir="rtl"
-            type="text" 
-            // placeholder={changeAddress === "" ? initialAddress : address}
-            placeholder={address}
-            className={`w-full outline-none bg-white text-sm px-5 py-3 ${
-              errors.address ? "border-red-500" : "border-gray-300"
-            }`}
-            onChange={handleInputChange}
-            onFocus={(e) => {
-              const autocomplete = new google.maps.places.Autocomplete(
-                e.target
-              );
-              autocomplete.addListener("place_changed", () => {
-                const place = autocomplete.getPlace();
-                handlePlaceSelect(place.formatted_address || ""); // עדכון הכתובת הנבחרת
-              });
-            }}
-          /> */}
           <input
             dir="rtl"
             type="text"
             value={changeAddress === "" ? initialAddress : changeAddress} // תנאי לבחירת הערך
-            // placeholder={changeAddress === "" ? initialAddress : changeAddress}
             className={`w-full outline-none bg-white text-sm px-5 py-3 ${
               errors.address ? "border-red-500" : "border-gray-300"
             }`}
-            onChange={handleInputChange} // עדכון ה-state בעת שינוי
+            onChange={(event) =>
+              handleInputChange(
+                event as React.ChangeEvent<HTMLInputElement>,
+                setChangeAddress,
+                setIsSelectedFromAutocomplete
+              )
+            }
             onFocus={(e) => {
               const autocomplete = new google.maps.places.Autocomplete(
                 e.target
               );
               autocomplete.addListener("place_changed", () => {
                 const place = autocomplete.getPlace();
-                handlePlaceSelect(place.formatted_address || "");
+                handlePlaceSelect(
+                  place.formatted_address || "",
+                  setAddress,
+                  setErrors,
+                  setIsSelectedFromAutocomplete
+                );
               });
             }}
           />

@@ -16,10 +16,6 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
 
   const userToken = getUserToken();
 
-  // const uploadedData = JSON.parse(
-  //   localStorage.getItem("uploadedImage") || "{}"
-  // );
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -51,9 +47,7 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
     }
 
     const userToUpdate = { fullName, email, address };
-    // Submit the form (example placeholder)
     putUserDetails(userToken!.id, userToUpdate);
-    // router.push("/pages/home");
     setIsEditUser(false);
   };
 

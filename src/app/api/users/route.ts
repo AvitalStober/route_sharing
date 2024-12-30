@@ -3,48 +3,6 @@ import User from "@/app/lib/models/userModel";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 
-// export async function PUT(request: Request) {
-//   try {
-//     await connect();
-//     const { userId, routeId } = await request.json();
-
-//     if (!userId || !routeId) {
-//       return NextResponse.json(
-//         { message: "Missing userId or routeId" },
-//         { status: 400 }
-//       );
-//     }
-
-//     // עדכון המשתמש והוספת אובייקט עם ה- routeId ו- rateRoute
-//     const updatedUser = await User.findByIdAndUpdate(
-//       userId,
-//       {
-//         historyRoutes: {
-//           $addToSet: { routeId: routeId },
-//           rateRoute: 0,
-//         },
-//       },
-//       { new: true } // מחזיר את המסמך המעודכן
-//     );
-
-//     if (!updatedUser) {
-//       return NextResponse.json({ message: "User not found" }, { status: 404 });
-//     }
-
-//     // החזרת תגובה עם המשתמש המעודכן
-//     return NextResponse.json(
-//       { message: "Route added to history successfully", user: updatedUser },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error(error);
-//     return NextResponse.json(
-//       { message: "Error: failed to add history route" },
-//       { status: 500 }
-//     );
-//   }
-// }
-
 export async function PUT(request: Request) {
   try {
     await connect();
@@ -114,17 +72,3 @@ export async function GET() {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
-
-// export async function DELETE(request: Request) {
-//   try {
-//     await connect();
-//     const result = await User.deleteMany({});
-//     return NextResponse.json(
-//       { message: "All users have been deleted", deletedCount: result.deletedCount },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error("Error deleting users:", error);
-//     return NextResponse.json({ error: "Failed to delete users" }, { status: 500 });
-//   }
-// }

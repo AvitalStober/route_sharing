@@ -1,6 +1,4 @@
-import {
-  addHistoryRoute,
-} from "@/app/services/userService";
+import { addHistoryRoute } from "@/app/services/userService";
 import {
   fetchUserById,
   getUserToken,
@@ -66,6 +64,8 @@ export const getUserRouteRate = async (routeId: string) => {
     }
   );
   if (!historyRoute) {
+    console.log("routeId", routeId);
+
     console.error("Route not found in user historyRoutes");
     return 0;
   }
@@ -73,17 +73,72 @@ export const getUserRouteRate = async (routeId: string) => {
   return historyRoute.rateRoute;
 };
 
-// export  const fetchRates = async (
-//   Routes: IRoute[],
-//   filtered:number,
-//   routeId: string,
-//   setRouteRates:( routeId: string[] )=>void,
-// ): Promise<void> => {
-//   const rates: Record<string, number> = {};
-//   for (const route of Routes) {
-//     if (filtered === 2) {
-//       rates[routeId] = (await getUserRouteRate(route._id as string)) || 0;
-//     }
-//   }
-//   setRouteRates(rates);
-// };
+export const calculateRoute = (
+  points: google.maps.LatLngLiteral[],
+  setDirections: React.Dispatch<
+    React.SetStateAction<google.maps.DirectionsResult | null>
+  >,
+  setHours: React.Dispatch<React.SetStateAction<number>>,
+  setMinutes: React.Dispatch<React.SetStateAction<number>>
+) => {
+  if (points.length < 2) {
+    alert("עליך לבחור לפחות שתי נקודות למסלול.");
+    return;
+  }
+
+  const directionsService = new google.maps.DirectionsService();
+  const request: google.maps.DirectionsRequest = {
+    origin: points[0],
+    destination: points[points.length - 1],
+    waypoints: points.slice(1, -1).map((point) => ({
+      location: point,
+      stopover: true,
+    })),
+    travelMode: google.maps.TravelMode.WALKING,
+  };
+
+  directionsService.route(request, (result, status) => {
+    if (status === google.maps.DirectionsStatus.OK && result) {
+      calculateWalkingTime(result, setHours, setMinutes);
+      setDirections(result);
+    } else {
+      alert("לא ניתן לחשב מסלול");
+    }
+  });
+};
+
+export const calculateWalkingTime = (
+  result: google.maps.DirectionsResult,
+  setHours: React.Dispatch<React.SetStateAction<number>>,
+  setMinutes: React.Dispatch<React.SetStateAction<number>>
+) => {
+  let totalTimeInSeconds = 0;
+
+  const route = result.routes[0];
+
+  route.legs.forEach((leg) => {
+    totalTimeInSeconds += leg.duration!.value;
+  });
+  const calculatedHours = Math.floor(totalTimeInSeconds / 3600); // שעות
+  const calculatedMinutes = Math.floor((totalTimeInSeconds % 3600) / 60); // דקות
+
+  setHours(calculatedHours);
+  setMinutes(calculatedMinutes);
+};
+
+// פונקציה ללחיצה על הכפתור
+export const handleSelectRoute = (
+  routeId: string,
+  setSelectedRoutes: React.Dispatch<React.SetStateAction<Set<string>>>
+) => {
+  setSelectedRoutes((prevSelectedRoutes) => {
+    const updatedRoutes = new Set(prevSelectedRoutes);
+    if (updatedRoutes.has(routeId)) {
+      updatedRoutes.delete(routeId); // אם המסלול כבר נבחר, מסירים אותו
+    } else {
+      updatedRoutes.add(routeId); // אם לא, מוסיפים אותו
+      addRouteToHistoryRoute(routeId); // מוסיף את המסלול להיסטוריה
+    }
+    return updatedRoutes;
+  });
+};
