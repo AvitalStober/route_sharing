@@ -7,7 +7,6 @@ import {
   getUserRouteRate,
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import IRoute from "../types/routes";
 
