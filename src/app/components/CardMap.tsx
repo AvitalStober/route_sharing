@@ -52,12 +52,6 @@ const CardMap: React.FC<CardMapProps> = ({
             >
               ראה עוד
             </button>
-            {/* <button
-              onClick={calculateRoute}
-              className="my-2 px-4 py-2 border-blue-600 text-blue-700 font-medium text-sm rounded-lg shadow hover:border-blue-700 hover:shadow-lg transition duration-300"
-            >
-              חישוב מסלול וזמן הליכה
-            </button> */}
           </>
         )}
       </div>
@@ -86,7 +80,7 @@ const CardMap: React.FC<CardMapProps> = ({
       <div dir="rtl" className="h-[40px] mt-auto flex items-center">
         {(hours !== 0 || minutes !== 0) && (
           <p>
-            הזמן הכולל להליכה: {hours !== 0 && `${hours} שעות`}
+            זמן הליכה: {hours !== 0 && `${hours} שעות`}
             {hours !== 0 && minutes !== 0 && ", "}
             {minutes && `${minutes} דקות`}
           </p>

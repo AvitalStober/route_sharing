@@ -81,7 +81,7 @@ const Page = () => {
                 dir="rtl"
                 className="flex flex-col md:flex-row justify-around gap-4"
               >
-                <div className="w-full md:w-auto mb-3">
+                {/* <div className="md:w-auto mb-3"> */}
                   <FilteredRoutes
                     selectedRoute={selectedRoute}
                     setSelectedRoute={setSelectedRoute}
@@ -90,7 +90,7 @@ const Page = () => {
                     setIsHomePage={setIsHomePage}
                     setIsEditUser={setIsEditUser}
                   />
-                </div>
+                {/* </div> */}
               </div>
             </div>
           ) : isAreaChoosing ? (

@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import Star from "./Star";
-import Image from "next/image";
 import CloudinaryUploader from "./CloudinaryUploader";
 import { editRoutes } from "../services/routeService";
 import IRoute from "../types/routes";
 import { fetchRouteById } from "../functions/routesFunctions";
 import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
 import { IoClose } from "react-icons/io5";
+import ImageModal from "./ImageModal";
 
 const PopUpRoute: React.FC<PopUpRouteProps> = ({
   onClose,
@@ -20,6 +20,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     async function fetchRoute() {
@@ -70,10 +71,12 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
   return (
     <div
       className={`fixed top-0 right-0 h-full 
-      bg-white shadow-lg p-6 overflow-y-auto z-50 
+      bg-white shadow-lg p-6 z-50 
       transition-transform duration-[500ms] transform 
       ${isVisible ? "translate-x-0" : "translate-x-full"}
-      sm:w-full md:w-2/3 lg:w-1/2 pt-20`}
+      sm:w-full md:w-2/3 lg:w-1/2 pt-20 ${
+        isOpen ? "overflow-hidden" : "overflow-y-auto"
+      }`}
     >
       <div className="flex flex-row justify-between items-center w-full  mb-4">
         <div
@@ -100,17 +103,14 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
           {pictures && pictures.length > 0 && (
             <div className="flex flex-col items-center pt-10">
               <div
-                className="relative w-[300px] h-[200px] overflow-hidden"
+                className="w-[300px] h-[200px] overflow-hidden"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
-                <Image
-                  className="rounded-md object-cover w-[300px] h-[200px]"
-                  src={pictures[currentImageIndex]}
-                  height={200}
-                  width={300}
-                  alt={`Image ${currentImageIndex}`}
-                  priority
+                <ImageModal
+                  imgUrl={pictures[currentImageIndex]}
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
                 />
               </div>
               <div className="flex mt-2">
