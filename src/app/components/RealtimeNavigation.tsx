@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import RealtimeNavigationProps from "@/app/types/props/RealtimeNavigationProps";
 import { startNavigation } from "../functions/RealTimeNavigationFunction";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
   waypoints = [],
@@ -17,7 +17,7 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0); // אינדקס הנקודה הנוכחית במסלול
   const [instructions, setInstructions] = useState<string>(""); // הנחיות ניווט
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {    
     if (window.google && mapContainerRef.current) {
@@ -49,7 +49,7 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
         waypoints,
         setInstructions,
         setCurrentIndex,
-        router
+        // router
       );
     }
   }, []);

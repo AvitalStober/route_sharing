@@ -1,5 +1,5 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { calculateDistance } from "./routesFunctions";
+// import { calculateDistance } from "./routesFunctions";
 
 export const startNavigation = (
   service: google.maps.DirectionsService,
@@ -12,7 +12,7 @@ export const startNavigation = (
   }[],
   setInstructions: React.Dispatch<React.SetStateAction<string>>,
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
-  router: AppRouterInstance
+  // router: AppRouterInstance
 ) => {
   const watchId = navigator.geolocation.watchPosition(
     (position) => {
