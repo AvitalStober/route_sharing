@@ -45,7 +45,7 @@ const CardMap: React.FC<CardMapProps> = ({
 
   useEffect(() => {
     calculateRoute(points, setDirections, setHours, setMinutes);
-  }, [minutes]);
+  }, [points]);
 
   const handleClick = (routeId: string) => {
     router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
@@ -54,24 +54,25 @@ const CardMap: React.FC<CardMapProps> = ({
   return (
     <>
       <div className="flex justify-center">
-        {!isExpanded && !expanded && (
-          <>
-            {/* כפתור בחירת מסלול */}
-            {filtered === 1 && (
-              <div dir="rtl" className="m-2">
-                <button
-                  onClick={() => {
-                    addRouteToHistoryRoute(route!._id as string);
-                    handleClick(route!._id as string);
-                    calcKMAndUpdate(route!.pointsArray);
-                  }}
-                  className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
-                >
-                  צא לדרך🚶‍♂️
-                </button>
-              </div>
-            )}
-            {/* ראה עוד */}
+        {/* {!isExpanded && ( */}
+        <>
+          {/* כפתור בחירת מסלול */}
+          {/* {(filtered === 1 && !expanded) || (filtered === 4 && expanded) ? ( */}
+          <div dir="rtl" className="m-2">
+            <button
+              onClick={() => {
+                addRouteToHistoryRoute(route!._id as string);
+                handleClick(route!._id as string);
+                calcKMAndUpdate(route!.pointsArray);
+              }}
+              className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
+            >
+              צא לדרך🚶‍♂️
+            </button>
+          </div>
+
+          {/* ראה עוד */}
+          {!expanded && !isExpanded && (
             <button
               onClick={() => setIsExpanded(true)}
               className="my-2 px-4 py-2 border-slate-700 text-slate-700 font-medium text-sm rounded-lg shadow hover:border-slate-700 hover:shadow-lg transition duration-300"
@@ -79,8 +80,9 @@ const CardMap: React.FC<CardMapProps> = ({
             >
               מידע נוסף 👀
             </button>
-          </>
-        )}
+          )}
+        </>
+        {/* )} */}
       </div>
 
       <div className="mb-2 border border-black rounded-xl">

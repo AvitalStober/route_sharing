@@ -2,8 +2,11 @@ import Image from "next/image";
 import React from "react";
 import ImageModalProps from "../types/props/ImageModalProps";
 
-const ImageModal: React.FC<ImageModalProps> = ({ imgUrl, isOpen, setIsOpen }) => {
-
+const ImageModal: React.FC<ImageModalProps> = ({
+  imgUrl,
+  isOpen,
+  setIsOpen,
+}) => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -23,20 +26,16 @@ const ImageModal: React.FC<ImageModalProps> = ({ imgUrl, isOpen, setIsOpen }) =>
       {/* מודאל */}
       {isOpen && (
         <div
-          className="flex items-center justify-center fixed top-10 bottom-0 inset-0 bg-black bg-opacity-70 z-50"
+          className="flex items-center justify-center fixed top-32 bottom-0 inset-0 bg-black bg-opacity-70 z-50 h-[92vh]"
           onClick={toggleModal}
         >
-          {/* <div
-            className=" w-full"
-            onClick={(e) => e.stopPropagation()} // מונע סגירה בלחיצה על התמונה
-          > */}
-            <Image
-              src={`${imgUrl}`}
-              alt="Full Image"
-              layout="fill"
-              objectFit="contain"
-              className="rounded-lg shadow-lg"
-            />
+          <Image
+            src={`${imgUrl}`}
+            alt="Full Image"
+            layout="fill"
+            objectFit="contain"
+            className="rounded-lg shadow-lg"
+          />
           {/* </div> */}
         </div>
       )}

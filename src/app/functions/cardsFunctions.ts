@@ -57,18 +57,18 @@ export const getUserRouteRate = async (routeId: string) => {
     console.error("User not found");
     return 0;
   }
-
+  // debugger;
   const historyRoute = user.historyRoutes.find(
     (route: { routeId: Types.ObjectId; rateRoute: number }) => {
       return route.routeId.toString() === routeId;
     }
   );
   if (!historyRoute) {
-    console.error("Route not found in user historyRoutes");
-    return;
+    console.log("Route not found in user historyRoutes");
+    // return;
   }
 
-  return historyRoute.rateRoute;
+  return historyRoute ? historyRoute.rateRoute : 0;
 };
 
 export const calculateRoute = (

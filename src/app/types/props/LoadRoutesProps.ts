@@ -1,5 +1,5 @@
 export interface LoadRoutesProps {
   selectedRoute: string | null;
-  onClick: () => void;
+  // onClick: () => void;
   label:string
 }

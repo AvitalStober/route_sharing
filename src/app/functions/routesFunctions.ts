@@ -3,7 +3,6 @@ import { getAllRoutes, getRoutesById } from "../services/routeService";
 import IRoute from "@/app/types/routes";
 import useStore from "@/app/store/store";
 import { getMeter } from "../services/distanceService";
-import { TopRoute } from "../types/topRoutes";
 
 export const appendRoutes = (newRoutes: IRoute[]) => {
   const state = useStore.getState();
@@ -43,16 +42,17 @@ export const fetchCountOfKilometers = async () => {
   }
 };
 
-export const getTopRoutes = async() : Promise<TopRoute[]> => {
+export const getTopRoutes = async (): Promise<IRoute[]> => {
   const routes: IRoute[] = await getAllRoutes();
-  const topRoutes:TopRoute[] = []
-  routes.forEach(route => {
-      topRoutes.push({rate:route.rate, description:route.description});
-      topRoutes.sort((a, b) => b.rate - a.rate);
-      if (topRoutes.length > 3) topRoutes.pop();
-  })
+  const topRoutes: IRoute[] = [];
+  routes.forEach((route) => {
+    // topRoutes.push({rate:route.rate, description:route.description});
+    topRoutes.push(route);
+    topRoutes.sort((a, b) => b.rate - a.rate);
+    if (topRoutes.length > 3) topRoutes.pop();
+  });
   return topRoutes;
-}
+};
 
 export function calculateDistance(
   lat1: number,
