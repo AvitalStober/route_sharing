@@ -53,7 +53,7 @@ const CardMap: React.FC<CardMapProps> = ({
   };
 
   return (
-    <>
+    <div>
       <div className="flex justify-center">
         {!isExpanded && !expanded && (
           <>
@@ -131,7 +131,7 @@ const CardMap: React.FC<CardMapProps> = ({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
