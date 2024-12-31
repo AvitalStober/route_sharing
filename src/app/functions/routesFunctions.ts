@@ -3,7 +3,6 @@ import { getAllRoutes, getRoutesById } from "../services/routeService";
 import IRoute from "@/app/types/routes";
 import useStore from "@/app/store/store";
 import { getMeter } from "../services/distanceService";
-import { TopRoute } from "../types/topRoutes";
 
 export const appendRoutes = (newRoutes: IRoute[]) => {
   const state = useStore.getState();
@@ -49,7 +48,6 @@ export const getTopRoutes = async (): Promise<IRoute[]> => {
   routes.forEach((route) => {
     // topRoutes.push({rate:route.rate, description:route.description});
     topRoutes.push(route);
-    route;
     topRoutes.sort((a, b) => b.rate - a.rate);
     if (topRoutes.length > 3) topRoutes.pop();
   });
