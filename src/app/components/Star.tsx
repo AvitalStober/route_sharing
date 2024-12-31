@@ -38,19 +38,13 @@ const Star: React.FC<StarProps> = ({ rate, filtered, onClick }) => {
     typeof rate === "number" &&
     rate >= 0
   ) {
-  } else if (
-    filtered === 2 &&
-    rate !== null &&
-    typeof rate === "number" &&
-    rate >= 0
-  ) {
     const fullStars = Math.floor(rate);
     const validFullStars = Math.min(fullStars, starsArray.length); // לוודא שאין חיתוך מעבר לאורך המערך
     starsArray.splice(0, validFullStars, ...Array(validFullStars).fill("full"));
   }
 
   return (
-    <div className="flex justify-end space-x-1 mt-2">
+    <div className="flex justify-end space-x-1 mt-2" dir="ltr">
       {starsArray.map((type, index) => (
         <div
           key={index}

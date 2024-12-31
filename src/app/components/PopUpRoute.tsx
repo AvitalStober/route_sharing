@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import CardMap from "./CardMap";
 import Star from "./Star";
 import CloudinaryUploader from "./CloudinaryUploader";
@@ -21,6 +21,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const elementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchRoute() {
@@ -66,10 +67,15 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
     }, 500);
   };
 
-  console.log(routeId);
+  const scrollToElement = () => {
+    if (elementRef.current) {
+      elementRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div
+      onClick={scrollToElement}
       className={`fixed top-0 right-0 h-full 
       bg-white shadow-lg p-6 z-50 
       transition-transform duration-[500ms] transform 
@@ -78,7 +84,10 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
         isOpen ? "overflow-hidden" : "overflow-y-auto"
       }`}
     >
-      <div className="flex flex-row justify-between items-center w-full  mb-4">
+      <div
+        className="flex flex-row justify-between items-center w-full  mb-4"
+        ref={elementRef}
+      >
         <div
           onClick={handleClose}
           aria-label="Toggle Sidebar"
@@ -99,7 +108,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
             filtered={filtered}
           />
           <Star rate={route.rate} filtered={1} />
-          <p>{route.description}</p>
+          <p dir="rtl">{route.description}</p>
           {pictures && pictures.length > 0 && (
             <div className="flex flex-col items-center pt-10">
               <div
@@ -127,7 +136,9 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
               </div>
             </div>
           )}
-          {filtered !== 1 && <CloudinaryUploader setPictures={setPictures} />}
+          {(filtered === 2 || filtered === 3) && (
+            <CloudinaryUploader setPictures={setPictures} />
+          )}
         </>
       )}
     </div>

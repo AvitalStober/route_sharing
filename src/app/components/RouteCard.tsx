@@ -8,7 +8,6 @@ import {
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import Image from "next/image";
-import IRoute from "../types/routes";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
@@ -19,26 +18,23 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     {}
   );
 
-  const fetchRates = async () => {
-    const rates: Record<string, number> = {};
-    const localRoutes: IRoute[] = [];
-    if (Routes) {
-      for (const route of Routes) {
-        if (filtered === 2) {
-          rates[route._id as string] =
-            (await getUserRouteRate(route._id as string)) || 0;
-          localRoutes.push(route);
-        }
-      }
-      setRouteRates(rates);
-    }
-  };
-
   useEffect(() => {
     if (filtered === 2) {
       fetchRates();
     }
-  }, [filtered]);
+  }, [filtered, Routes]);
+
+  const fetchRates = async () => {
+    if (!Routes || filtered !== 2) return;
+
+    const rates: Record<string, number> = {};
+    for (const route of Routes) {
+      const rate = await getUserRouteRate(route._id as string);
+      rates[route._id as string] = rate || 0;
+    }
+    console.log("Final rates to set:", rates);
+    setRouteRates(rates);
+  };
 
   const handleStarClickInternal = async (routeId: string, new_rate: number) => {
     await handleStarClick(
@@ -54,32 +50,18 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     <div className="m-4 w-full">
       {Array.isArray(Routes) && Routes.length > 0 ? (
         <div className="flex flex-wrap gap-6 justify-center">
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> */}
           {Routes.map((route, index) => (
             <div
               key={index}
-              className="w-full flex-[0_0_300px] min-w-[270px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
+              className="flex-[0_0_300px] min-w-[270px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
             >
               <CardMap
                 points={route.pointsArray}
                 route={route}
                 filtered={filtered}
               />
+
               <div className="flex flex-row items-center justify-between">
-                {/* {filtered === 1 && (
-                  <div dir="rtl" className="m-2">
-                    <button
-                      onClick={() => {
-                        addRouteToHistoryRoute(route._id as string);
-                        handleClick(route._id as string);
-                        calcKMAndUpdate(route.pointsArray);
-                      }}
-                      className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
-                    >
-                      בחירת מסלול
-                    </button>
-                  </div>
-                )} */}
                 <Star
                   rate={
                     filtered === 2

@@ -28,12 +28,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
 
   const router = useRouter();
 
-  const handleLoadRoutes = (fetchFunction: FetchFunction, label: string) => {
+  const handleLoadRoutes = async (
+    fetchFunction: FetchFunction,
+    label: string
+  ) => {
     const newPage = 1;
     setCurrentPage(newPage);
     setLastPage(false);
     setSelectedRoute(label);
-    fetchFunction(setRoutes, newPage, setLastPage);
+    await fetchFunction(setRoutes, newPage, setLastPage);
   };
 
   const handleLogout = () => {
@@ -109,7 +112,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("myRoutes")}
+                onClick={() => {
+                  setSelectedButton("myRoutes");
+                  handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
+                  setIsAreaChoosing(false);
+                  setIsAddRoute(false);
+                  setIsEditUser(false);
+                  setIsHomePage(false);
+                  setChangeAddress("");
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -128,14 +139,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <LoadRoutes
                   label="מסלולים שלי"
                   selectedRoute="myRoutes"
-                  onClick={() => {
-                    handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
-                    setIsAreaChoosing(false);
-                    setIsAddRoute(false);
-                    setIsEditUser(false);
-                    setIsHomePage(false);
-                    setChangeAddress("");
-                  }}
+                  // onClick={() => {
+                  //   handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
+                  //   setIsAreaChoosing(false);
+                  //   setIsAddRoute(false);
+                  //   setIsEditUser(false);
+                  //   setIsHomePage(false);
+                  //   setChangeAddress("");
+                  // }}
                 />
               </div>
             </li>
@@ -191,7 +202,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("routes")}
+                onClick={() => {
+                  setSelectedButton("routes");
+                  handleLoadRoutes(fetchRoutesInYourArea, "routes");
+                  setIsAreaChoosing(false);
+                  setIsAddRoute(false);
+                  setIsHomePage(false);
+                  setIsEditUser(false);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -215,13 +233,13 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <LoadRoutes
                   label="מסלולים באזורך"
                   selectedRoute="routes"
-                  onClick={() => {
-                    handleLoadRoutes(fetchRoutesInYourArea, "routes");
-                    setIsAreaChoosing(false);
-                    setIsAddRoute(false);
-                    setIsHomePage(false);
-                    setIsEditUser(false);
-                  }}
+                  // onClick={() => {
+                  //   handleLoadRoutes(fetchRoutesInYourArea, "routes");
+                  //   setIsAreaChoosing(false);
+                  //   setIsAddRoute(false);
+                  //   setIsHomePage(false);
+                  //   setIsEditUser(false);
+                  // }}
                 />
               </div>
             </li>
@@ -265,7 +283,15 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("history")}
+                onClick={() => {
+                  setSelectedButton("history");
+                  handleLoadRoutes(fetchHistoryRoutes, "history");
+                  setIsAreaChoosing(false);
+                  setIsAddRoute(false);
+                  setIsHomePage(false);
+                  setIsEditUser(false);
+                  setChangeAddress("");
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -287,14 +313,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <LoadRoutes
                   label="צפה בהיסטוריה"
                   selectedRoute="history"
-                  onClick={() => {
-                    handleLoadRoutes(fetchHistoryRoutes, "history");
-                    setIsAreaChoosing(false);
-                    setIsAddRoute(false);
-                    setIsHomePage(false);
-                    setChangeAddress("");
-                    setIsEditUser(false);
-                  }}
+                  // onClick={() => {
+                  //   handleLoadRoutes(fetchHistoryRoutes, "history");
+                  //   setIsAreaChoosing(false);
+                  //   setIsAddRoute(false);
+                  //   setIsHomePage(false);
+                  //   setIsEditUser(false);
+                  //   setChangeAddress("");
+                  // }}
                 />
               </div>
             </li>
