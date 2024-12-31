@@ -8,7 +8,6 @@ import {
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import Image from "next/image";
-import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
