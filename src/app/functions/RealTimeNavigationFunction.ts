@@ -12,6 +12,7 @@ export const startNavigation = (
   }[],
   setInstructions: React.Dispatch<React.SetStateAction<string>>,
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
+  googleMap: google.maps.Map | null
   // router: AppRouterInstance
 ) => {
   const watchId = navigator.geolocation.watchPosition(
@@ -44,11 +45,13 @@ export const startNavigation = (
         currentLocation,
         service,
         renderer,
+        googleMap!, // מעביר את אובייקט המפה
         currentIndex,
         waypoints,
         setInstructions,
         setCurrentIndex
       );
+      
     },
     (error) => {
       if (error.code === error.PERMISSION_DENIED) {
@@ -76,10 +79,69 @@ export const startNavigation = (
   };
 };
 
+// const updateDirections = (
+//   currentLocation: google.maps.LatLngLiteral,
+//   service: google.maps.DirectionsService,
+//   renderer: google.maps.DirectionsRenderer,
+//   currentIndex: number,
+//   waypoints: {
+//     lat: number;
+//     lng: number;
+//   }[],
+//   setInstructions: React.Dispatch<React.SetStateAction<string>>,
+//   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
+// ) => {
+//   if (currentIndex >= waypoints.length) {
+//     setInstructions("הגעת ליעד!");
+//     return;
+//   }
+
+//   const remainingWaypoints = waypoints.slice(currentIndex).map((point) => ({
+//     location: point,
+//     stopover: false,
+//   }));
+
+//   // היעד יהיה הנקודה האחרונה במסלול
+//   // const destination = waypoints[waypoints.length - 1];
+//   debugger;
+//   service.route(
+//     {
+//       origin: currentLocation,
+//       destination: currentLocation,
+//       waypoints: remainingWaypoints,
+//       travelMode: google.maps.TravelMode.WALKING,
+//     },
+//     (response, status) => {
+//       if (status === google.maps.DirectionsStatus.OK) {
+//         renderer.setDirections(response);
+
+//         // מציאת הצעד הבא
+//         const leg = response!.routes[0].legs[0];
+//         const nextStep = getNextStep(leg);
+
+//         setInstructions(nextStep);
+
+//         // בדיקת אם הגעת לנקודה הבאה במסלול
+//         const nextWaypoint = waypoints[currentIndex];
+//         const distance = haversineDistance(currentLocation, nextWaypoint);
+
+//         if (distance < 0.05) {
+//           setCurrentIndex((prevIndex) => prevIndex + 1); // עדכון אינדקס לנקודה הבאה
+//         }
+//       } else {
+//         console.error("Directions request failed", status);
+//       }
+//     }
+//   );
+
+//   debugger;
+// };
+
 const updateDirections = (
   currentLocation: google.maps.LatLngLiteral,
   service: google.maps.DirectionsService,
   renderer: google.maps.DirectionsRenderer,
+  map: google.maps.Map, // הוספת המפה כפרמטר
   currentIndex: number,
   waypoints: {
     lat: number;
@@ -89,7 +151,7 @@ const updateDirections = (
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
   if (currentIndex >= waypoints.length) {
-    setInstructions("הגעת ליעד!");
+    setInstructions("הגעת לנקודת ההתחלה!");
     return;
   }
 
@@ -98,19 +160,22 @@ const updateDirections = (
     stopover: false,
   }));
 
-  // היעד יהיה הנקודה האחרונה במסלול
-  const destination = waypoints[waypoints.length - 1];
+  // היעד הוא הנקודה הראשונה במסלול (נקודת ההתחלה)
+  const destination = waypoints[0];
 
   service.route(
     {
       origin: currentLocation,
-      destination: destination,
+      destination: destination, // יעד = נקודת ההתחלה
       waypoints: remainingWaypoints,
       travelMode: google.maps.TravelMode.WALKING,
     },
     (response, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         renderer.setDirections(response);
+        // עדכון מרכז המפה לנקודה הנוכחית
+        map.setCenter(waypoints[currentIndex]);
+        
 
         // מציאת הצעד הבא
         const leg = response!.routes[0].legs[0];
@@ -131,6 +196,7 @@ const updateDirections = (
     }
   );
 };
+
 
 const getNextStep = (leg: google.maps.DirectionsLeg) => {
   if (leg.steps.length > 0) {
@@ -156,8 +222,3 @@ const haversineDistance = (
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // מרחק בק"מ
 };
-
-
-
-
-
