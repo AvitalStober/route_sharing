@@ -23,7 +23,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imgUrl, isOpen, setIsOpen }) =>
       {/* מודאל */}
       {isOpen && (
         <div
-          className="flex items-center justify-center fixed top-0 inset-0 bg-black bg-opacity-70 z-50"
+          className="flex items-center justify-center fixed top-10 bottom-0 inset-0 bg-black bg-opacity-70 z-50"
           onClick={toggleModal}
         >
           {/* <div

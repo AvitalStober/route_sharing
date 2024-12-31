@@ -56,7 +56,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
             <div className="text-center animate-fadeInUp delay-200">
-              <div className="flex justify-center items-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4">
+              <div className="text-2xl flex justify-center items-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4">
                 📍
               </div>
               <h3 className="text-xl font-bold text-blue-700">חקרו מסלולים</h3>
@@ -66,7 +66,7 @@ const LandingPage = () => {
             </div>
             {/* Feature 2 */}
             <div className="text-center animate-fadeInUp delay-300">
-              <div className="flex justify-center items-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4">
+              <div className="text-2xl pb-2 flex justify-center items-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4">
                 📸
               </div>
               <h3 className="text-xl font-bold text-blue-700">שתפו רגעים</h3>
@@ -76,7 +76,7 @@ const LandingPage = () => {
             </div>
             {/* Feature 3 */}
             <div className="text-center animate-fadeInUp delay-400">
-              <div className="flex justify-center items-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4">
+              <div className="text-2xl flex justify-center items-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4">
                 🗺️
               </div>
               <h3 className="text-xl font-bold text-blue-700">

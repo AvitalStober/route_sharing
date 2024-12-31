@@ -3,7 +3,10 @@ import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
 import PopUpRoute from "./PopUpRoute";
 import { Types } from "mongoose";
 import { CardMapProps } from "../types/props/CardMapProps";
-import { addRouteToHistoryRoute } from "../functions/cardsFunctions";
+import {
+  addRouteToHistoryRoute,
+  calculateRoute,
+} from "../functions/cardsFunctions";
 import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 import { useRouter } from "next/navigation";
 
@@ -13,6 +16,8 @@ const CardMap: React.FC<CardMapProps> = ({
   expanded = false,
   filtered,
 }) => {
+  const router = useRouter();
+
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
 
@@ -22,7 +27,6 @@ const CardMap: React.FC<CardMapProps> = ({
   //לפופאפ
   const [isExpanded, setIsExpanded] = useState<boolean>();
 
-  const router = useRouter();
   // הגדרת סגנון המפה
   const mapContainerStyle = {
     inlineSize: "100%",
@@ -32,36 +36,10 @@ const CardMap: React.FC<CardMapProps> = ({
   // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
-  const calculateRoute = () => {
-    console.log("enter");
-
-    if (points.length < 2) {
-      alert("עליך לבחור לפחות שתי נקודות למסלול.");
-      return;
-    }
-
-    const directionsService = new google.maps.DirectionsService();
-    const request: google.maps.DirectionsRequest = {
-      origin: points[0],
-      destination: points[points.length - 1],
-      waypoints: points.slice(1, -1).map((point) => ({
-        location: point,
-        stopover: true,
-      })),
-      travelMode: google.maps.TravelMode.WALKING,
-    };
-
-    directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK && result) {
-        calculateWalkingTime(result);
-        setDirections(result);
-      } else {
-        alert("לא ניתן לחשב מסלול");
-      }
-    });
-  };
+ 
 
   const calculateWalkingTime = (result: google.maps.DirectionsResult) => {
+
     let totalTimeInSeconds = 0;
 
     const route = result.routes[0];
@@ -83,13 +61,14 @@ const CardMap: React.FC<CardMapProps> = ({
     fullscreenControl: true, // מבטל את כפתור המסך המלא
   };
   
+
+  useEffect(() => {
+    calculateRoute(points, setDirections, setHours, setMinutes);
+  }, [minutes]);
+
   const handleClick = (routeId: string) => {
     router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
   };
-
-  useEffect(() => {
-    calculateRoute();
-  }, [minutes]);
 
   return (
     <>
@@ -107,7 +86,7 @@ const CardMap: React.FC<CardMapProps> = ({
                   }}
                   className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
                 >
-                 צא לדרך🚶‍♂️
+                  צא לדרך🚶‍♂️
                 </button>
               </div>
             )}
@@ -117,7 +96,7 @@ const CardMap: React.FC<CardMapProps> = ({
               className="my-2 px-4 py-2 border-slate-700 text-slate-700 font-medium text-sm rounded-lg shadow hover:border-slate-700 hover:shadow-lg transition duration-300"
               type="button"
             >
-              מידע נוסף 👀 
+              מידע נוסף 👀
             </button>
           </>
         )}

@@ -1,12 +1,22 @@
 "use client";
 import { useState, useEffect } from "react";
-import { fetchCountOfUsers } from "@/app/functions/usersFunctions";
+import { fetchCountOfUsers, getTopUsers } from "@/app/functions/usersFunctions";
 import {
   fetchCountOfKilometers,
   fetchCountOfRoutes,
+  getTopRoutes,
 } from "@/app/functions/routesFunctions";
-import { FaUser, FaRoute, FaWalking } from "react-icons/fa";
+import {
+  FaUser,
+  FaRoute,
+  FaWalking,
+  FaCrown,
+  FaMapMarkedAlt,
+} from "react-icons/fa";
 import { CounterProps } from "@/app/types/props/CounterProps";
+import { TopUser } from "@/app/types/topUser";
+import { TopRoute } from "@/app/types/topRoutes";
+import Star from "@/app/components/Star";
 
 const Counter: React.FC<CounterProps> = ({ target, duration, icon, label }) => {
   const [count, setCount] = useState<number>(0);
@@ -39,10 +49,48 @@ const Counter: React.FC<CounterProps> = ({ target, duration, icon, label }) => {
   );
 };
 
+const RecommendedRouteCard = ({
+  rate,
+  description,
+}: {
+  rate: number;
+  description: string;
+}) => {
+  return (
+    <div className="w-60 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl shadow-lg p-6 flex flex-col items-center space-y-4">
+      <div className="text-white text-3xl">
+        <FaMapMarkedAlt className="text-white  text-3xl mb-2" />
+      </div>
+      <Star rate={rate} filtered={1} onClick={undefined} />
+      <div className="text-white text-sm text-center">{description}</div>
+    </div>
+  );
+};
+
+const ActiveUserCard = ({
+  username,
+  activities,
+}: {
+  username: string;
+  activities: number;
+}) => {
+  return (
+    <div className="w-60 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl shadow-lg p-6 flex flex-col items-center space-y-4">
+      <div className="flex flex-col text-white text-2xl font-bold flex items-center">
+        <FaCrown className="text-yellow-400 text-3xl mb-2" />
+        {username}
+        <div className="text-white text-base mt-2">{activities} פעילויות</div>
+      </div>
+    </div>
+  );
+};
+
 const HomePage: React.FC = () => {
   const [usersCount, setUsersCount] = useState<number>(0);
   const [routesCount, setRoutesCount] = useState<number>(0);
   const [kilometersCount, setKilometersCount] = useState<number>(0);
+  const [topUsers, setTopUsers] = useState<TopUser[]>([]);
+  const [recommendedRoutes, setRecommendedRoutes] = useState<TopRoute[]>([]);
   const animationDuration = 2000;
 
   useEffect(() => {
@@ -54,8 +102,31 @@ const HomePage: React.FC = () => {
       setRoutesCount(routes);
       setKilometersCount(kilometers as number);
     };
-
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchTopUsers = async () => {
+      try {
+        const users: TopUser[] = await getTopUsers();
+        setTopUsers(users);
+      } catch (error) {
+        console.error("Failed to fetch top users:", error);
+      }
+    };
+    fetchTopUsers();
+  }, []);
+
+  useEffect(() => {
+    const fetchTopRoutes = async () => {
+      try {
+        const routes: TopRoute[] = await getTopRoutes();
+        setRecommendedRoutes(routes);
+      } catch (error) {
+        console.error("Failed to fetch top routes:", error);
+      }
+    };
+    fetchTopRoutes();
   }, []);
 
   return (
@@ -79,6 +150,44 @@ const HomePage: React.FC = () => {
           icon={<FaWalking />}
           label="קילומטרים שהלכו"
         />
+      </div>
+
+      {/* Active Users Section */}
+      <div className="animate-fadeInUp delay-100">
+        <div className="text-2xl font-bold text-gray-800 text-center">
+          המשתמשים הכי פעילים
+        </div>
+        <div
+          className="flex flex-wrap justify-center gap-10 mt-12 text-center"
+          dir="rtl"
+        >
+          {topUsers.map((user, index) => (
+            <ActiveUserCard
+              key={index}
+              username={user.name as string}
+              activities={user.numRoute}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Recommended Routes Section */}
+      <div className="animate-fadeInUp delay-100">
+        <div className="text-2xl font-bold text-gray-800 text-center animate-fadeInUp delay-100">
+          מסלולים מומלצים
+        </div>
+        <div
+          className="flex flex-wrap justify-center gap-10 mt-12 text-center animate-fadeInUp"
+          dir="rtl"
+        >
+          {recommendedRoutes.map((route, index) => (
+            <RecommendedRouteCard
+              key={index}
+              rate={route.rate}
+              description={route.description}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

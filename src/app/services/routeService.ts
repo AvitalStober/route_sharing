@@ -1,8 +1,8 @@
 import axios from "axios";
 import PartialRoute from "../types/props/RouteAddingProps";
 
-const url = "http://localhost:3000";
-// const url = "https://route-sharing-bsd7.vercel.app";
+// const url = "http://localhost:3000";
+const url = "https://route-sharing-bsd7.vercel.app";
 
 export const addRoute = async (newRoute: PartialRoute) => {
   try {
@@ -97,7 +97,7 @@ export const editRoutes = async (
   }
 };
 
-export const getCountOfRoutes = async () => {
+export const getAllRoutes = async () => {
   try {
     const response = await axios.get(`${url}/api/routes`);
     return response.data;

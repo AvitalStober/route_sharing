@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import SignUpFormProps from "@/app/types/props/SignUpFormProps";
 import { z } from 'zod';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const emailSchema = z
   .string()
@@ -26,6 +27,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     setErrorMessage(null);
@@ -81,16 +83,22 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
         <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
       )}
 
-      <fieldset className="border border-gray-300 p-2 rounded-lg">
+      <fieldset className="border border-gray-300 p-2 rounded-lg relative">
         <legend className="text-md font-medium text-gray-700 px-2">סיסמא</legend>
         <input
           id="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="focus:outline-none focus:border-none w-full"
+          className="focus:outline-none focus:border-none w-full pr-10"
         />
+        <span
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute inset-y-0 left-2 flex items-center cursor-pointer"
+        >
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+        </span>
       </fieldset>
       {errorMessage && errorMessage.includes("סיסמא") && (
         <p className="mt-1 text-sm text-red-600">{errorMessage}</p>

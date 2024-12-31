@@ -33,7 +33,6 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
     useState<google.maps.DirectionsResult | null>(null);
   // make thw map disable after calaulate route
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
-
   const libraries: ("geometry" | "places")[] = ["geometry", "places"];
 
   // map loading

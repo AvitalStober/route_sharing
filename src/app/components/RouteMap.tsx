@@ -84,8 +84,8 @@ const RouteMap = ({ routePoints }: { routePoints: LatLng[] }) => {
 
   return (
     <div style={{ display: "flex", gap: "20px" }}>
-      <div id="map" style={{ height: "500px", width: "70%" }}></div>
-      <div style={{ width: "30%", overflowY: "auto", maxHeight: "500px" }}>
+      <div id="map" style={{ blockSize: "500px", inlineSize: "70%" }}></div>
+      <div style={{ inlineSize: "30%", overflowY: "auto", blockSize: "500px" }}>
         <h3>Walking Instructions</h3>
         <ol>
           {directions.map((instruction, index) => (

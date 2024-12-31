@@ -1,25 +1,11 @@
-
 import React, { useState } from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/props/‎RouteCardProps";
-import { addRouteToHistoryRoute } from "@/app/functions/cardsFunctions";
+import { handleSelectRoute } from "@/app/functions/cardsFunctions";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRoutes, setSelectedRoutes] = useState<Set<string>>(new Set());
   
-  // פונקציה ללחיצה על הכפתור
-  const handleSelectRoute = (routeId: string) => {
-    setSelectedRoutes((prevSelectedRoutes) => {
-      const updatedRoutes = new Set(prevSelectedRoutes);
-      if (updatedRoutes.has(routeId)) {
-        updatedRoutes.delete(routeId); // אם המסלול כבר נבחר, מסירים אותו
-      } else {
-        updatedRoutes.add(routeId); // אם לא, מוסיפים אותו
-        addRouteToHistoryRoute(routeId); // מוסיף את המסלול להיסטוריה
-      }
-      return updatedRoutes;
-    });
-  };
   // טיפול בשגיאה אם המערך ריק
   if (!Routes || Routes.length === 0) {
     return (
@@ -42,7 +28,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
             <p>numRate: {route.ratingNum}</p>
             {filtered === 1 && (
               <button
-                onClick={() => handleSelectRoute(route._id as string)}
+                onClick={() => handleSelectRoute(route._id as string, setSelectedRoutes)}
                 className={`mt-4 px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 ${
                   selectedRoutes.has(route._id as string)
                     ? "bg-green-600 text-white hover:bg-green-700 cursor-not-allowed"
