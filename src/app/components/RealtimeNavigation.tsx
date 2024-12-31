@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import RealtimeNavigationProps from "@/app/types/props/RealtimeNavigationProps";
 import { startNavigation } from "../functions/RealTimeNavigationFunction";
-import { IoClose } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 
 const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
@@ -83,7 +82,6 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
           aria-label="Toggle Sidebar"
           className="cursor-pointer flex h-full items-center px-2"
         >
-          {/* <IoClose size={24} /> */}
           <p className="text-red-800">ביטול</p>
         </div>
       </div>

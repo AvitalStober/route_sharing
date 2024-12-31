@@ -36,24 +36,6 @@ const CardMap: React.FC<CardMapProps> = ({
   // בדיקת אם המערך של נקודות ציון ריק
   const center = points.length > 0 ? points[0] : { lat: 0, lng: 0 };
 
- 
-
-  const calculateWalkingTime = (result: google.maps.DirectionsResult) => {
-
-    let totalTimeInSeconds = 0;
-
-    const route = result.routes[0];
-
-    route.legs.forEach((leg) => {
-      totalTimeInSeconds += leg.duration!.value;
-    });
-    const calculatedHours = Math.floor(totalTimeInSeconds / 3600); // שעות
-    const calculatedMinutes = Math.floor((totalTimeInSeconds % 3600) / 60); // דקות
-
-    setHours(calculatedHours);
-    setMinutes(calculatedMinutes);
-  };
-
   // הגדרת אפשרויות המפה
   const mapOptions: google.maps.MapOptions = {
     mapTypeControl: false, // מבטל את אפשרות החלפת סוג המפה (לוויין, מפה רגילה)
