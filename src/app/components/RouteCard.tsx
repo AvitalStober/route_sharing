@@ -8,6 +8,7 @@ import {
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import Image from "next/image";
+import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
@@ -78,6 +79,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
           ))}
         </div>
       ) : (
+        // אין מסלולים זמינים
         <div className="flex flex-col mt-8 text-center justify-center items-center p-4 font-mono font-semibold border rounded">
           <p className="text-xl">
             לא נמצאו מסלולים התואמים לחיפוש שלך. <br />

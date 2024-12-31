@@ -4,7 +4,7 @@ import Script from "next/script";
 import RealtimeNavigationProps from "@/app/types/props/RealtimeNavigationProps";
 import { startNavigation } from "../functions/RealTimeNavigationFunction";
 // import { startNavigation } from "../functions/RealTimeNavigationFunction";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
   waypoints = [],
@@ -18,7 +18,7 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0); // אינדקס הנקודה הנוכחית במסלול
   const [instructions, setInstructions] = useState<string>(""); // הנחיות ניווט
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     if (window.google && mapContainerRef.current) {
       const initializedMap = new google.maps.Map(mapContainerRef.current, {
@@ -56,6 +56,18 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
 
   return (
     <div className="h-screen flex flex-col items-center">
+      <div className="bg-white w-3 h-full"></div>
+
+      <div
+        onClick={() => {
+          router.push("/pages/home");
+        }}
+        aria-label="Toggle Sidebar"
+        className="cursor-pointer flex h-full items-center px-2"
+      >
+        <p className="text-red-800">ביטול</p>
+      </div>
+
       <div
         className="p-5 flex flex-col flex-1 justify-center bg-gray-100 w-[80%] mt-4 border-r-2 border-black"
         dir="rtl"
@@ -80,17 +92,6 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
 };
 
 export default RealtimeNavigation;
-
-
-
-
-
-
-
-
-
-
-
 
 // // עמוד ראשי
 // "use client";
@@ -176,7 +177,7 @@ export default RealtimeNavigation;
 //             lat: position.coords.latitude,
 //             lng: position.coords.longitude,
 //           };
-  
+
 //           if (window.google && mapContainerRef.current) {
 //             const initializedMap = new google.maps.Map(mapContainerRef.current, {
 //               center: userLocation, // מיקום המשתמש
@@ -187,16 +188,16 @@ export default RealtimeNavigation;
 //               mapTypeControl: false,
 //             });
 //             setGoogleMap(initializedMap);
-  
+
 //             const newDirectionsService = new google.maps.DirectionsService();
 //             const newDirectionsRenderer = new google.maps.DirectionsRenderer({
 //               map: initializedMap,
 //               suppressMarkers: false,
 //             });
-  
+
 //             setDirectionsService(newDirectionsService);
 //             setDirectionsRenderer(newDirectionsRenderer);
-  
+
 //             // התחלת הניווט
 //             startNavigation(
 //               newDirectionsService,
@@ -207,7 +208,7 @@ export default RealtimeNavigation;
 //               setInstructions,
 //               setCurrentIndex
 //             );
-  
+
 //             // פוקוס מחדש על מיקום המשתמש
 //             google.maps.event.addListenerOnce(newDirectionsRenderer, "directions_changed", () => {
 //               initializedMap.setCenter(userLocation);
@@ -230,7 +231,7 @@ export default RealtimeNavigation;
 //       );
 //     }
 //   }, []);
-  
+
 //   return (
 //     <div className="h-screen flex flex-col items-center">
 //       <div
