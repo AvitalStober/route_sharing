@@ -8,8 +8,9 @@ import {
 } from "@/app/functions/cardsFunctions";
 import Star from "@/app/components/Star";
 import Image from "next/image";
+import Loading from "../loading";
 
-const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
+const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered, loading }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
     [routeId: string]: number;
   }>({});
@@ -47,55 +48,60 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   };
 
   return (
-    <div className="m-4 w-full">
-      {Array.isArray(Routes) && Routes.length > 0 ? (
-        <div className="flex flex-wrap gap-6 justify-center">
-          {Routes.map((route, index) => (
-            <div
-              key={index}
-              className="flex-[0_0_300px] min-w-[270px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
-            >
-              <CardMap
-                points={route.pointsArray}
-                route={route}
-                filtered={filtered}
-              />
-
-              <div className="flex flex-row items-center justify-between">
-                <Star
-                  rate={
-                    filtered === 2
-                      ? routeRates[route._id as string] || 0
-                      : route.rate || 0
-                  }
-                  filtered={filtered}
-                  onClick={(newRate) =>
-                    handleStarClickInternal(route._id as string, newRate)
-                  }
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+    <>
+      {loading ? (
+        <Loading />
       ) : (
-        // אין מסלולים זמינים
-        <div className="flex flex-col mt-8 text-center justify-center items-center p-4 font-mono font-semibold border rounded">
-          <p className="text-xl">
-            לא נמצאו מסלולים התואמים לחיפוש שלך. <br />
-            זו ההזדמנות שלך להוסיף מסלול חדש ולשתף אותו עם כולם!
-          </p>
+        <div className="m-4 w-full">
+          {Array.isArray(Routes) && Routes.length > 0 ? (
+            <div className="flex flex-wrap gap-6 justify-center">
+              {Routes.map((route, index) => (
+                <div
+                  key={index}
+                  className="flex-[0_0_300px] min-w-[270px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
+                >
+                  <CardMap
+                    points={route.pointsArray}
+                    route={route}
+                    filtered={filtered}
+                  />
 
-          <Image
-            src={
-              "https://res.cloudinary.com/dltlyphap/image/upload/v1735199623/33075775_isometric_businessman_with_magnifying_glass_analyze_circle_footstep-1024x1024-removebg-preview_ml81fh.png"
-            }
-            alt={"no routes available"}
-            width={350}
-            height={350}
-          />
+                  <div className="flex flex-row items-center justify-between">
+                    <Star
+                      rate={
+                        filtered === 2
+                          ? routeRates[route._id as string] || 0
+                          : route.rate || 0
+                      }
+                      filtered={filtered}
+                      onClick={(newRate) =>
+                        handleStarClickInternal(route._id as string, newRate)
+                      }
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            // אין מסלולים זמינים
+            <div className="flex flex-col mt-8 text-center justify-center items-center p-4 font-mono font-semibold rounded">
+              <p className="text-xl">
+                לא נמצאו מסלולים התואמים לחיפוש שלך. <br />
+                זו ההזדמנות שלך להוסיף מסלול חדש ולשתף אותו עם כולם!
+              </p>
+              <Image
+                src={
+                  "https://res.cloudinary.com/dltlyphap/image/upload/v1735199623/33075775_isometric_businessman_with_magnifying_glass_analyze_circle_footstep-1024x1024-removebg-preview_ml81fh.png"
+                }
+                alt={"no routes available"}
+                width={350}
+                height={350}
+              />
+            </div>
+          )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -100,7 +100,6 @@ const HomePage: React.FC = () => {
   const [kilometersCount, setKilometersCount] = useState<number>(0);
   const [topUsers, setTopUsers] = useState<TopUser[]>([]);
   const [recommendedRoutes, setRecommendedRoutes] = useState<IRoute[]>([]);
-  // const [isExpanded, setIsExpanded] = useState<boolean>();
   const [expandedRouteId, setExpandedRouteId] = useState<string | null>(null);
 
   const animationDuration = 2000;

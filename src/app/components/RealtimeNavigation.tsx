@@ -18,7 +18,7 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0); // אינדקס הנקודה הנוכחית במסלול
   const [instructions, setInstructions] = useState<string>(""); // הנחיות ניווט
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-const router=useRouter()
+  const router = useRouter();
   useEffect(() => {
     if (window.google && mapContainerRef.current) {
       const initializedMap = new google.maps.Map(mapContainerRef.current, {
@@ -56,27 +56,28 @@ const router=useRouter()
 
   return (
     <div className="h-screen flex flex-col items-center">
-      {/* <div className="bg-white w-3 h-full"></div> */}
-
-      <div 
-        onClick={() => {
-          router.push("/pages/home");
-        }}
-        aria-label="Toggle Sidebar"
-        className="cursor-pointer flex h-full items-center px-2"
-      >
-        <p className="text-red-800">ביטול</p>
-      </div>
-
-      <div
-        className="p-5 flex flex-col flex-1 justify-center bg-gray-100 w-[80%] mt-4 border-r-2 border-black"
-        dir="rtl"
-      >
-        <h3>הוראות ניווט:</h3>
-        <p>{instructions}</p>
-        {errorMessage && (
-          <p style={{ color: "red", fontWeight: "bold" }}>{errorMessage}</p>
-        )}
+      <div className="flex items-center w-[80%] mt-4 bg-gray-100">
+        <div
+          className="p-5 flex flex-col flex-1 justify-center w-[80%] border-r-2 border-black"
+          dir="rtl"
+        >
+          <h3>הוראות ניווט:</h3>
+          <p>{instructions}</p>
+          {errorMessage && (
+            <p style={{ color: "red", fontWeight: "bold" }}>{errorMessage}</p>
+          )}
+        </div>
+        {/* חזרה לעמוד בית */}
+        <div className="bg-white w-3 h-full"></div>
+        <div
+          onClick={() => {
+            router.push("/pages/home");
+          }}
+          aria-label="Toggle Sidebar"
+          className="cursor-pointer flex h-full items-center px-2"
+        >
+          <p className="text-red-800">ביטול</p>
+        </div>
       </div>
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyD3kFjuuxQTBDSd3D8aVx0YqtFxa9onxdI&libraries=places`}

@@ -8,7 +8,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 const emailSchema = z
   .string()
   .email("כתובת אימייל שגויה");
-
 const passwordSchema = z
   .string()
   .min(6, "סיסמא חייבת להכיל לפחות 6 תוים")
@@ -91,7 +90,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="focus:outline-none focus:border-none w-full pr-10"
+          className="focus:outline-none focus:border-none w-full"
         />
         <span
           onClick={() => setShowPassword(!showPassword)}

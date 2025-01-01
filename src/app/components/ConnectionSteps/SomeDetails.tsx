@@ -12,8 +12,12 @@ const formSchema = z.object({
 const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     address: "",
+    birthDate: "",
   });
-  const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
+  const [errors, setErrors] = useState<{
+    birthDate?: string;
+    address?: string;
+  }>({});
 
   const handlePlaceSelect = (address: string) => {
     setFormData({ ...formData, address });
@@ -28,7 +32,6 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
     if (!validationResult.success) {
       const fieldErrors = validationResult.error.format();
       setErrors({
-        // age: fieldErrors.age?._errors[0],
         address: fieldErrors.address?._errors[0],
       });
       return;
@@ -50,13 +53,14 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
             </legend>
             <input
               type="date"
-              name="age"
+              name="birthDate"
+              max={new Date().toISOString().split("T")[0]}
               required
               className="focus:outline-none focus:border-none w-full bg-none"
             />
           </fieldset>
-          {errors.age && (
-            <p className="text-red-500 text-sm mt-1">{errors.age}</p>
+          {errors.birthDate && (
+            <p className="text-red-500 text-sm mt-1">{errors.birthDate}</p>
           )}
         </div>
         <div>

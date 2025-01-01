@@ -19,6 +19,7 @@ const Page = () => {
   const filterAddress = useStore((state) => state.filterAddress);
   const [isEditUser, setIsEditUser] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // מצב תפריט צד בתצוגה קטנה
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (filterAddress === true) {
@@ -71,6 +72,7 @@ const Page = () => {
             setIsAddRoute={setIsAddRoute}
             setIsEditUser={setIsEditUser}
             setIsHomePage={setIsHomePage}
+            setLoading={setLoading}
           />
         </div>
         {/* תוכן עמוד מרכזי */}
@@ -82,14 +84,16 @@ const Page = () => {
                 className="flex flex-col md:flex-row justify-around gap-4"
               >
                 {/* <div className="md:w-auto mb-3"> */}
-                  <FilteredRoutes
-                    selectedRoute={selectedRoute}
-                    setSelectedRoute={setSelectedRoute}
-                    setIsAreaChoosing={setIsAreaChoosing}
-                    setIsAddRoute={setIsAddRoute}
-                    setIsHomePage={setIsHomePage}
-                    setIsEditUser={setIsEditUser}
-                  />
+                <FilteredRoutes
+                  selectedRoute={selectedRoute}
+                  setSelectedRoute={setSelectedRoute}
+                  setIsAreaChoosing={setIsAreaChoosing}
+                  setIsAddRoute={setIsAddRoute}
+                  setIsHomePage={setIsHomePage}
+                  setIsEditUser={setIsEditUser}
+                  setLoading={setLoading}
+                  loading={loading}
+                />
                 {/* </div> */}
               </div>
             </div>

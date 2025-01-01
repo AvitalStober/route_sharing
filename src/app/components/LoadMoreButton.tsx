@@ -4,6 +4,7 @@ import useStore from "../store/store";
 
 const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
   fetchFunction,
+  setLoading,
   setRoutes,
   setLastPage,
   setCurrentPage,
@@ -17,7 +18,13 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
         setFilterAddress(false);
         setCurrentPage((prevPage) => {
           const newPage = prevPage + 1;
-          fetchFunction(setRoutes, newPage, setLastPage, changeAddress);
+          fetchFunction(
+            setLoading,
+            setRoutes,
+            newPage,
+            setLastPage,
+            changeAddress
+          );
           return newPage;
         });
       }}

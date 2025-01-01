@@ -26,7 +26,7 @@ const useStore = create<StoreState>((set) => ({
 
   initializeRoutes: async () => {
     const setRoutes = useStore.getState().setRoutes;
-    await fetchRoutesInYourArea(setRoutes, 1);
+    // await fetchRoutesInYourArea(setRoutes, 1);
   },
 }));
 

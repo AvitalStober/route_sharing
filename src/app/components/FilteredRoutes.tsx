@@ -14,6 +14,8 @@ import { displayPoints } from "../functions/areaChoosingFunctions";
 const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   selectedRoute,
   setSelectedRoute,
+  setLoading,
+  loading,
 }) => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
@@ -50,79 +52,82 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
 
   return (
     // <div className="flex flex-col">
-      <div className="flex flex-col w-full items-center">
-        {/* אם נבחר מסלול "routes" */}
-        {selectedRoute === "routes" && (
-          <>
-            <RouteCard Routes={Routes} filtered={1} />
-            {!lastPage && (
-              <LoadMoreButton
-                fetchFunction={fetchRoutesInYourArea}
-                setRoutes={setRoutes}
-                setLastPage={setLastPage}
-                setCurrentPage={setCurrentPage}
-                changeAddress={changeAddress} // העברת changeAddress
-              />
-            )}
-          </>
-        )}
-        {/* אם נבחרה היסטוריית מסלולים */}
-        {selectedRoute === "history" && (
-          <>
-            <RouteCard Routes={Routes} filtered={2} />
-            {!lastPage && (
-              <LoadMoreButton
-                fetchFunction={fetchHistoryRoutes}
-                setRoutes={setRoutes}
-                setLastPage={setLastPage}
-                setCurrentPage={setCurrentPage}
-              />
-            )}
-          </>
-        )}
-        {/* אם נבחרו מסלולים שלי */}
-        {selectedRoute === "myRoutes" && (
-          <>
-            <RouteCard Routes={Routes} filtered={4} />
-            {!lastPage && (
-              <LoadMoreButton
-                fetchFunction={FetchOwnerRoutes}
-                setRoutes={setRoutes}
-                setLastPage={setLastPage}
-                setCurrentPage={setCurrentPage}
-              />
-            )}
-          </>
-        )}
-        {selectedRoute === "chosenArea" && (
-          <>
-            <RouteCard Routes={Routes} filtered={1} />
-            {!lastPage && (
-              <button
-                onClick={(event) => {
-                  event.preventDefault();
-                  setCurrentPage((prevPage) => {
-                    const newPage = prevPage + 1;
-                    displayPoints(
-                      setRoutes,
-                      newPage,
-                      setLastPage,
-                      undefined,
-                      undefined,
-                      setChangeAddress,
-                      changeAddress
-                    );
-                    return newPage;
-                  });
-                }}
-                className="mt-4 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
-              >
-                טען עוד מסלולים {/* ↺ */}↻
-              </button>
-            )}
-          </>
-        )}
-      </div>
+    <div className="flex flex-col w-full items-center">
+      {/* אם נבחר מסלול "routes" */}
+      {selectedRoute === "routes" && (
+        <>
+          <RouteCard Routes={Routes} filtered={1} loading={loading} />
+          {!lastPage && (
+            <LoadMoreButton
+              fetchFunction={fetchRoutesInYourArea}
+              setLoading={setLoading}
+              setRoutes={setRoutes}
+              setLastPage={setLastPage}
+              setCurrentPage={setCurrentPage}
+              changeAddress={changeAddress} // העברת changeAddress
+            />
+          )}
+        </>
+      )}
+      {/* אם נבחרה היסטוריית מסלולים */}
+      {selectedRoute === "history" && (
+        <>
+          <RouteCard Routes={Routes} filtered={2} loading={loading} />
+          {!lastPage && (
+            <LoadMoreButton
+              fetchFunction={fetchHistoryRoutes}
+              setLoading={setLoading}
+              setRoutes={setRoutes}
+              setLastPage={setLastPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </>
+      )}
+      {/* אם נבחרו מסלולים שלי */}
+      {selectedRoute === "myRoutes" && (
+        <>
+          <RouteCard Routes={Routes} filtered={4} loading={loading} />
+          {!lastPage && (
+            <LoadMoreButton
+              fetchFunction={FetchOwnerRoutes}
+              setLoading={setLoading}
+              setRoutes={setRoutes}
+              setLastPage={setLastPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </>
+      )}
+      {selectedRoute === "chosenArea" && (
+        <>
+          <RouteCard Routes={Routes} filtered={1} loading={loading} />
+          {!lastPage && (
+            <button
+              onClick={(event) => {
+                event.preventDefault();
+                setCurrentPage((prevPage) => {
+                  const newPage = prevPage + 1;
+                  displayPoints(
+                    setRoutes,
+                    newPage,
+                    setLastPage,
+                    undefined,
+                    undefined,
+                    setChangeAddress,
+                    changeAddress
+                  );
+                  return newPage;
+                });
+              }}
+              className="mt-4 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
+            >
+              טען עוד מסלולים {/* ↺ */}↻
+            </button>
+          )}
+        </>
+      )}
+    </div>
     // </div>
   );
 };
