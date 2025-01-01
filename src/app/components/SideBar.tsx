@@ -87,7 +87,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 setIsEditUser(false);
                 setSelectedRoute("");
                 setChangeAddress("");
-                setIsSideBarOpen && setIsSideBarOpen(false);
+                if (setIsSideBarOpen) {
+                  setIsSideBarOpen(false);
+                }
               }}
               className={`text-black ${
                 selectedButton === "index"
@@ -125,7 +127,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
                 onClick={() => {
                   setSelectedButton("myRoutes");
-                  setIsSideBarOpen && setIsSideBarOpen(false);
+                  if (setIsSideBarOpen) {
+                    setIsSideBarOpen(false);
+                  }
                 }}
               >
                 <svg
@@ -166,7 +170,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsEditUser(false);
                   setSelectedButton("addRoute");
                   setChangeAddress("");
-                  setIsSideBarOpen && setIsSideBarOpen(false);
+                  if (setIsSideBarOpen) {
+                    setIsSideBarOpen(false);
+                  }
                 }}
                 className={`text-black ${
                   selectedButton === "addRoute"
@@ -213,7 +219,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
                 onClick={() => {
                   setSelectedButton("routes");
-                  setIsSideBarOpen && setIsSideBarOpen(false);
+                  if (setIsSideBarOpen) {
+                    setIsSideBarOpen(false);
+                  }
                 }}
               >
                 <svg
@@ -257,7 +265,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsEditUser(false);
                   setIsHomePage(false);
                   setSelectedButton("chosenArea");
-                  setIsSideBarOpen && setIsSideBarOpen(false);
+                  if (setIsSideBarOpen) {
+                    setIsSideBarOpen(false);
+                  }
                 }}
                 className={`text-black ${
                   selectedButton === "chosenArea"
@@ -293,7 +303,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
                 onClick={() => {
                   setSelectedButton("history");
-                  setIsSideBarOpen && setIsSideBarOpen(false);
+                  if (setIsSideBarOpen) {
+                    setIsSideBarOpen(false);
+                  }
                 }}
               >
                 <svg
@@ -341,7 +353,9 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setSelectedButton("editProfile");
                   // router.push("/pages/editUser");
                   setIsEditUser(true);
-                  setIsSideBarOpen && setIsSideBarOpen(false);
+                  if (setIsSideBarOpen) {
+                    setIsSideBarOpen(false);
+                  }
                 }}
                 className={`text-black ${
                   selectedButton === "editProfile"
