@@ -22,7 +22,8 @@ export const fetchHistoryRoutes = async (
   }
   const { userHistory, lastPage } = await getUserHistoryRoutes(
     user.id,
-    currentPage
+    currentPage,
+    setLoading
   );
   const historyRoutes: Route[] = [];
   if (userHistory) {
@@ -59,6 +60,7 @@ export const FetchOwnerRoutes = async (
     return;
   }
   try {
+    setLoading(true);
     const response = await getRoutesByOwnerId(userToken.id, currentPage);
     const { routes, lastPage } = response;
 
@@ -86,7 +88,7 @@ export const fetchRoutesInYourArea = async (
   areaAddress?: string
 ): Promise<void> => {
   try {
-    debugger; 
+    setLoading(true);
     let data: { routes: IRoute[]; lastPage: boolean };
     const userTokenFromStorage = localStorage.getItem("userToken");
     if (userTokenFromStorage) {

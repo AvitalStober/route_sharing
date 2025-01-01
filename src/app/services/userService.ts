@@ -93,8 +93,13 @@ export const getUserById = async (userId: string) => {
   }
 };
 
-export const getUserHistoryRoutes = async (userId: string, page: number) => {
+export const getUserHistoryRoutes = async (
+  userId: string,
+  page: number,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   try {
+    setLoading(true);
     const response = await axios.get(
       `${url}/api/users/historyRoutes/${userId}?page=${page}`
     );
