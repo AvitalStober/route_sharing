@@ -5,13 +5,13 @@ import useStore from "@/app/store/store";
 import { getMeter } from "../services/distanceService";
 
 export const appendRoutes = (newRoutes: IRoute[]) => {
-  const state = useStore.getState();
-  const Routes = state.Routes;
-  const setRoutes = state.setRoutes;
-  if (newRoutes.length !== 0) {
-    const newArray: IRoute[] = [...Routes, ...newRoutes];
-    setRoutes(newArray);
-  }
+    const state = useStore.getState();
+    const Routes = state.Routes;
+    const setRoutes = state.setRoutes;
+    if (newRoutes.length !== 0) {
+      const newArray: IRoute[] = [...Routes, ...newRoutes];
+      setRoutes(newArray);
+    }
 };
 
 export const fetchRouteById = async (routeId: string) => {

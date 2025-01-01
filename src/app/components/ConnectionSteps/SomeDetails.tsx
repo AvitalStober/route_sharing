@@ -1,4 +1,3 @@
-// pages/someDetails.tsx
 "use client";
 import React, { useState } from "react";
 import { z } from "zod";
@@ -12,15 +11,20 @@ const formSchema = z.object({
 const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     address: "",
+    birthDate: "",
   });
-  const [errors, setErrors] = useState<{ age?: string; address?: string }>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{
+    birthDate?: string;
+    address?: string;
+  }>({});
 
   const handlePlaceSelect = (address: string) => {
     setFormData({ ...formData, address });
     setErrors((prev) => ({ ...prev, address: undefined }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
     const validationResult = formSchema.safeParse(formData);
@@ -28,13 +32,17 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
     if (!validationResult.success) {
       const fieldErrors = validationResult.error.format();
       setErrors({
-        // age: fieldErrors.age?._errors[0],
         address: fieldErrors.address?._errors[0],
       });
       return;
     }
 
-    onSubmit(formData.address);
+    setIsLoading(true);
+    try {
+      await onSubmit(formData.address);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -50,13 +58,14 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
             </legend>
             <input
               type="date"
-              name="age"
+              name="birthDate"
+              max={new Date().toISOString().split("T")[0]}
               required
               className="focus:outline-none focus:border-none w-full bg-none"
             />
           </fieldset>
-          {errors.age && (
-            <p className="text-red-500 text-sm mt-1">{errors.age}</p>
+          {errors.birthDate && (
+            <p className="text-red-500 text-sm mt-1">{errors.birthDate}</p>
           )}
         </div>
         <div>
@@ -90,7 +99,7 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
           type="submit"
           className="w-full px-4 py-2 font-semibold text-black border-2 border-blue-400 rounded-md hover:shadow-md focus:outline-none focus:ring-offset-2 focus:flex items-center justify-center"
         >
-          הרשמה
+          {isLoading ? "...שולח" : "הרשמה"}
         </button>
       </form>
     </div>

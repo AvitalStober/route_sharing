@@ -6,4 +6,6 @@ export interface FilteredRoutesProps {
   setIsHomePage: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditUser: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSideBarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loading?: boolean;
 }

@@ -85,8 +85,9 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
       }`}
     >
       <div
-        className="flex flex-row justify-between items-center w-full  mb-4"
+        className="flex flex-row justify-between items-center w-full mb-4"
         ref={elementRef}
+        dir="rtl"
       >
         <div
           onClick={handleClose}

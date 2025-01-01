@@ -8,7 +8,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 const emailSchema = z
   .string()
   .email("כתובת אימייל שגויה");
-
 const passwordSchema = z
   .string()
   .min(6, "סיסמא חייבת להכיל לפחות 6 תוים")

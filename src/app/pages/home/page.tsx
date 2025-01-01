@@ -21,6 +21,8 @@ const Page = () => {
   const [isEditUser, setIsEditUser] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // מצב תפריט צד בתצוגה קטנה
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (filterAddress === true) {
       setIsAddRoute(false);
@@ -80,6 +82,7 @@ const Page = () => {
             setIsAddRoute={setIsAddRoute}
             setIsEditUser={setIsEditUser}
             setIsHomePage={setIsHomePage}
+            setLoading={setLoading}
             setIsSideBarOpen={setIsSideBarOpen}
           />
         </div>
@@ -99,6 +102,8 @@ const Page = () => {
                   setIsAddRoute={setIsAddRoute}
                   setIsHomePage={setIsHomePage}
                   setIsEditUser={setIsEditUser}
+                  setLoading={setLoading}
+                  loading={loading}
                 />
                 {/* </div> */}
               </div>
