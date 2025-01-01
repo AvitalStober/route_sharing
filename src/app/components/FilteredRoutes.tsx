@@ -117,7 +117,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
                 }}
                 className="mt-4 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
               >
-                טען עוד מסלולים {/* ↺ */}↻
+                טען עוד מסלולים ↻
               </button>
             )}
           </>

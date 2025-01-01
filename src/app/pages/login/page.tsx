@@ -7,7 +7,6 @@ import GoogleSignInButton from "@/app/components/ConnectionSteps/GoogleButton";
 import { loginFunction } from "@/app/services/userService";
 import { z } from "zod";
 
-
 const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -35,7 +34,10 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div dir="rtl" className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-md">
+      <div
+        dir="rtl"
+        className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-md"
+      >
         <h2 className="text-2xl font-bold text-center text-gray-800">
           התחברות
         </h2>
@@ -44,14 +46,17 @@ const Login: React.FC = () => {
         <div className="text-center">
           <GoogleSignInButton />
         </div>
-        <p className="mt-2 text-center text-gray-700">
-          עדיין אין לך חשבון?{" "}
-          <a href="./signup" className="text-blue-500">
-            הרשמה
+        <div className="text-center">
+          <p className="mt-2 text-center text-gray-700">
+            עדיין אין לך חשבון?{" "}
+            <a href="./signup" className="text-blue-500">
+              הרשמה
+            </a>
+          </p>
+          <a href="./forgetPassword" className="text-blue-500 text-center">
+            שכחת סיסמא?
           </a>
-        </p>
-        <a href="./forgetPassword" className="text-blue-500">שכחת סיסמא?</a>
-
+        </div>
       </div>
     </div>
   );

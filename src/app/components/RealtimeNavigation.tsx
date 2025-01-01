@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import RealtimeNavigationProps from "@/app/types/props/RealtimeNavigationProps";
 import { startNavigation } from "../functions/RealTimeNavigationFunction";
-// import { startNavigation } from "../functions/RealTimeNavigationFunction";
 import { useRouter } from "next/navigation";
 
 const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
@@ -24,11 +23,12 @@ const router=useRouter()
       const initializedMap = new google.maps.Map(mapContainerRef.current, {
         center: waypoints[0],
         zoom: 15,
-        disableDefaultUI: true, // מבטל את ה-UI של המפה
-        zoomControl: true, // מאפשר את כפתור הזום
-        streetViewControl: false, // מבטל את תצוגת הרחוב
-        mapTypeControl: false, // מבטל את אפשרות החלפת סוג המפה
+        disableDefaultUI: true,
+        zoomControl: true,
+        streetViewControl: false,
+        mapTypeControl: false,
       });
+
       setGoogleMap(initializedMap);
 
       const newDirectionsService = new google.maps.DirectionsService();
@@ -40,6 +40,8 @@ const router=useRouter()
       setDirectionsService(newDirectionsService);
       setDirectionsRenderer(newDirectionsRenderer);
 
+      console.log("googleMap", initializedMap);
+
       // התחלת הניווט
       startNavigation(
         newDirectionsService,
@@ -48,7 +50,8 @@ const router=useRouter()
         currentIndex,
         waypoints,
         setInstructions,
-        setCurrentIndex
+        setCurrentIndex,
+        initializedMap
         // router
       );
     }
@@ -56,27 +59,28 @@ const router=useRouter()
 
   return (
     <div className="h-screen flex flex-col items-center">
-      {/* <div className="bg-white w-3 h-full"></div> */}
-
-      <div 
-        onClick={() => {
-          router.push("/pages/home");
-        }}
-        aria-label="Toggle Sidebar"
-        className="cursor-pointer flex h-full items-center px-2"
-      >
-        <p className="text-red-800">ביטול</p>
-      </div>
-
-      <div
-        className="p-5 flex flex-col flex-1 justify-center bg-gray-100 w-[80%] mt-4 border-r-2 border-black"
-        dir="rtl"
-      >
-        <h3>הוראות ניווט:</h3>
-        <p>{instructions}</p>
-        {errorMessage && (
-          <p style={{ color: "red", fontWeight: "bold" }}>{errorMessage}</p>
-        )}
+      <div className="flex items-center w-[80%] mt-4 bg-gray-100">
+        <div
+          className="p-5 flex flex-col flex-1 justify-center w-[80%] border-r-2 border-black"
+          dir="rtl"
+        >
+          <h3>הוראות ניווט:</h3>
+          <p>{instructions}</p>
+          {errorMessage && (
+            <p style={{ color: "red", fontWeight: "bold" }}>{errorMessage}</p>
+          )}
+        </div>
+        {/* חזרה לעמוד בית */}
+        <div className="bg-white w-3 h-full"></div>
+        <div
+          onClick={() => {
+            router.push("/pages/home");
+          }}
+          aria-label="Toggle Sidebar"
+          className="cursor-pointer flex h-full items-center px-2"
+        >
+          <p className="text-red-800">ביטול</p>
+        </div>
       </div>
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyD3kFjuuxQTBDSd3D8aVx0YqtFxa9onxdI&libraries=places`}

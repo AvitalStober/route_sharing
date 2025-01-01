@@ -9,18 +9,27 @@ import {
 } from "../functions/cardsFunctions";
 import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 import { useRouter } from "next/navigation";
+import Star from "./Star";
+import {
+  handleStarClick,
+} from "@/app/functions/cardsFunctions";
+import { FaRegClock } from "react-icons/fa";
 
 const CardMap: React.FC<CardMapProps> = ({
   points = [], // נותנים ערך ברירת מחדל ריק למערך
   route,
   expanded = false,
   filtered,
+  routeRates,
 }) => {
   const router = useRouter();
 
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
 
+  const [selectedRatings, setSelectedRatings] = useState<{
+    [routeId: string]: number;
+  }>({});
   // משתני זמן כסטייט
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
@@ -50,9 +59,18 @@ const CardMap: React.FC<CardMapProps> = ({
   const handleClick = (routeId: string) => {
     router.push(`/pages/RealtimeNavigation?routeId=${routeId}`);
   };
+  const handleStarClickInternal = async (routeId: string, new_rate: number) => {
+    await handleStarClick(
+      routeId,
+      new_rate,
+      selectedRatings,
+      filtered,
+      setSelectedRatings
+    );
+  };
 
   return (
-    <>
+    <div>
       <div className="flex justify-center">
         {/* {!isExpanded && ( */}
           <>
@@ -106,14 +124,44 @@ const CardMap: React.FC<CardMapProps> = ({
           )}
         </GoogleMap>
       </div>
-      <div dir="rtl" className="h-[40px] mt-auto flex items-center">
+      <div
+        dir="rtl"
+        className="h-[40px] mt-auto flex justify-between pt-3 items-center"
+      >
         {(hours !== 0 || minutes !== 0) && (
-          <p>
-            זמן הליכה: {hours !== 0 && `${hours} שעות`}
-            {hours !== 0 && minutes !== 0 && ", "}
-            {minutes && `${minutes} דקות`}
-          </p>
+          // <p>
+          //   זמן הליכה: {hours !== 0 && `${hours} שעות`}
+          //   {hours !== 0 && minutes !== 0 && ", "}
+          //   {minutes && `${minutes} דקות`}
+          // </p>
+          <div className="flex">
+            <div className="flex items-center p-1">
+              <FaRegClock />
+            </div>{" "}
+            <div className="flex items-center p-1">
+              {hours !== 0 && `${hours}`}
+              {hours !== 0 && minutes !== 0 && "."}
+              {minutes && `${minutes}`}
+              {hours == 0 && minutes !== 0 && " דק'"}
+              {hours !== 0 && minutes !== 0 && " שעות"}
+            </div>
+          </div>
         )}
+        <div className="flex flex-row items-center justify-between">
+          {routeRates && (
+            <Star
+              rate={
+                filtered === 2
+                  ? routeRates![route!._id as string] || 0
+                  : route!.rate || 0
+              }
+              filtered={filtered}
+              onClick={(newRate) =>
+                handleStarClickInternal(route!._id as string, newRate)
+              }
+            />
+          )}
+        </div>
       </div>
 
       {isExpanded && (
@@ -132,7 +180,7 @@ const CardMap: React.FC<CardMapProps> = ({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
