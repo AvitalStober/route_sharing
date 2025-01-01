@@ -11,6 +11,7 @@ import { FilteredRoutesProps } from "../types/props/FilteredRoutesProps";
 import LoadRoutes from "./LoadRoutes";
 import { FetchFunction } from "../types/FetchFunction";
 import AddressSearch from "./AddressSearch";
+import Swal from "sweetalert2";
 
 const SideBar: React.FC<FilteredRoutesProps> = ({
   setSelectedRoute,
@@ -36,9 +37,17 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
     fetchFunction(setRoutes, newPage, setLastPage);
   };
 
-  const handleLogout = () => {
-    const confirmLogout = window.confirm("האם אתה בטוח שברצונך להתנתק?");
-    if (confirmLogout) {
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: 'התנתקות',
+      text: 'האם אתה בטוח שברצונך להתנתק?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'כן, התנתק',
+      cancelButtonText: 'ביטול',
+      reverseButtons: true,
+    });
+    if (result.isConfirmed) {
       // מחיקת הטוקן מהסטור
       if (typeof window === "undefined") {
         return null;

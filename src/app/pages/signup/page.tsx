@@ -15,7 +15,6 @@ const passwordSchema = z
 const nameSchema = z
   .string()
   .min(2, "Name must be at least 2 characters long")
-  // .regex(/^[A-Za-z]+$/, "Name must contain only letters");
 
 const Signup = () => {
   const router = useRouter();

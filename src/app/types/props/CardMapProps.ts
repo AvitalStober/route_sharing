@@ -4,4 +4,7 @@ export interface CardMapProps {
   route: IRoute | null;
   expanded?: boolean;
   filtered: number;
+  routeRates?: {
+    [routeId: string]: number;
+  };
 }

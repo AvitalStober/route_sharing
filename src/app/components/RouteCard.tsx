@@ -3,17 +3,12 @@ import React, { useEffect, useState } from "react";
 import CardMap from "./CardMap";
 import RouteCardProps from "../types/props/‎RouteCardProps";
 import {
-  handleStarClick,
   getUserRouteRate,
 } from "@/app/functions/cardsFunctions";
-import Star from "@/app/components/Star";
 import Image from "next/image";
 import IRoute from "../types/routes";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
-  const [selectedRatings, setSelectedRatings] = useState<{
-    [routeId: string]: number;
-  }>({});
 
   const [routeRates, setRouteRates] = useState<{ [routeId: string]: number }>(
     {}
@@ -40,15 +35,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     }
   }, [filtered]);
 
-  const handleStarClickInternal = async (routeId: string, new_rate: number) => {
-    await handleStarClick(
-      routeId,
-      new_rate,
-      selectedRatings,
-      filtered,
-      setSelectedRatings
-    );
-  };
 
   return (
     <div className="m-4 w-full">
@@ -58,27 +44,14 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
           {Routes.map((route, index) => (
             <div
               key={index}
-              className="w-full flex-[0_0_300px] min-w-[270px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
+              className="w-full flex-[0_0_300px] min-w-[300px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
             >
               <CardMap
                 points={route.pointsArray}
                 route={route}
                 filtered={filtered}
+                routeRates={routeRates}
               />
-              <div className="flex flex-row items-center justify-between">
-               
-                <Star
-                  rate={
-                    filtered === 2
-                      ? routeRates[route._id as string] || 0
-                      : route.rate || 0
-                  }
-                  filtered={filtered}
-                  onClick={(newRate) =>
-                    handleStarClickInternal(route._id as string, newRate)
-                  }
-                />
-              </div>
             </div>
           ))}
         </div>

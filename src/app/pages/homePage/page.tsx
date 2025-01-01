@@ -76,7 +76,7 @@ const ActiveUserCard = ({
 }) => {
   return (
     <div className="w-60 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl shadow-lg p-6 flex flex-col items-center space-y-4">
-      <div className="flex flex-col text-white text-2xl font-bold flex items-center">
+      <div className="flex flex-col text-white text-2xl font-bold items-center">
         <FaCrown className="text-yellow-400 text-3xl mb-2" />
         {username}
         <div className="text-white text-base mt-2">{activities} פעילויות</div>

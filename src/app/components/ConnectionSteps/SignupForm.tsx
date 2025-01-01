@@ -91,7 +91,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onContinue }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="focus:outline-none focus:border-none w-full pr-10"
+          className="focus:outline-none focus:border-none w-full"
         />
         <span
           onClick={() => setShowPassword(!showPassword)}
