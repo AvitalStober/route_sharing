@@ -21,26 +21,26 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
   const setChangeAddress = useStore((state) => state.setChangeAddress);
   const changeAddress = useStore((state) => state.changeAddress);
   const Routes = useStore((state) => state.Routes);
-  const initializeRoutes = useStore((state) => state.initializeRoutes);
+  // const initializeRoutes = useStore((state) => state.initializeRoutes);
   const setRoutes = useStore((state) => state.setRoutes);
   const lastPage = useStore((state) => state.lastPage);
   const setLastPage = useStore((state) => state.setLastPage);
   const filterAddress = useStore((state) => state.filterAddress);
 
   // אם אין מסלולים, נטען את המסלולים הראשונים
-  useEffect(() => {
-    const fetchData = async () => {
-      if (
-        Routes &&
-        Routes.length === 0 &&
-        selectedRoute === "routes" &&
-        changeAddress.length === 0
-      ) {
-        initializeRoutes();
-      }
-    };
-    fetchData();
-  }, [Routes, selectedRoute, changeAddress]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (
+  //       Routes &&
+  //       Routes.length === 0 &&
+  //       selectedRoute === "routes" &&
+  //       changeAddress.length === 0
+  //     ) {
+  //       initializeRoutes();
+  //     }
+  //   };
+  //   fetchData();
+  // }, [Routes, selectedRoute, changeAddress]);
 
   useEffect(() => {
     if (filterAddress) {

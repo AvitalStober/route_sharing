@@ -7,7 +7,7 @@ export interface Token {
 }
 
 export interface StoreState {
-  initializeRoutes(): unknown;
+  // initializeRoutes(): unknown;
   token: Token | null;
   setToken: (token: Token) => void;
   clearToken: () => void;
