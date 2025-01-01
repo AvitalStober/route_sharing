@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import CardMap from "./CardMap";
-import Star from "./Star";
 import CloudinaryUploader from "./CloudinaryUploader";
 import { editRoutes } from "../services/routeService";
 import IRoute from "../types/routes";
