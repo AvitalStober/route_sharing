@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import CloudinaryUploader from "./CloudinaryUploader";
-import Image from "next/image";
 import {
   GoogleMap,
   DirectionsRenderer,
