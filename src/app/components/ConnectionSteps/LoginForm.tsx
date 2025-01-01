@@ -2,11 +2,15 @@
 
 import React, { useState } from "react";
 import LoginFormProps from "@/app/types/props/LoginFormProps";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,18 +33,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           className="focus:outline-none focus:border-none w-full"
         />
       </fieldset>
-      <fieldset className="border border-gray-300 p-2 rounded-lg">
-        <legend className="text-md font-medium text-gray-700 px-2">
-          סיסמא
-        </legend>
+      <fieldset className="border border-gray-300 p-2 rounded-lg relative">
+        <legend className="text-md font-medium text-gray-700 px-2">סיסמא</legend>
         <input
           id="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           className="focus:outline-none focus:border-none bg-none w-full"
         />
+        <span
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute inset-y-0 left-2 flex items-center cursor-pointer"
+        >
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+        </span>
       </fieldset>
       <button
         type="submit"
