@@ -80,6 +80,7 @@ const Page = () => {
             setIsAddRoute={setIsAddRoute}
             setIsEditUser={setIsEditUser}
             setIsHomePage={setIsHomePage}
+            setIsSideBarOpen={setIsSideBarOpen}
           />
         </div>
         {/* תוכן עמוד מרכזי */}

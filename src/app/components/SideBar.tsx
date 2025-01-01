@@ -19,6 +19,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   setIsAddRoute,
   setIsHomePage,
   setIsEditUser,
+  setIsSideBarOpen,
 }) => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setRoutes = useStore((state) => state.setRoutes);
@@ -39,12 +40,12 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
 
   const handleLogout = async () => {
     const result = await Swal.fire({
-      title: 'התנתקות',
-      text: 'האם אתה בטוח שברצונך להתנתק?',
-      icon: 'warning',
+      title: "התנתקות",
+      text: "האם אתה בטוח שברצונך להתנתק?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'כן, התנתק',
-      cancelButtonText: 'ביטול',
+      confirmButtonText: "כן, התנתק",
+      cancelButtonText: "ביטול",
       reverseButtons: true,
     });
     if (result.isConfirmed) {
@@ -60,6 +61,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   return (
     <div>
       <nav className="bg-white shadow-lg h-screen py-5 fixed top-0 right-0 min-w-[250px] px-4 font-[sans-serif] overflow-y-scroll max-h-[calc(100vh-50px)]">
+        {/* כתובת */}
         <div
           onClick={() => {
             setSelectedButton("routes");
@@ -73,6 +75,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           <AddressSearch />
         </div>
 
+        {/* עמוד ראשי */}
         <ul dir="rtl" className="mt-3">
           <li className="cursor-pointer">
             <div
@@ -84,6 +87,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 setIsEditUser(false);
                 setSelectedRoute("");
                 setChangeAddress("");
+                setIsSideBarOpen && setIsSideBarOpen(false);
               }}
               className={`text-black ${
                 selectedButton === "index"
@@ -111,6 +115,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
         <div dir="rtl" className="mt-2">
           <h6 className="text-blue-600 text-sm font-bold px-4">ניהול</h6>
           <ul className="mt-3">
+            {/* מסלולים שלי */}
             <li className="cursor-pointer">
               <div
                 className={`text-black ${
@@ -118,7 +123,10 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("myRoutes")}
+                onClick={() => {
+                  setSelectedButton("myRoutes");
+                  setIsSideBarOpen && setIsSideBarOpen(false);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -148,6 +156,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 />
               </div>
             </li>
+            {/* הוספת מסלול */}
             <li className="cursor-pointer">
               <div
                 onClick={() => {
@@ -157,6 +166,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsEditUser(false);
                   setSelectedButton("addRoute");
                   setChangeAddress("");
+                  setIsSideBarOpen && setIsSideBarOpen(false);
                 }}
                 className={`text-black ${
                   selectedButton === "addRoute"
@@ -193,6 +203,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
         <div dir="rtl" className="mt-3">
           <h6 className="text-blue-600 text-sm font-bold px-4">תכנון מסלול</h6>
           <ul className="mt-3">
+            {/* מסלולים באזור */}
             <li className="cursor-pointer">
               <div
                 className={`text-black ${
@@ -200,7 +211,10 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("routes")}
+                onClick={() => {
+                  setSelectedButton("routes");
+                  setIsSideBarOpen && setIsSideBarOpen(false);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -234,6 +248,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 />
               </div>
             </li>
+            {/* בחירת אזור */}
             <li className="cursor-pointer">
               <div
                 onClick={() => {
@@ -242,6 +257,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsEditUser(false);
                   setIsHomePage(false);
                   setSelectedButton("chosenArea");
+                  setIsSideBarOpen && setIsSideBarOpen(false);
                 }}
                 className={`text-black ${
                   selectedButton === "chosenArea"
@@ -267,6 +283,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <span>בחירת אזור</span>
               </div>
             </li>
+            {/* היסטוריה */}
             <li className="cursor-pointer">
               <div
                 className={`text-black ${
@@ -274,7 +291,10 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-                onClick={() => setSelectedButton("history")}
+                onClick={() => {
+                  setSelectedButton("history");
+                  setIsSideBarOpen && setIsSideBarOpen(false);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -314,12 +334,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
         <div dir="rtl" className="mt-3">
           <h6 className="text-blue-600 text-sm font-bold px-4">אזור אישי</h6>
           <ul className="mt-3">
+            {/* עריכת פרופיל */}
             <li className="cursor-pointer">
               <div
                 onClick={() => {
                   setSelectedButton("editProfile");
                   // router.push("/pages/editUser");
                   setIsEditUser(true);
+                  setIsSideBarOpen && setIsSideBarOpen(false);
                 }}
                 className={`text-black ${
                   selectedButton === "editProfile"
@@ -341,6 +363,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 <span>עריכת פרופיל</span>
               </div>
             </li>
+            {/* התנתקות */}
             <li className="cursor-pointer">
               <div
                 onClick={handleLogout}
