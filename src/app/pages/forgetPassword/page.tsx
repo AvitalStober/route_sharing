@@ -41,7 +41,7 @@ const ForgetPassword = () => {
                 setError("שליחת קוד אימות נכשלה. נסה שנית");
             }
         } catch (err) {
-            setError(err instanceof z.ZodError ? err.errors[0].message : "An error occurred. Please try again.");
+            setError(err instanceof z.ZodError ? err.errors[0].message : "שגיאה: נסה שנית");
         } finally {
             setLoading(false);
         }
@@ -65,7 +65,7 @@ const ForgetPassword = () => {
                 setError("קוד אימות שגוי, נסה שנית");
             }
         } catch  {
-            setError("An error occurred. Please try again.");
+            setError("שגיאה: נסה שנית");
         } finally {
             setLoading(false);
         }
@@ -84,17 +84,17 @@ const ForgetPassword = () => {
                 alert("סיסמא עודכנה בהצלחה");
                 router.push("/pages/login");
             } else {
-                setError("Failed to update password. Please try again.");
+                setError("שגיאה בעדכון סיסמא, נסה שנית");
             }
         } catch (err) {
-            setError(err instanceof z.ZodError ? err.errors[0].message : "An error occurred. Please try again.");
+            setError(err instanceof z.ZodError ? err.errors[0].message : "שגיאה: נסה שנית");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md" dir="rtl">
             {step === 1 ? (
                 <>
                     <h2 className="text-xl font-semibold mb-4">אימות כתובת מייל</h2>
@@ -113,7 +113,7 @@ const ForgetPassword = () => {
                         }`}
                         disabled={loading}
                     >
-                        {loading ? "Sending..." : "Send OTP"}
+                        {loading ? "שולח..." : "שלח קוד אימות"}
                     </button>
                 </>
             ) : step === 2 ? (
@@ -135,7 +135,7 @@ const ForgetPassword = () => {
                         }`}
                         disabled={loading}
                     >
-                        {loading ? "Verifying..." : "Verify OTP"}
+                        {loading ? "מאמת..." : "אימות קוד"}
                     </button>
                 </>
             ) : (
@@ -156,7 +156,7 @@ const ForgetPassword = () => {
                         }`}
                         disabled={loading}
                     >
-                        {loading ? "Updating..." : "Update Password"}
+                        {loading ? "עדכון..." : "עדכן סיסמא"}
                     </button>
                 </>
             )}

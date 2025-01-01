@@ -21,14 +21,14 @@ const Login: React.FC = () => {
       if (token) {
         router.push("/pages/home");
       } else {
-        setError("Invalid email or password");
+        setError("שם משתמש או סיסמא שגויים");
       }
     } catch (e) {
       if (e instanceof z.ZodError) {
         setError(e.errors[0].message);
       } else {
         console.error("Failed to connect");
-        setError("An error occurred while trying to log in.");
+        setError("שגיאת התחברות.");
       }
     }
   };
@@ -50,7 +50,13 @@ const Login: React.FC = () => {
             הרשמה
           </a>
         </p>
-        <a href="./forgetPassword" className="text-blue-500">שכחת סיסמא?</a>
+        <p className="mt-2 text-center text-gray-700">
+        שכחת סיסמא?{" "}
+
+          <a href="./forgetPassword" className="text-blue-500">
+            שחזור סיסמא
+          </a>
+        </p>
 
       </div>
     </div>

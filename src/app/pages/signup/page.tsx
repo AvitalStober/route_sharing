@@ -6,19 +6,6 @@ import { signupFunction } from "@/app/services/userService";
 import GoogleSignInButton from "@/app/components/ConnectionSteps/GoogleButton";
 import SomeDatails from "@/app/components/ConnectionSteps/SomeDetails";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
-
-// Zod schemas for validation
-const passwordSchema = z
-  .string()
-  .min(4, "Password must be at least 4 characters long");
-const nameSchema = z
-  .string()
-  .min(2, "Name must be at least 2 characters long")
-  .regex(
-    /^[א-תA-Za-z\s]+$/,
-    "Name must contain only letters in Hebrew, English, or spaces"
-  );
 
 const Signup = () => {
   const router = useRouter();
@@ -35,10 +22,6 @@ const Signup = () => {
   const handleCompleteDetails = async (address: string) => {
     if (userData?.fullName && userData.email && userData.password) {
       try {
-        // Validate user data
-        nameSchema.parse(userData.fullName);
-        passwordSchema.parse(userData.password);
-
         const token = await signupFunction(
           userData?.fullName,
           userData?.email,
