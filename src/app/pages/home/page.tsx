@@ -10,6 +10,7 @@ import useStore from "@/app/store/store";
 import { FaBars } from "react-icons/fa"; // אייקון של 3 פסים
 import { IoClose } from "react-icons/io5"; // אייקון של סגירה
 import EditUser from "@/app/components/EditUser";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [isAreaChoosing, setIsAreaChoosing] = useState(false);
@@ -19,7 +20,7 @@ const Page = () => {
   const filterAddress = useStore((state) => state.filterAddress);
   const [isEditUser, setIsEditUser] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false); // מצב תפריט צד בתצוגה קטנה
-
+  const router = useRouter();
   useEffect(() => {
     if (filterAddress === true) {
       setIsAddRoute(false);
@@ -46,7 +47,15 @@ const Page = () => {
     <div className="min-h-screen flex flex-col">
       {/* כותרת ואייקון של תפריט רק בתצוגת טלפון */}
       <div className="flex z-50 sticky top-0 items-center justify-between bg-gray-800 text-white p-4">
-        <h1 className="text-xl font-bold font-cursive">Routes Sharing</h1>
+        <h1
+          onClick={() => {
+            router.push("/pages/Index");
+          }}
+          className="cursor-pointer font-cursive text-xl"
+        >
+          <i className="fas fa-map-signs pr-2 transform rotate-[-10deg]"></i>
+          Routes Sharing
+        </h1>
 
         <button
           onClick={() => setIsSideBarOpen(!isSideBarOpen)}
@@ -82,14 +91,14 @@ const Page = () => {
                 className="flex flex-col md:flex-row justify-around gap-4"
               >
                 {/* <div className="md:w-auto mb-3"> */}
-                  <FilteredRoutes
-                    selectedRoute={selectedRoute}
-                    setSelectedRoute={setSelectedRoute}
-                    setIsAreaChoosing={setIsAreaChoosing}
-                    setIsAddRoute={setIsAddRoute}
-                    setIsHomePage={setIsHomePage}
-                    setIsEditUser={setIsEditUser}
-                  />
+                <FilteredRoutes
+                  selectedRoute={selectedRoute}
+                  setSelectedRoute={setSelectedRoute}
+                  setIsAreaChoosing={setIsAreaChoosing}
+                  setIsAddRoute={setIsAddRoute}
+                  setIsHomePage={setIsHomePage}
+                  setIsEditUser={setIsEditUser}
+                />
                 {/* </div> */}
               </div>
             </div>

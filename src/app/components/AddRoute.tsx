@@ -113,8 +113,10 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
   }, [isLoaded]);
 
   return (
-    <div className="flex items-center">
-      <div className="justify-center w-[40%] m-2">
+    <div className="flex flex-col items-center">
+      {/* חלק עליון */}
+      <div dir="rtl" className="justify-center w-[80%] m-2">
+        {/* כתובת */}
         <div className="flex justify-center text-center items-center m-4 space-x-2">
           <input
             ref={autocompleteRef}
@@ -125,69 +127,75 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
             className="px-4 py-2 border rounded"
           />
         </div>
-        <div className="flex justify-center m-4">
-          <textarea
-            dir="rtl"
-            placeholder="הזן תיאור"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
-        <CloudinaryUploader setPictures={setPictures} />
-        <div className="flex flex-col justify-center my-2 space-y-2">
-          <button
-            onClick={() =>
-              calculateRoute(
-                routePoints,
-                description,
-                pictures,
-                setDirections,
-                setDisableMapClick,
-                setIsAddRoute
-              )
-            }
-            className="px-4 py-2 shadow-md border-green-500 text-green-500 rounded hover:shadow-lg"
-          >
-            חישוב מסלול ושליחה
-          </button>
-          <button
-            onClick={() =>
-              resetMap(
-                setRoutePoints,
-                setDirections,
-                setDisableMapClick,
-                mapRef,
-                directions
-              )
-            }
-            className="px-4 py-2 shadow-md border-red-500 text-red-500 rounded hover:shadow-lg"
-          >
-            איפוס מפה
-          </button>
-        </div>
-
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2
+        <div className="flex justify-between">
+          {/* תיאור */}
+          <div className="flex w-[75%] justify-center m-4">
+            <textarea
+              dir="rtl"
+              placeholder="הזן תיאור"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+          </div>
+          {/* כפתורים */}
+          <div className="flex-1 flex-col justify-center items-center my-2 space-y-2">
+            <CloudinaryUploader setPictures={setPictures} />
+            <button
+              onClick={() =>
+                calculateRoute(
+                  routePoints,
+                  description,
+                  pictures,
+                  setDirections,
+                  setDisableMapClick,
+                  setIsAddRoute
+                )
+              }
+              // className="px-4 py-2 shadow-md border-green-500 text-green-500 rounded hover:shadow-lg"
+              className="mt-4 p-2 border border-green-500 text-green-500 hover:bg-green-300 hover:text-white rounded-2xl w-[200px]"
+            >
+              חישוב מסלול ושליחה
+            </button>
+            <button
+              onClick={() =>
+                resetMap(
+                  setRoutePoints,
+                  setDirections,
+                  setDisableMapClick,
+                  mapRef,
+                  directions
+                )
+              }
+              // className="px-4 py-2 shadow-md border-red-500 text-red-500 rounded hover:shadow-lg"
+              className="mt-4 p-2 border border-red-500 text-red-500 hover:bg-red-300 hover:text-white rounded-2xl w-[200px]"
+            >
+              איפוס מפה
+            </button>
+          </div>
+          {/* <div
+            className="grid grid-cols-1 sm:grid-cols-2
             md:grid-cols-3 lg:grid-cols-4 gap-4"
-        >
-          {pictures.length > 0 &&
-            pictures.map((image: string, index: number) => (
-              <div key={index}>
-                <Image
-                  className="flex flex-wrap justify-center"
-                  src={image}
-                  height={300}
-                  width={200}
-                  alt="My cloudinary image"
-                  priority
-                />
-              </div>
-            ))}
+          >
+            {pictures.length > 0 &&
+              pictures.map((image: string, index: number) => (
+                <div key={index}>
+                  <Image
+                    className="flex flex-wrap justify-center"
+                    src={image}
+                    height={300}
+                    width={200}
+                    alt="My cloudinary image"
+                    priority
+                  />
+                </div>
+              ))}
+          </div> */}
         </div>
       </div>
+      {/* מפה */}
       {isLoaded ? (
-        <div className="w-[50%] m-8 border border-black rounded-xl">
+        <div className="w-[80%] m-8 border border-black rounded-xl">
           <GoogleMap
             mapContainerStyle={{
               width: "100%",

@@ -132,7 +132,7 @@ const CardMap: React.FC<CardMapProps> = ({
           //   {hours !== 0 && minutes !== 0 && ", "}
           //   {minutes && `${minutes} דקות`}
           // </p>
-          <p className="flex">
+          <div className="flex">
             <div className="flex items-center p-1">
               <FaRegClock />
             </div>{" "}
@@ -143,7 +143,7 @@ const CardMap: React.FC<CardMapProps> = ({
               {hours == 0 && minutes !== 0 && " דק'"}
               {hours !== 0 && minutes !== 0 && " שעות"}
             </div>
-          </p>
+          </div>
         )}
         <div className="flex flex-row items-center justify-between">
           {routeRates && (

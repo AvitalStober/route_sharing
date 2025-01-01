@@ -41,9 +41,9 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex justify-around items-center w-[100%] m-3">
+      <div className="flex justify-around items-center w-[100%] mt-3">
         {/* כתובת */}
-        <div dir="rtl" className="flex border items-center mb-4 mt-4 space-x-2">
+        <div dir="rtl" className="flex border items-center mt-4 space-x-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 192.904 192.904"
@@ -65,7 +65,8 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
       <div className="flex justify-center mb-4 space-x-2">
         <button
           onClick={() => resetMap(setAreaPoints)}
-          className="px-4 py-2 bg-red-500 text-white rounded"
+          // className="px-4 py-2 bg-red-500 text-white rounded"
+          className="mt-4 p-2 border border-red-500 text-red-500 hover:bg-red-300 hover:text-white rounded-2xl w-[200px]"
         >
           איפוס מפה
         </button>
@@ -81,15 +82,17 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
                 areaPoints,
                 setIsAreaChoosing,
                 setChangeAddress,
-                address,
+                address
               );
             }
           }}
           disabled={areaPoints.length < 3} // הכפתור מושבת אם יש פחות מ-3 נקודות
           className={`px-4 py-2 rounded ${
             areaPoints.length < 3
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed" // סגנון לכפתור מושבת
-              : "bg-yellow-500 text-white cursor-pointer" // סגנון לכפתור פעיל
+              ? // ? "bg-gray-300 text-gray-600 cursor-not-allowed" // סגנון לכפתור מושבת
+                // : "bg-yellow-500 text-white cursor-pointer" // סגנון לכפתור פעיל
+                "mt-4 p-2 border border-gray-500 text-gray-500 hover:bg-gray-300 hover:text-white rounded-2xl w-[200px] cursor-not-allowed"
+              : "mt-4 p-2 border border-yellow-500 text-yellow-500 hover:bg-yellow-200 hover:text-white rounded-2xl w-[200px]"
           }`}
         >
           מציאת מסלולים
@@ -97,7 +100,7 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
       </div>
 
       {isLoaded ? (
-        <div className="w-[60%] mb-8 border border-black rounded-xl">
+        <div className="w-[80%] mb-8 border border-black rounded-xl">
           <GoogleMap
             mapContainerStyle={{
               inlineSize: "100%",

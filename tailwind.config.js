@@ -19,6 +19,10 @@ module.exports = {
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
       },
+      fontFamily: {
+        cursive: ['Pacifico', 'cursive'], // לפונט המחובר באנגלית
+        // sans: ["Assistant", "sans-serif"], // לפונט בעברית
+      },
     },
   },
   plugins: [],
