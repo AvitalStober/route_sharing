@@ -4,8 +4,8 @@ import useStore from "@/app/store/store";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "../types/storeState";
 
-const url = "http://localhost:3000";
-// const url = "https://route-sharing-bsd7.vercel.app";
+// const url = "http://localhost:3000";
+const url = "https://route-sharing-bsd7.vercel.app";
 
 export const signupFunction = async (
   fullName: string,
