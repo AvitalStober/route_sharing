@@ -20,6 +20,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   setIsHomePage,
   setIsEditUser,
   setIsSideBarOpen,
+  setLoading,
 }) => {
   const setCurrentPage = useStore((state) => state.setCurrentPage);
   const setRoutes = useStore((state) => state.setRoutes);
@@ -27,6 +28,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   const setLastPage = useStore((state) => state.setLastPage);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
   const [selectedButton, setSelectedButton] = useState("index");
+  // const [noRoutesFound, setNoRoutesFound] = useState(false);
 
   const router = useRouter();
 
@@ -38,7 +40,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
     setCurrentPage(newPage);
     setLastPage(false);
     setSelectedRoute(label);
-    await fetchFunction(setRoutes, newPage, setLastPage);
+    await fetchFunction(setLoading, setRoutes, newPage, setLastPage);
   };
 
   const handleLogout = async () => {
@@ -69,13 +71,14 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
           onClick={() => {
             setSelectedButton("routes");
             setSelectedRoute("routes");
+            handleLoadRoutes(fetchRoutesInYourArea, "routes");
             setIsHomePage(false);
             setIsAddRoute(false);
             setIsAreaChoosing(false);
             setIsEditUser(false);
           }}
         >
-          <AddressSearch />
+          <AddressSearch setLoading={setLoading} />
         </div>
 
         {/* עמוד ראשי */}
@@ -155,18 +158,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"
                   />
                 </svg>
-                <LoadRoutes
-                  label="מסלולים שלי"
-                  selectedRoute="myRoutes"
-                  // onClick={() => {
-                  //   handleLoadRoutes(FetchOwnerRoutes, "myRoutes");
-                  //   setIsAreaChoosing(false);
-                  //   setIsAddRoute(false);
-                  //   setIsEditUser(false);
-                  //   setIsHomePage(false);
-                  //   setChangeAddress("");
-                  // }}
-                />
+                <LoadRoutes label="מסלולים שלי" selectedRoute="myRoutes" />
               </div>
             </li>
             {/* הוספת מסלול */}
@@ -257,17 +249,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
                   />
                 </svg>
-                <LoadRoutes
-                  label="מסלולים באזורך"
-                  selectedRoute="routes"
-                  // onClick={() => {
-                  //   handleLoadRoutes(fetchRoutesInYourArea, "routes");
-                  //   setIsAreaChoosing(false);
-                  //   setIsAddRoute(false);
-                  //   setIsHomePage(false);
-                  //   setIsEditUser(false);
-                  // }}
-                />
+                <LoadRoutes label="מסלולים באזורך" selectedRoute="routes" />
               </div>
             </li>
             {/* בחירת אזור */}
@@ -346,18 +328,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     />
                   </g>
                 </svg>
-                <LoadRoutes
-                  label="צפה בהיסטוריה"
-                  selectedRoute="history"
-                  // onClick={() => {
-                  //   handleLoadRoutes(fetchHistoryRoutes, "history");
-                  //   setIsAreaChoosing(false);
-                  //   setIsAddRoute(false);
-                  //   setIsHomePage(false);
-                  //   setIsEditUser(false);
-                  //   setChangeAddress("");
-                  // }}
-                />
+                <LoadRoutes label="צפה בהיסטוריה" selectedRoute="history" />
               </div>
             </li>
           </ul>

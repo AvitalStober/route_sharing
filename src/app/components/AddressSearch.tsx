@@ -10,8 +10,11 @@ import {
   handlePlaceSelect,
   isValidAddress,
 } from "../functions/addressSearch";
+import AddressSearchProps from "../types/props/AddressSearchProps";
 
-const AddressSearch = () => {
+const AddressSearch :React.FC<AddressSearchProps> = (
+  {setLoading}
+) => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
   const [userAddress, setUserAddress] = useState(""); // כתובת שכותב המשתמש
   const [errors, setErrors] = useState<{ address?: string }>({});
@@ -61,7 +64,13 @@ const AddressSearch = () => {
         setCurrentPage(newPage);
         setChangeAddress(address);
         setFilterAddress(true);
-        fetchRoutesInYourArea(setRoutes, currentPage, setLastPage, address);
+        fetchRoutesInYourArea(
+          setLoading,
+          setRoutes,
+          currentPage,
+          setLastPage,
+          address
+        );
       }
     }
   }, [address, isSelectedFromAutocomplete, initialAddress]);

@@ -4,8 +4,8 @@ import useStore from "@/app/store/store";
 import { jwtDecode } from "jwt-decode";
 import { Token } from "../types/storeState";
 
-// const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app";
+const url = "http://localhost:3000";
+// const url = "https://route-sharing-bsd7.vercel.app";
 
 export const signupFunction = async (
   fullName: string,
@@ -93,8 +93,13 @@ export const getUserById = async (userId: string) => {
   }
 };
 
-export const getUserHistoryRoutes = async (userId: string, page: number) => {
+export const getUserHistoryRoutes = async (
+  userId: string,
+  page: number,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   try {
+    if (page === 1) setLoading(true);
     const response = await axios.get(
       `${url}/api/users/historyRoutes/${userId}?page=${page}`
     );

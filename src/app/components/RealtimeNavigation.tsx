@@ -17,7 +17,7 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0); // אינדקס הנקודה הנוכחית במסלול
   const [instructions, setInstructions] = useState<string>(""); // הנחיות ניווט
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-const router=useRouter()
+  const router = useRouter();
   useEffect(() => {
     if (window.google && mapContainerRef.current) {
       const initializedMap = new google.maps.Map(mapContainerRef.current, {
