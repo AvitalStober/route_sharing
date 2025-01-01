@@ -5,6 +5,7 @@ import useStore from "../store/store";
 const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
   fetchFunction,
   setLoading,
+  loading,
   setRoutes,
   setLastPage,
   setCurrentPage,
@@ -13,25 +14,29 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
   const setFilterAddress = useStore((state) => state.setFilterAddress);
 
   return (
-    <button
-      onClick={() => {
-        setFilterAddress(false);
-        setCurrentPage((prevPage) => {
-          const newPage = prevPage + 1;
-          fetchFunction(
-            setLoading,
-            setRoutes,
-            newPage,
-            setLastPage,
-            changeAddress
-          );
-          return newPage;
-        });
-      }}
-      className="mt-6 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
-    >
-      טען עוד מסלולים {/* ↺ */}↻
-    </button>
+    <>
+      {!loading && (
+        <button
+          onClick={() => {
+            setFilterAddress(false);
+            setCurrentPage((prevPage) => {
+              const newPage = prevPage + 1;
+              fetchFunction(
+                setLoading,
+                setRoutes,
+                newPage,
+                setLastPage,
+                changeAddress
+              );
+              return newPage;
+            });
+          }}
+          className="mt-6 p-2 border border-blue-500 text-blue-500 hover:bg-blue-300 hover:text-white rounded-2xl w-[250px]"
+        >
+          טען עוד מסלולים {/* ↺ */}↻
+        </button>
+      )}
+    </>
   );
 };
 

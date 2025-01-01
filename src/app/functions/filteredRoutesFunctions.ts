@@ -60,7 +60,7 @@ export const FetchOwnerRoutes = async (
     return;
   }
   try {
-    setLoading(true);
+    if (currentPage === 1) setLoading(true);
     const response = await getRoutesByOwnerId(userToken.id, currentPage);
     const { routes, lastPage } = response;
 
@@ -88,7 +88,7 @@ export const fetchRoutesInYourArea = async (
   areaAddress?: string
 ): Promise<void> => {
   try {
-    setLoading(true);
+    if (currentPage === 1) setLoading(true);
     let data: { routes: IRoute[]; lastPage: boolean };
     const userTokenFromStorage = localStorage.getItem("userToken");
     if (userTokenFromStorage) {

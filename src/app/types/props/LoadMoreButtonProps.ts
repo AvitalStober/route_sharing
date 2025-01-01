@@ -9,6 +9,7 @@ export interface LoadMoreButtonProps {
     changeAddress?: string
   ) => void;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean | undefined;
   setRoutes: (routes: IRoute[]) => void;
   setLastPage: (lastPage: boolean) => void;
   setCurrentPage: (updateFn: (prevPage: number) => number) => void;

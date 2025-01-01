@@ -99,7 +99,7 @@ export const getUserHistoryRoutes = async (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
-    setLoading(true);
+    if (page === 1) setLoading(true);
     const response = await axios.get(
       `${url}/api/users/historyRoutes/${userId}?page=${page}`
     );

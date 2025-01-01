@@ -61,6 +61,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
             <LoadMoreButton
               fetchFunction={fetchRoutesInYourArea}
               setLoading={setLoading}
+              loading={loading}
               setRoutes={setRoutes}
               setLastPage={setLastPage}
               setCurrentPage={setCurrentPage}
@@ -77,6 +78,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
             <LoadMoreButton
               fetchFunction={fetchHistoryRoutes}
               setLoading={setLoading}
+              loading={loading}
               setRoutes={setRoutes}
               setLastPage={setLastPage}
               setCurrentPage={setCurrentPage}
@@ -92,6 +94,7 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
             <LoadMoreButton
               fetchFunction={FetchOwnerRoutes}
               setLoading={setLoading}
+              loading={loading}
               setRoutes={setRoutes}
               setLastPage={setLastPage}
               setCurrentPage={setCurrentPage}
