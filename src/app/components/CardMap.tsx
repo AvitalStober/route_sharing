@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 import Star from "./Star";
 import {
   handleStarClick,
-  getUserRouteRate,
 } from "@/app/functions/cardsFunctions";
 import { FaRegClock } from "react-icons/fa";
 
