@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { StoreState } from "../types/storeState";
-import { fetchRoutesInYourArea } from "@/app/functions/filteredRoutesFunctions";
+// import { fetchRoutesInYourArea } from "@/app/functions/filteredRoutesFunctions";
 
 const useStore = create<StoreState>((set) => ({
   token: null,
