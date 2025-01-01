@@ -6,6 +6,7 @@ import {
 } from "@/app/functions/usersFunctions";
 import { editRoutes } from "../services/routeService";
 import { Types } from "mongoose";
+import Swal from 'sweetalert2';
 
 export const addRouteToHistoryRoute = async (routeId: string) => {
   const userToken = getUserToken();
@@ -80,7 +81,12 @@ export const calculateRoute = (
   setMinutes: React.Dispatch<React.SetStateAction<number>>
 ) => {
   if (points.length < 2) {
-    alert("עליך לבחור לפחות שתי נקודות למסלול.");
+    Swal.fire({
+      icon: 'warning',
+      title: 'אזהרה!',
+      text: 'עליך לבחור לפחות שתי נקודות למסלול.',
+      confirmButtonText: 'אוקי'
+    });
     return;
   }
 
@@ -100,7 +106,12 @@ export const calculateRoute = (
       calculateWalkingTime(result, setHours, setMinutes);
       setDirections(result);
     } else {
-      alert("לא ניתן לחשב מסלול");
+      Swal.fire({
+        icon: 'error',
+        title: 'שגיאה!',
+        text: 'לא ניתן לחשב מסלול',
+        confirmButtonText: 'אוקי'
+      });
     }
   });
 };

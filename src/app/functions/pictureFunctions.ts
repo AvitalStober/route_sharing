@@ -1,5 +1,6 @@
 import { CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { Dispatch, SetStateAction } from "react";
+import Swal from 'sweetalert2';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleUpload = (
@@ -18,6 +19,11 @@ export const handleUpload = (
     setPictures((prevInfo: string[]) => [...prevInfo, imageUrl]);
   } else {
     console.error("Failed to upload image. Result info is invalid.");
-    alert("Upload failed. Please try again.");
+    Swal.fire({
+      icon: 'error',
+      title: 'שגיאה!',
+      text: 'העלאה נכשלה. אנא נסה שוב.',
+      confirmButtonText: 'אוקי'
+    });
   }
 };

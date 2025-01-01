@@ -148,7 +148,7 @@ const CardMap: React.FC<CardMapProps> = ({
           </div>
         )}
         <div className="flex flex-row items-center justify-between">
-          {routeRates && (
+         
             <Star
               rate={
                 filtered === 2
@@ -160,7 +160,6 @@ const CardMap: React.FC<CardMapProps> = ({
                 handleStarClickInternal(route!._id as string, newRate)
               }
             />
-          )}
         </div>
       </div>
 

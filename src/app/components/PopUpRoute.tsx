@@ -107,8 +107,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
             expanded={true}
             filtered={filtered}
           />
-          <Star rate={route.rate} filtered={1} />
-          <p dir="rtl">{route.description}</p>
+          <p dir="rtl" className="m-10 pr-2">{route.description}</p>
           {pictures && pictures.length > 0 && (
             <div className="flex flex-col items-center pt-10">
               <div

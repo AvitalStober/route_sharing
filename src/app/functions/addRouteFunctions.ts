@@ -1,5 +1,6 @@
 import { addRoute } from "../services/routeService";
 import { getUserToken } from "./usersFunctions";
+import Swal from 'sweetalert2';
 
 export const handleMapClick = (
   event: google.maps.MapMouseEvent,
@@ -92,7 +93,12 @@ export const calculateRoute = (
   setIsAddRoute: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   if (routePoints.length < 2) {
-    alert("עליך לבחור לפחות שתי נקודות למסלול.");
+    Swal.fire({
+      icon: 'warning',
+      title: 'שגיאה',
+      text: 'עליך לבחור לפחות שתי נקודות למסלול.',
+      confirmButtonText: 'הבנתי'
+    });
     return;
   }
 
@@ -137,7 +143,12 @@ export const calculateRoute = (
       setDisableMapClick(true);
       setIsAddRoute(false);
     } else {
-      alert("לא ניתן לחשב מסלול.");
+      Swal.fire({
+        icon: 'error',
+        title: 'שגיאה',
+        text: 'לא ניתן לחשב מסלול.',
+        confirmButtonText: 'הבנתי'
+      });
     }
   });
 };

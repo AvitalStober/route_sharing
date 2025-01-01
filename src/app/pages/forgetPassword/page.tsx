@@ -3,6 +3,7 @@ import { editPassword, verifyEmailAndSendOTP, verifyOTP } from "@/app/services/u
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import Swal from 'sweetalert2';
 
 // סכמות Zod
 const emailSchema = z
@@ -81,7 +82,12 @@ const ForgetPassword = () => {
 
             const response = await editPassword(email, newPassword);
             if (response) {
-                alert("סיסמא עודכנה בהצלחה");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'הצלחה!',
+                    text: 'סיסמא עודכנה בהצלחה',
+                    confirmButtonText: 'אוקי'
+                  });
                 router.push("/pages/login");
             } else {
                 setError("Failed to update password. Please try again.");
