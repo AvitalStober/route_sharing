@@ -1,4 +1,3 @@
-// pages/someDetails.tsx
 "use client";
 import React, { useState } from "react";
 import { z } from "zod";
@@ -14,6 +13,7 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
     address: "",
     birthDate: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{
     birthDate?: string;
     address?: string;
@@ -24,7 +24,7 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
     setErrors((prev) => ({ ...prev, address: undefined }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
     const validationResult = formSchema.safeParse(formData);
@@ -37,7 +37,12 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
       return;
     }
 
-    onSubmit(formData.address);
+    setIsLoading(true);
+    try {
+      await onSubmit(formData.address);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -94,7 +99,7 @@ const SomeDetails: React.FC<SomeDetailsProps> = ({ onSubmit }) => {
           type="submit"
           className="w-full px-4 py-2 font-semibold text-black border-2 border-blue-400 rounded-md hover:shadow-md focus:outline-none focus:ring-offset-2 focus:flex items-center justify-center"
         >
-          הרשמה
+          {isLoading ? "...שולח" : "הרשמה"}
         </button>
       </form>
     </div>
