@@ -7,7 +7,6 @@ import {
   handleStarClick,
 } from "@/app/functions/cardsFunctions";
 import Image from "next/image";
-import Star from "./Star";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
   const [selectedRatings, setSelectedRatings] = useState<{
@@ -35,15 +34,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
     setRouteRates(rates);
   };
 
-  const handleStarClickInternal = async (routeId: string, new_rate: number) => {
-    await handleStarClick(
-      routeId,
-      new_rate,
-      selectedRatings,
-      filtered,
-      setSelectedRatings
-    );
-  };
 
   return (
     <div className="m-4 w-full">
