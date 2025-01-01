@@ -61,19 +61,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
                 routeRates={routeRates}
               />
 
-              <div className="flex flex-row items-center justify-between">
-                <Star
-                  rate={
-                    filtered === 2
-                      ? routeRates[route._id as string] || 0
-                      : route.rate || 0
-                  }
-                  filtered={filtered}
-                  onClick={(newRate) =>
-                    handleStarClickInternal(route._id as string, newRate)
-                  }
-                />
-              </div>
             </div>
           ))}
         </div>
