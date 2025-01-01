@@ -4,14 +4,10 @@ import CardMap from "./CardMap";
 import RouteCardProps from "../types/props/‎RouteCardProps";
 import {
   getUserRouteRate,
-  handleStarClick,
 } from "@/app/functions/cardsFunctions";
 import Image from "next/image";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered }) => {
-  const [selectedRatings, setSelectedRatings] = useState<{
-    [routeId: string]: number;
-  }>({});
   const [routeRates, setRouteRates] = useState<{ [routeId: string]: number }>(
     {}
   );
