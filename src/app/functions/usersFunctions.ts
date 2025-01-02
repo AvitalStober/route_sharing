@@ -23,7 +23,6 @@ export const getUserAddress = async () => {
     const user: User | undefined = await fetchUserById();
 
     if (!user) {
-      // throw new Error("User not found");
       console.error("user not found");
       return;
     }

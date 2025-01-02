@@ -27,6 +27,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   // סטייט חדש עבור רשימת המסלולים
   const setLastPage = useStore((state) => state.setLastPage);
   const setChangeAddress = useStore((state) => state.setChangeAddress);
+  const setFilterAddress = useStore((state) => state.setFilterAddress);
   const [selectedButton, setSelectedButton] = useState("index");
   // const [noRoutesFound, setNoRoutesFound] = useState(false);
 
@@ -93,6 +94,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                 setIsEditUser(false);
                 setSelectedRoute("");
                 setChangeAddress("");
+                setFilterAddress(false);
                 if (setIsSideBarOpen) {
                   setIsSideBarOpen(false);
                 }
@@ -139,6 +141,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsEditUser(false);
                   setIsHomePage(false);
                   setChangeAddress("");
+                  setFilterAddress(false);
                   if (setIsSideBarOpen) {
                     setIsSideBarOpen(false);
                   }
@@ -171,6 +174,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsEditUser(false);
                   setSelectedButton("addRoute");
                   setChangeAddress("");
+                  setFilterAddress(false);
                   if (setIsSideBarOpen) {
                     setIsSideBarOpen(false);
                   }
@@ -297,7 +301,6 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                     ? "bg-blue-100"
                     : "hover:text-blue-600 hover:bg-blue-50"
                 } text-sm flex items-center rounded px-4 py-3 transition-all`}
-               
                 onClick={() => {
                   setSelectedButton("history");
                   handleLoadRoutes(fetchHistoryRoutes, "history");
@@ -306,6 +309,7 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
                   setIsHomePage(false);
                   setIsEditUser(false);
                   setChangeAddress("");
+                  setFilterAddress(false);
                   if (setIsSideBarOpen) {
                     setIsSideBarOpen(false);
                   }
@@ -343,8 +347,10 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
               <div
                 onClick={() => {
                   setSelectedButton("editProfile");
-                  // router.push("/pages/editUser");
                   setIsEditUser(true);
+                  setIsAreaChoosing(false);
+                  setIsAddRoute(false);
+                  setIsHomePage(false);
                   if (setIsSideBarOpen) {
                     setIsSideBarOpen(false);
                   }

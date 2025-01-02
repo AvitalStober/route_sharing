@@ -92,7 +92,10 @@ const CardMap: React.FC<CardMapProps> = ({
             {/* ראה עוד */}
             {!expanded && !isExpanded && (
               <button
-                onClick={() => setIsExpanded(true)}
+              onClick={() => {
+                setIsExpanded(true);
+                console.log("route!._id as string", route!._id as string);
+              }}
                 className="my-2 px-4 py-2 border-slate-700 text-slate-700 font-medium text-sm rounded-lg shadow hover:border-slate-700 hover:shadow-lg transition duration-300"
                 type="button"
               >
@@ -129,11 +132,6 @@ const CardMap: React.FC<CardMapProps> = ({
         className="h-[40px] mt-auto flex justify-between pt-3 items-center"
       >
         {(hours !== 0 || minutes !== 0) && (
-          // <p>
-          //   זמן הליכה: {hours !== 0 && `${hours} שעות`}
-          //   {hours !== 0 && minutes !== 0 && ", "}
-          //   {minutes && `${minutes} דקות`}
-          // </p>
           <div className="flex">
             <div className="flex items-center p-1">
               <FaRegClock />

@@ -8,14 +8,13 @@ import { fetchRoutesInYourArea } from "../functions/filteredRoutesFunctions";
 import {
   handleInputChange,
   handlePlaceSelect,
-  // isValidAddress,
+  isValidAddress,
 } from "../functions/addressSearch";
 import AddressSearchProps from "../types/props/AddressSearchProps";
 
-const AddressSearch :React.FC<AddressSearchProps> = (
-  {setLoading}
-) => {
+const AddressSearch: React.FC<AddressSearchProps> = ({ setLoading }) => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
+  const [firstTime, setFirstTime] = useState(""); // כתובת שכותב המשתמש
   const [userAddress, setUserAddress] = useState(""); // כתובת שכותב המשתמש
   const [errors, setErrors] = useState<{ address?: string }>({});
   const [isSelectedFromAutocomplete, setIsSelectedFromAutocomplete] =
@@ -29,10 +28,10 @@ const AddressSearch :React.FC<AddressSearchProps> = (
   const setChangeAddress = useStore((state) => state.setChangeAddress);
   const changeAddress = useStore((state) => state.changeAddress);
   const setFilterAddress = useStore((state) => state.setFilterAddress);
+  const filterAddress = useStore((state) => state.filterAddress);
 
   useEffect(() => {
     if (changeAddress === "") {
-      console.log("changeAddress", changeAddress);
       setAddress(changeAddress);
     }
   }, [changeAddress, setChangeAddress]);
@@ -52,11 +51,11 @@ const AddressSearch :React.FC<AddressSearchProps> = (
     if (userTokenFromStorage) {
       fetchAddress();
     }
-  }, []);
+  }, [filterAddress]);
 
   useEffect(() => {
     // אם הכתובת לא תקינה, נזין בחזרה את הכתובת המקורית
-    if (!isSelectedFromAutocomplete) {
+    if (!isSelectedFromAutocomplete && !isValidAddress(address)) {
       setAddress(initialAddress); // חוזר לכתובת המקורית
     } else {
       if (address !== userAddress && isSelectedFromAutocomplete) {
@@ -93,7 +92,8 @@ const AddressSearch :React.FC<AddressSearchProps> = (
           <input
             dir="rtl"
             type="text"
-            value={changeAddress === "" ? initialAddress : changeAddress} // תנאי לבחירת הערך
+            placeholder={changeAddress === "" ? initialAddress : changeAddress}
+            value={changeAddress} // תנאי לבחירת הערך
             className={`w-full outline-none bg-white text-sm px-5 py-3 ${
               errors.address ? "border-red-500" : "border-gray-300"
             }`}
@@ -101,7 +101,9 @@ const AddressSearch :React.FC<AddressSearchProps> = (
               handleInputChange(
                 event as React.ChangeEvent<HTMLInputElement>,
                 setChangeAddress,
-                setIsSelectedFromAutocomplete
+                setInitialAddress,
+                setIsSelectedFromAutocomplete,
+                filterAddress
               )
             }
             onFocus={(e) => {

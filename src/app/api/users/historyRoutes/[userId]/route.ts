@@ -9,7 +9,7 @@ type Props = {
 };
 
 export async function GET(request: Request, props: Props) {
-  const LIMIT = 2;
+  const LIMIT = 6;
 
   try {
     await connect();

@@ -6,7 +6,7 @@ import { calculateDistance } from "@/app/functions/routesFunctions";
 
 // הגדרת הלקוח של גוגל מפס
 const googleMaps = new Client({});
-const LIMIT = 2;
+const LIMIT = 6;
 
 export async function POST(request: Request) {
   try {

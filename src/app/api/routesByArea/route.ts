@@ -3,7 +3,7 @@ import connect from "@/app/lib/DB/connectDB";
 import Routes from "@/app/lib/models/routeModel";
 import { isPointInsidePolygon } from "@/app/functions/areaChoosingFunctions";
 
-const LIMIT = 2;
+const LIMIT = 6;
 
 export async function POST(request: Request) {
   try {
