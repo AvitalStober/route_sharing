@@ -8,7 +8,7 @@ import { fetchRoutesInYourArea } from "../functions/filteredRoutesFunctions";
 import {
   handleInputChange,
   handlePlaceSelect,
-  isValidAddress,
+  // isValidAddress,
 } from "../functions/addressSearch";
 import AddressSearchProps from "../types/props/AddressSearchProps";
 
@@ -56,7 +56,7 @@ const AddressSearch :React.FC<AddressSearchProps> = (
 
   useEffect(() => {
     // אם הכתובת לא תקינה, נזין בחזרה את הכתובת המקורית
-    if (!isSelectedFromAutocomplete && !isValidAddress(address)) {
+    if (!isSelectedFromAutocomplete) {
       setAddress(initialAddress); // חוזר לכתובת המקורית
     } else {
       if (address !== userAddress && isSelectedFromAutocomplete) {

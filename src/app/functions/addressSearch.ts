@@ -1,7 +1,7 @@
 // פונקציה שתבדוק אם הכתובת לא ריקה
-export const isValidAddress = (input: string): boolean => {
-  return input.trim().length > 0;
-};
+// export const isValidAddress = (input: string): boolean => {
+//   return input.trim().length > 0;
+// };
 
 export const handlePlaceSelect = (
   selectedAddress: string,
