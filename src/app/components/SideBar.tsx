@@ -29,7 +29,6 @@ const SideBar: React.FC<FilteredRoutesProps> = ({
   const setChangeAddress = useStore((state) => state.setChangeAddress);
   const setFilterAddress = useStore((state) => state.setFilterAddress);
   const [selectedButton, setSelectedButton] = useState("index");
-  // const [noRoutesFound, setNoRoutesFound] = useState(false);
 
   const router = useRouter();
 

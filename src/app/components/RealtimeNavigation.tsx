@@ -21,7 +21,7 @@ const RealtimeNavigation: React.FC<RealtimeNavigationProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
-    const [directions, setDirections] =
+    const [, setDirections] =
       useState<google.maps.DirectionsResult | null>(null);
   const router = useRouter();
 

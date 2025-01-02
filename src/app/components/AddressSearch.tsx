@@ -14,7 +14,6 @@ import AddressSearchProps from "../types/props/AddressSearchProps";
 
 const AddressSearch: React.FC<AddressSearchProps> = ({ setLoading }) => {
   const [address, setAddress] = useState(""); // כתובת שכותב המשתמש
-  const [firstTime, setFirstTime] = useState(""); // כתובת שכותב המשתמש
   const [userAddress, setUserAddress] = useState(""); // כתובת שכותב המשתמש
   const [errors, setErrors] = useState<{ address?: string }>({});
   const [isSelectedFromAutocomplete, setIsSelectedFromAutocomplete] =
