@@ -54,9 +54,9 @@ const Signup = () => {
               יצירת חשבון חדש
             </h2>
             <SignUpForm onContinue={handleSignUp} />
-            <div className="text-center">
+            {/* <div className="text-center">
               <GoogleSignInButton />
-            </div>
+            </div> */}
             <p className="mt-2 text-center text-gray-700">
               יש לך חשבון?{" "}
               <a href="./login" className="text-blue-500">

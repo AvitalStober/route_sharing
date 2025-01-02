@@ -6,6 +6,8 @@ import { getUserToken } from "../functions/usersFunctions";
 import MapLoader from "./MapLoader";
 import Image from "next/image";
 import EditUserProps from "../types/props/EditUserProps";
+import useStore from "../store/store";
+import { generateToken } from "../functions/tokenFunction";
 
 const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
   const [userDetails, setUserDetails] = useState<User | null>(null);
@@ -13,6 +15,7 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const setChangeAddress = useStore((state) => state.setChangeAddress);
 
   const userToken = getUserToken();
 
@@ -53,6 +56,7 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
 
   const handlePlaceSelect = (selectedAddress: string) => {
     setAddress(selectedAddress);
+    setChangeAddress(selectedAddress)
   };
 
   if (!userDetails) {
@@ -111,9 +115,8 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
               placeholder="address"
               value={address}
               onChange={(e) => setAddress(e.target.value)} // הוספנו את ה-onChange
-              className={`focus:outline-none focus:border-none w-full bg-none ${
-                errors.address ? "border-red-500" : "border-gray-300"
-              } rounded-md`}
+              className={`focus:outline-none focus:border-none w-full bg-none ${errors.address ? "border-red-500" : "border-gray-300"
+                } rounded-md`}
               onFocus={(e) => {
                 const autocomplete = new google.maps.places.Autocomplete(
                   e.target

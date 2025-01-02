@@ -99,7 +99,6 @@ export const fetchRoutesInYourArea = async (
         data = await getRoutesInYourArea(areaAddress as string, currentPage!);
       }
       if (data && data.routes) {
-        debugger;
         if (currentPage === 1) {
           setRoutes(data.routes);
           setLoading(false);

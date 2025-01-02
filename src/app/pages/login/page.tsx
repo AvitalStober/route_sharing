@@ -43,9 +43,9 @@ const Login: React.FC = () => {
         </h2>
         {error && <p className="text-sm text-red-600">{error}</p>}
         <LoginForm onSubmit={handleLogin} />
-        <div className="text-center">
+        {/* <div className="text-center">
           <GoogleSignInButton />
-        </div>
+        </div> */}
         <p className="mt-2 text-center text-gray-700">
           עדיין אין לך חשבון?{" "}
           <a href="./signup" className="text-blue-500">
