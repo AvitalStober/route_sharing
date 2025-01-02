@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/app/components/ConnectionSteps/LoginForm";
-import GoogleSignInButton from "@/app/components/ConnectionSteps/GoogleButton";
 import { loginFunction } from "@/app/services/userService";
 import { z } from "zod";
 
