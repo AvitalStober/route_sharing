@@ -8,6 +8,7 @@ import { fetchRouteById } from "../functions/routesFunctions";
 import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
 import { IoClose } from "react-icons/io5";
 import ImageModal from "./ImageModal";
+import {Loading} from "../loading";
 
 const PopUpRoute: React.FC<PopUpRouteProps> = ({
   onClose,
@@ -86,7 +87,6 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
       <div
         className="flex flex-row justify-between items-center w-full mb-4"
         ref={elementRef}
-        dir="rtl"
       >
         <div
           onClick={handleClose}
@@ -98,7 +98,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
         <h2 className="font-bold text-center flex-grow">פרטי מסלול</h2>
       </div>
       {!route ? (
-        <p>Loading...</p>
+        <Loading/>
       ) : (
         <>
           <CardMap

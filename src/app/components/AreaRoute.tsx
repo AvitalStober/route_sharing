@@ -16,7 +16,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 
-const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
+const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing, setLoading }) => {
   const [address, setAddress] = useState("");
   const [center, setCenter] = useState<google.maps.LatLngLiteral>();
   const polygonRef = useRef<google.maps.Polygon | null>(null);
@@ -76,6 +76,7 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
             setCurrentPage(newPage);
             {
               displayPoints(
+                setLoading,
                 setRoutes,
                 newPage,
                 setLastPage,
@@ -89,9 +90,7 @@ const AreaRoute: React.FC<AreaRouteProps> = ({ setIsAreaChoosing }) => {
           disabled={areaPoints.length < 3} // הכפתור מושבת אם יש פחות מ-3 נקודות
           className={`px-4 py-2 rounded ${
             areaPoints.length < 3
-              ? // ? "bg-gray-300 text-gray-600 cursor-not-allowed" // סגנון לכפתור מושבת
-                // : "bg-yellow-500 text-white cursor-pointer" // סגנון לכפתור פעיל
-                "mt-4 p-2 border border-gray-500 text-gray-500 hover:bg-gray-300 hover:text-white rounded-2xl w-[200px] cursor-not-allowed"
+              ? "mt-4 p-2 border border-gray-500 text-gray-500 hover:bg-gray-300 hover:text-white rounded-2xl w-[200px] cursor-not-allowed"
               : "mt-4 p-2 border border-yellow-500 text-yellow-500 hover:bg-yellow-200 hover:text-white rounded-2xl w-[200px]"
           }`}
         >
