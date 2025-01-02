@@ -6,6 +6,7 @@ import { getUserToken } from "../functions/usersFunctions";
 import MapLoader from "./MapLoader";
 import Image from "next/image";
 import EditUserProps from "../types/props/EditUserProps";
+import {Loading} from "../loading";
 
 const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
   const [userDetails, setUserDetails] = useState<User | null>(null);
@@ -56,7 +57,7 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
   };
 
   if (!userDetails) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   return (

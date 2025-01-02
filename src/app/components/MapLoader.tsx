@@ -11,7 +11,7 @@ const MapLoader = ({ children }: { children: React.ReactNode }) => {
     language: "he", // שפה עברית
   });
 
-  if (!isLoaded) return <div>Loading map...</div>;
+  if (!isLoaded) return <p dir="rtl">טוען כתובת...</p>;
 
   return <>{children}</>;
 };

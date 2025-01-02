@@ -4,7 +4,7 @@ import CardMap from "./CardMap";
 import RouteCardProps from "../types/props/‎RouteCardProps";
 import { getUserRouteRate } from "@/app/functions/cardsFunctions";
 import Image from "next/image";
-import Loading from "../loading";
+import {ReverseLoading} from "../loading";
 
 const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered, loading }) => {
   const [routeRates, setRouteRates] = useState<{ [routeId: string]: number }>(
@@ -32,7 +32,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered, loading }) => {
   return (
     <>
       {loading ? (
-        <Loading />
+        <ReverseLoading />
       ) : (
         <div className="m-4 w-full">
           {Array.isArray(Routes) && Routes.length > 0 ? (
@@ -48,8 +48,6 @@ const RouteCard: React.FC<RouteCardProps> = ({ Routes, filtered, loading }) => {
                     filtered={filtered}
                     routeRates={routeRates}
                   />
-
-                  
                 </div>
               ))}
             </div>

@@ -105,13 +105,14 @@ const FilteredRoutes: React.FC<FilteredRoutesProps> = ({
       {selectedRoute === "chosenArea" && (
         <>
           <RouteCard Routes={Routes} filtered={1} loading={loading} />
-          {!lastPage && (
+          {!lastPage && !loading && (
             <button
               onClick={(event) => {
                 event.preventDefault();
                 setCurrentPage((prevPage) => {
                   const newPage = prevPage + 1;
                   displayPoints(
+                    setLoading,
                     setRoutes,
                     newPage,
                     setLastPage,

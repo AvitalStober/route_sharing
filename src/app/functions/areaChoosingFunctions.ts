@@ -141,6 +141,7 @@ export const resetMap = (
 };
 
 export const displayPoints = async (
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setRoutes: (routes: Route[]) => void,
   currentPage: number | undefined,
   setLastPage: (lastPage: boolean) => void,
@@ -153,6 +154,10 @@ export const displayPoints = async (
     setChangeAddress(address);
   }
   try {
+    if (currentPage === 1 && setIsAreaChoosing) {
+      setLoading(true);
+      setIsAreaChoosing(false);
+    }
     let data: { routes: Route[]; lastPage: boolean };
     if (areaPoints) {
       localStorage.setItem("areaPoints", JSON.stringify(areaPoints));
@@ -167,11 +172,14 @@ export const displayPoints = async (
     if (data && data.routes) {
       if (currentPage === 1) {
         setRoutes(data.routes);
+        setLoading(false);
       } else if (appendRoutes) {
         appendRoutes(data.routes);
+        setLoading(false);
       }
     } else {
       setRoutes([]);
+      setLoading(false);
     }
     if (setLastPage)
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions

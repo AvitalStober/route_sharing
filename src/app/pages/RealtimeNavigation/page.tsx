@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { fetchRouteById } from "@/app/functions/routesFunctions";
 import IRoute from "@/app/types/routes";
+import Loading from "@/app/loading";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -24,7 +25,7 @@ const Page = () => {
   }, [routeId]);
 
   if (!route) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return <RealtimeNavigation waypoints={route.pointsArray} />;
