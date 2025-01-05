@@ -3,7 +3,6 @@
 import SignUpForm from "@/app/components/ConnectionSteps/SignupForm";
 import React, { useState } from "react";
 import { signupFunction } from "@/app/services/userService";
-import GoogleSignInButton from "@/app/components/ConnectionSteps/GoogleButton";
 import SomeDatails from "@/app/components/ConnectionSteps/SomeDetails";
 import { useRouter } from "next/navigation";
 
@@ -54,9 +53,9 @@ const Signup = () => {
               יצירת חשבון חדש
             </h2>
             <SignUpForm onContinue={handleSignUp} />
-            <div className="text-center">
+            {/* <div className="text-center">
               <GoogleSignInButton />
-            </div>
+            </div> */}
             <p className="mt-2 text-center text-gray-700">
               יש לך חשבון?{" "}
               <a href="./login" className="text-blue-500">

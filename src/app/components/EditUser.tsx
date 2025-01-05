@@ -56,7 +56,7 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
 
   const handlePlaceSelect = (selectedAddress: string) => {
     setAddress(selectedAddress);
-    setChangeAddress(selectedAddress);
+    setChangeAddress(selectedAddress)
   };
 
   if (!userDetails) {
@@ -115,9 +115,8 @@ const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
               placeholder="address"
               value={address}
               onChange={(e) => setAddress(e.target.value)} // הוספנו את ה-onChange
-              className={`focus:outline-none focus:border-none w-full bg-none ${
-                errors.address ? "border-red-500" : "border-gray-300"
-              } rounded-md`}
+              className={`focus:outline-none focus:border-none w-full bg-none ${errors.address ? "border-red-500" : "border-gray-300"
+                } rounded-md`}
               onFocus={(e) => {
                 const autocomplete = new google.maps.places.Autocomplete(
                   e.target

@@ -34,6 +34,9 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
   const [disableMapClick, setDisableMapClick] = useState(false); // שליטה על קליקים במפה
   const libraries: ("geometry" | "places")[] = ["geometry", "places"];
 
+  const [feedbackMessage, setFeedbackMessage] = useState(""); // הודעת משוב
+  const [feedbackColor, setFeedbackColor] = useState("text-gray-500"); // צבע המשוב
+
   // map loading
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLMAPS_API_KEY || "",
@@ -111,6 +114,26 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
     }
   }, [isLoaded]);
 
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setDescription(value);
+
+    if (value.length < 5) {
+      setFeedbackMessage("אופס! זה קצר מדי, תן עוד קצת פרטים!");
+      setFeedbackColor("text-red-500");
+    } else if (value.length <= 15) {
+      setFeedbackMessage("מתקדם יפה, אבל בוא נוסיף עוד קצת פירוט! 😎");
+      setFeedbackColor("text-orange-500");
+    } else if (value.length <= 25) {
+      setFeedbackMessage("כמעט שם! עוד קצת וזה יהיה מושלם! 😊");
+      setFeedbackColor("text-green-500");
+    } else {
+      setFeedbackMessage("מצוין! תיאור נהדר ומפורט! 🎉");
+      setFeedbackColor("text-green-700");
+    }
+  };
+
+
   return (
     <div className="flex flex-col items-center">
       {/* חלק עליון */}
@@ -128,20 +151,24 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
         </div>
         <div className="flex justify-between">
           {/* תיאור */}
-          <div className="flex w-[75%] justify-center m-4">
+          <div className="flex flex-col w-[75%] justify-center m-4">
             <textarea
               dir="rtl"
-              placeholder="הזן תיאור"
+              placeholder="ככל שתוסיפו יותר פירוט, זה יועיל למשתמשים להבין את אופי המסלול.                                  לדוגמה: מסלול המתאים למשפחות. מתחיל במגרש חניה מוסדר וממשיך בשביל עפר רחב עם נוף פתוח לכיוון צפון. לאורך הדרך יש נקודת תצפית יפה על העמק, ספסלים לנוחות המטיילים ועצי פרי בעונה. המסלול מישורי ברובו עם עלייה קלה לקראת הסוף ומתאים גם לרוכבי אופניים. רמת קושי: קלה."
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={handleDescriptionChange}
+              className="block p-2.5 w-full h-40 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
+            <div className={`text-sm ${feedbackColor} mt-2`}>
+              {feedbackMessage}
+            </div>
           </div>
           {/* כפתורים */}
           <div className="flex-1 flex-col justify-center items-center my-2 space-y-2">
             <CloudinaryUploader setPictures={setPictures} />
             <button
               onClick={() =>
+                description.length >= 5 &&
                 calculateRoute(
                   routePoints,
                   description,
@@ -151,7 +178,7 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
                   setIsAddRoute
                 )
               }
-              // className="px-4 py-2 shadow-md border-green-500 text-green-500 rounded hover:shadow-lg"
+              disabled={description.length < 5}
               className="mt-4 p-2 border border-green-500 text-green-500 hover:bg-green-300 hover:text-white rounded-2xl w-[200px]"
             >
               חישוב מסלול ושליחה
@@ -166,30 +193,11 @@ const AddRoute: React.FC<AddRouteProps> = ({ setIsAddRoute }) => {
                   directions
                 )
               }
-              // className="px-4 py-2 shadow-md border-red-500 text-red-500 rounded hover:shadow-lg"
               className="mt-4 p-2 border border-red-500 text-red-500 hover:bg-red-300 hover:text-white rounded-2xl w-[200px]"
             >
               איפוס מפה
             </button>
           </div>
-          {/* <div
-            className="grid grid-cols-1 sm:grid-cols-2
-            md:grid-cols-3 lg:grid-cols-4 gap-4"
-          >
-            {pictures.length > 0 &&
-              pictures.map((image: string, index: number) => (
-                <div key={index}>
-                  <Image
-                    className="flex flex-wrap justify-center"
-                    src={image}
-                    height={300}
-                    width={200}
-                    alt="My cloudinary image"
-                    priority
-                  />
-                </div>
-              ))}
-          </div> */}
         </div>
       </div>
       {/* מפה */}
