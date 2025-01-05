@@ -6,11 +6,11 @@ import { CardMapProps } from "../types/props/CardMapProps";
 import {
   addRouteToHistoryRoute,
   calculateRoute,
+  handleStarClick,
 } from "../functions/cardsFunctions";
 import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 import { useRouter } from "next/navigation";
 import Star from "./Star";
-import { handleStarClick } from "@/app/functions/cardsFunctions";
 import { FaRegClock } from "react-icons/fa";
 
 const CardMap: React.FC<CardMapProps> = ({
@@ -142,19 +142,21 @@ const CardMap: React.FC<CardMapProps> = ({
             </div>
           </div>
         )}
-        <div className="flex flex-row items-center justify-between">
-          <Star
-            rate={
-              filtered === 2
-                ? routeRates![route!._id as string] || 0
-                : route!.rate || 0
-            }
-            filtered={filtered}
-            onClick={(newRate) =>
-              handleStarClickInternal(route!._id as string, newRate)
-            }
-          />
-        </div>
+        {(!expanded || filtered !== 2) && (
+          <div className="flex flex-row items-center justify-between">
+            <Star
+              rate={
+                filtered === 2
+                  ? routeRates![route!._id as string] || 0
+                  : route!.rate || 0
+              }
+              filtered={filtered}
+              onClick={(newRate) =>
+                handleStarClickInternal(route!._id as string, newRate)
+              }
+            />
+          </div>
+        )}
       </div>
 
       {isExpanded && (

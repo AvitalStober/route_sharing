@@ -8,7 +8,7 @@ import { fetchRouteById } from "../functions/routesFunctions";
 import { PopUpRouteProps } from "../types/props/PopUpRouteProps";
 import { IoClose } from "react-icons/io5";
 import ImageModal from "./ImageModal";
-import {Loading} from "../loading";
+import { Loading } from "../loading";
 
 const PopUpRoute: React.FC<PopUpRouteProps> = ({
   onClose,
@@ -29,7 +29,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
 
       if (newRoute) {
         setRoute(newRoute);
-        setPictures(newRoute.gallery);
+        if (newRoute.gallery) setPictures(newRoute.gallery);
         setIsVisible(true);
       }
     }
@@ -98,7 +98,7 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
         <h2 className="font-bold text-center flex-grow">פרטי מסלול</h2>
       </div>
       {!route ? (
-        <Loading/>
+        <Loading />
       ) : (
         <>
           <CardMap
@@ -107,7 +107,9 @@ const PopUpRoute: React.FC<PopUpRouteProps> = ({
             expanded={true}
             filtered={filtered}
           />
-          <p dir="rtl" className="m-10 pr-2">{route.description}</p>
+          <p dir="rtl" className="m-10 pr-2">
+            {route.description}
+          </p>
           {pictures && pictures.length > 0 && (
             <div className="flex flex-col items-center pt-10">
               <div

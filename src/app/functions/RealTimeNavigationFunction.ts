@@ -1,6 +1,7 @@
 import { RoutePoint, SimplePoint } from "../types/points";
 import { calculateDistance } from "./routesFunctions";
 
+//התחלת הניווט
 export const startNavigation = (
   service: google.maps.DirectionsService,
   renderer: google.maps.DirectionsRenderer,
@@ -14,6 +15,7 @@ export const startNavigation = (
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
   googleMap: google.maps.Map | null
 ) => {
+  //מציאת מיקום המשתמש
   const watchId = navigator.geolocation.watchPosition(
     (position) => {
       const currentLocation = {
@@ -59,16 +61,21 @@ export const startNavigation = (
   };
 };
 
+//
 const updateDirections = (
   currentLocation: google.maps.LatLngLiteral,
+  //Google Maps API שמשמש לבקשת הוראות ניווט.
   service: google.maps.DirectionsService,
+  //של Google Maps API, שמציג את המסלול על המפה.
   renderer: google.maps.DirectionsRenderer,
   map: google.maps.Map, // הוספת המפה כפרמטר
+  //האינדקס הנוכחי במערך של נקודת הציון (waypoint) במסלול
   currentIndex: number,
   waypoints: {
     lat: number;
     lng: number;
   }[],
+  //פונקציה שמעדכנת את ההוראות למשתמש
   setInstructions: React.Dispatch<React.SetStateAction<string>>,
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
@@ -77,8 +84,10 @@ const updateDirections = (
     return;
   }
 
+  //חותך את המערך לנקודות הרלוונטיות לאחר כל התקדמות
   const remainingWaypoints = waypoints.slice(currentIndex).map((point) => ({
     location: point,
+    //מציין אם זו נקודת עצירה
     stopover: false,
   }));
 
