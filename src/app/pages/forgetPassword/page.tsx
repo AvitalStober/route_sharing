@@ -125,7 +125,7 @@ const ForgetPassword = () => {
             ) : step === 2 ? (
                 <>
                     <h2 className="text-xl font-semibold mb-4">הכנסת קוד אימות</h2>
-                    <p className="mb-4 text-gray-600">We have sent an OTP to your email.</p>
+                    <p className="mb-4 text-gray-600">הכנס את קוד האימות שנשלח אליך במייל</p>
                     <input
                         type="text"
                         placeholder="הכנס קוד אימות"
