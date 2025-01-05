@@ -1,5 +1,5 @@
-// import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-// import { calculateDistance } from "./routesFunctions";
+import { RoutePoint, SimplePoint } from "../types/points";
+import { calculateDistance } from "./routesFunctions";
 
 export const startNavigation = (
   service: google.maps.DirectionsService,
@@ -13,7 +13,6 @@ export const startNavigation = (
   setInstructions: React.Dispatch<React.SetStateAction<string>>,
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
   googleMap: google.maps.Map | null
-  // router: AppRouterInstance
 ) => {
   const watchId = navigator.geolocation.watchPosition(
     (position) => {
@@ -21,24 +20,6 @@ export const startNavigation = (
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
-
-      // if (
-      //   calculateDistance(
-      //     currentLocation.lat,
-      //     currentLocation.lng,
-      //     waypoints[0].lat,
-      //     waypoints[0].lng
-      //   ) > 2000
-      // ) {
-      //   const confirmStartNavigation = window.confirm(
-      //     "המסלול שבחרת רחוק ממיקומך, האם תרצה בכל זאת לצאת לדרך?"
-      //   );
-      //   if (!confirmStartNavigation) {
-      //     navigator.geolocation.clearWatch(watchId); // עצור את המעקב
-      //     router.push("/pages/home");
-      //     return; // יציאה מהפונקציה
-      //   }
-      // }
 
       setErrorMessage(null);
       updateDirections(
@@ -51,7 +32,6 @@ export const startNavigation = (
         setInstructions,
         setCurrentIndex
       );
-      
     },
     (error) => {
       if (error.code === error.PERMISSION_DENIED) {
@@ -78,64 +58,6 @@ export const startNavigation = (
     navigator.geolocation.clearWatch(watchId);
   };
 };
-
-// const updateDirections = (
-//   currentLocation: google.maps.LatLngLiteral,
-//   service: google.maps.DirectionsService,
-//   renderer: google.maps.DirectionsRenderer,
-//   currentIndex: number,
-//   waypoints: {
-//     lat: number;
-//     lng: number;
-//   }[],
-//   setInstructions: React.Dispatch<React.SetStateAction<string>>,
-//   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
-// ) => {
-//   if (currentIndex >= waypoints.length) {
-//     setInstructions("הגעת ליעד!");
-//     return;
-//   }
-
-//   const remainingWaypoints = waypoints.slice(currentIndex).map((point) => ({
-//     location: point,
-//     stopover: false,
-//   }));
-
-//   // היעד יהיה הנקודה האחרונה במסלול
-//   // const destination = waypoints[waypoints.length - 1];
-//   debugger;
-//   service.route(
-//     {
-//       origin: currentLocation,
-//       destination: currentLocation,
-//       waypoints: remainingWaypoints,
-//       travelMode: google.maps.TravelMode.WALKING,
-//     },
-//     (response, status) => {
-//       if (status === google.maps.DirectionsStatus.OK) {
-//         renderer.setDirections(response);
-
-//         // מציאת הצעד הבא
-//         const leg = response!.routes[0].legs[0];
-//         const nextStep = getNextStep(leg);
-
-//         setInstructions(nextStep);
-
-//         // בדיקת אם הגעת לנקודה הבאה במסלול
-//         const nextWaypoint = waypoints[currentIndex];
-//         const distance = haversineDistance(currentLocation, nextWaypoint);
-
-//         if (distance < 0.05) {
-//           setCurrentIndex((prevIndex) => prevIndex + 1); // עדכון אינדקס לנקודה הבאה
-//         }
-//       } else {
-//         console.error("Directions request failed", status);
-//       }
-//     }
-//   );
-
-//   debugger;
-// };
 
 const updateDirections = (
   currentLocation: google.maps.LatLngLiteral,
@@ -175,7 +97,6 @@ const updateDirections = (
         renderer.setDirections(response);
         // עדכון מרכז המפה לנקודה הנוכחית
         map.setCenter(waypoints[currentIndex]);
-        
 
         // מציאת הצעד הבא
         const leg = response!.routes[0].legs[0];
@@ -196,7 +117,6 @@ const updateDirections = (
     }
   );
 };
-
 
 const getNextStep = (leg: google.maps.DirectionsLeg) => {
   if (leg.steps.length > 0) {
@@ -221,4 +141,24 @@ const haversineDistance = (
       Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // מרחק בק"מ
+};
+
+export const calculateWalkingTime = (
+  points: SimplePoint[] | RoutePoint[],
+  setHours: React.Dispatch<React.SetStateAction<number>>,
+  setMinutes: React.Dispatch<React.SetStateAction<number>>
+) => {
+  const walkingSpeed = 1.39; // מהירות הליכה ממוצעת במטרים לשנייה
+  let totalDistance = 0;
+
+  for (let i = 0; i < points.length - 1; i++) {
+    const { lat: lat1, lng: lng1 } = points[i];
+    const { lat: lat2, lng: lng2 } = points[i + 1];
+
+    totalDistance += calculateDistance(lat1, lng1, lat2, lng2);
+  }
+
+  const totalTimeInSeconds = totalDistance / walkingSpeed;
+  setHours(Math.floor(totalTimeInSeconds / 3600));
+  setMinutes(Math.floor((totalTimeInSeconds % 3600) / 60));
 };
