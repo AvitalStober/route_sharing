@@ -7,7 +7,6 @@ import MapLoader from "./MapLoader";
 import Image from "next/image";
 import EditUserProps from "../types/props/EditUserProps";
 import useStore from "../store/store";
-import { generateToken } from "../functions/tokenFunction";
 
 const EditUser: React.FC<EditUserProps> = ({ setIsEditUser }) => {
   const [userDetails, setUserDetails] = useState<User | null>(null);
