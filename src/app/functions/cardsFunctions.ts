@@ -121,6 +121,7 @@ export const calculateWalkingTime = (
   setHours: React.Dispatch<React.SetStateAction<number>>,
   setMinutes: React.Dispatch<React.SetStateAction<number>>
 ) => {
+  debugger
   let totalTimeInSeconds = 0;
 
   const route = result.routes[0];

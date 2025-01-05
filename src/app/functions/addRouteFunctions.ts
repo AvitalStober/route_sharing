@@ -49,39 +49,6 @@ export const resetMap = (
   }
 };
 
-// export const handleAddressSubmit = (
-//   address: string,
-//   setCenter: React.Dispatch<React.SetStateAction<google.maps.LatLngLiteral>>,
-//   setRoutePoints: React.Dispatch<
-//     React.SetStateAction<google.maps.LatLngLiteral[]>
-//   >,
-//   mapRef: React.MutableRefObject<google.maps.Map | null>
-// ) => {
-//   const geocoder = new google.maps.Geocoder();
-
-//   geocoder.geocode({ address }, (results, status) => {
-//     if (status === google.maps.GeocoderStatus.OK && results!.length > 0) {
-//       const location = results![0].geometry.location;
-
-//       setCenter({
-//         lat: location.lat(),
-//         lng: location.lng(),
-//       });
-
-//       setRoutePoints((prevPoints) => [
-//         ...prevPoints,
-//         { lat: location.lat(), lng: location.lng() },
-//       ]);
-
-//       if (mapRef.current) {
-//         mapRef.current.setZoom(15);
-//       }
-//     } else {
-//       alert("כתובת לא נמצאה, נסה שוב.");
-//     }
-//   });
-// };
-
 export const calculateRoute = (
   routePoints: google.maps.LatLngLiteral[],
   description: string,

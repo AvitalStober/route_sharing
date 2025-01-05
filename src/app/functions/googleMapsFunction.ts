@@ -26,7 +26,6 @@ export const calcKMAndUpdate = (points: google.maps.LatLngLiteral[]) => {
             0
           );
   
-          console.log(totalDistance);
           addDistance(totalDistance); // עדכון הקילומטרים במערכת
           resolve(totalDistance); // החזרת הערך
           

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const url = "http://localhost:3000";
-const url = "https://route-sharing-bsd7.vercel.app";
+const url = "http://localhost:3000";
+// const url = "https://route-sharing-bsd7.vercel.app";
 
 // פונקציה להוספת קילומטרים
 export const addDistance = async (meter: number) => {
@@ -19,7 +19,6 @@ export const addDistance = async (meter: number) => {
 export const getMeter = async () => {
   try {
     const response = await axios.get(`${url}/api/distance`);
-    console.log("response.data", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching meters:", error);

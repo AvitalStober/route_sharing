@@ -10,9 +10,7 @@ import {
 import { calcKMAndUpdate } from "../functions/googleMapsFunction";
 import { useRouter } from "next/navigation";
 import Star from "./Star";
-import {
-  handleStarClick,
-} from "@/app/functions/cardsFunctions";
+import { handleStarClick } from "@/app/functions/cardsFunctions";
 import { FaRegClock } from "react-icons/fa";
 
 const CardMap: React.FC<CardMapProps> = ({
@@ -73,36 +71,35 @@ const CardMap: React.FC<CardMapProps> = ({
     <div>
       <div className="flex justify-center">
         {/* {!isExpanded && ( */}
-          <>
-            {/* כפתור בחירת מסלול */}
-            {/* {(filtered === 1 && !expanded) || (filtered === 4 && expanded) ? ( */}
-              <div dir="rtl" className="m-2">
-                <button
-                  onClick={() => {
-                    addRouteToHistoryRoute(route!._id as string);
-                    handleClick(route!._id as string);
-                    calcKMAndUpdate(route!.pointsArray);
-                  }}
-                  className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
-                >
-                  צא לדרך🚶‍♂️
-                </button>
-              </div>
+        <>
+          {/* כפתור בחירת מסלול */}
+          {/* {(filtered === 1 && !expanded) || (filtered === 4 && expanded) ? ( */}
+          <div dir="rtl" className="m-2">
+            <button
+              onClick={() => {
+                addRouteToHistoryRoute(route!._id as string);
+                handleClick(route!._id as string);
+                calcKMAndUpdate(route!.pointsArray);
+              }}
+              className="px-4 py-2 font-semibold rounded-lg shadow hover:shadow-md border-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75 text-green-700 hover:border-green-800"
+            >
+              צא לדרך🚶‍♂️
+            </button>
+          </div>
 
-            {/* ראה עוד */}
-            {!expanded && !isExpanded && (
-              <button
+          {/* ראה עוד */}
+          {!expanded && !isExpanded && (
+            <button
               onClick={() => {
                 setIsExpanded(true);
-                console.log("route!._id as string", route!._id as string);
               }}
-                className="my-2 px-4 py-2 border-slate-700 text-slate-700 font-medium text-sm rounded-lg shadow hover:border-slate-700 hover:shadow-lg transition duration-300"
-                type="button"
-              >
-                מידע נוסף 👀
-              </button>
-            )}
-          </>
+              className="my-2 px-4 py-2 border-slate-700 text-slate-700 font-medium text-sm rounded-lg shadow hover:border-slate-700 hover:shadow-lg transition duration-300"
+              type="button"
+            >
+              מידע נוסף 👀
+            </button>
+          )}
+        </>
         {/* )} */}
       </div>
 
@@ -146,18 +143,17 @@ const CardMap: React.FC<CardMapProps> = ({
           </div>
         )}
         <div className="flex flex-row items-center justify-between">
-         
-            <Star
-              rate={
-                filtered === 2
-                  ? routeRates![route!._id as string] || 0
-                  : route!.rate || 0
-              }
-              filtered={filtered}
-              onClick={(newRate) =>
-                handleStarClickInternal(route!._id as string, newRate)
-              }
-            />
+          <Star
+            rate={
+              filtered === 2
+                ? routeRates![route!._id as string] || 0
+                : route!.rate || 0
+            }
+            filtered={filtered}
+            onClick={(newRate) =>
+              handleStarClickInternal(route!._id as string, newRate)
+            }
+          />
         </div>
       </div>
 

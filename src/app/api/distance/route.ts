@@ -16,15 +16,12 @@ export async function POST(request: Request) {
     }
 
     let doc = await Distance.findOne(); 
-    console.log("doc", doc);
 
     if (!doc) {
       doc = await Distance.create({ totalmeters: 0 });
-      console.log("docif");
     }
     
     doc.totalmeters += metersToAdd;
-    console.log(doc.totalmeters);
     
     await doc.save();
 
