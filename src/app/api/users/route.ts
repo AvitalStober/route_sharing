@@ -72,39 +72,39 @@ export async function GET() {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
-//delete according to ID
-export async function DELETE() {
-  console.log("delete");
+// //delete according to ID
+// export async function DELETE() {
+//   console.log("delete");
   
-  try {
-    await connect(); // מחבר למסד הנתונים
-    const users = await User.find(); // מקבל את כל המשתמשים
-    let deletionsCount = 0; // משתנה למעקב אחרי מספר המחיקות
+//   try {
+//     await connect(); // מחבר למסד הנתונים
+//     const users = await User.find(); // מקבל את כל המשתמשים
+//     let deletionsCount = 0; // משתנה למעקב אחרי מספר המחיקות
 
-    // אם יש משתמשים
-    if (users.length > 0) {
-      // עוברים על כל המשתמשים
-      for (let user of users) {
-        // עוברים על היסטוריית המסלולים של המשתמש
-        user.historyRoutes.forEach(async (route) => {
-          // אם routeId של המסלול תואם ל-ID שברצונך למחוק
-          if (route.routeId.toString() === '6774ede5b28acd5f1cd7eea8') {
-            console.log(user, "user");
+//     // אם יש משתמשים
+//     if (users.length > 0) {
+//       // עוברים על כל המשתמשים
+//       for (let user of users) {
+//         // עוברים על היסטוריית המסלולים של המשתמש
+//         user.historyRoutes.forEach(async (route) => {
+//           // אם routeId של המסלול תואם ל-ID שברצונך למחוק
+//           if (route.routeId.toString() === '6774ede5b28acd5f1cd7eea8') {
+//             console.log(user, "user");
             
-            // מבצעים עדכון כדי למחוק את המסלול מההיסטוריה של המשתמש
-            await User.updateOne(
-              { _id: user._id },
-              { $pull: { historyRoutes: { routeId: '6774ede5b28acd5f1cd7eea8' } } }
-            );
-            deletionsCount++; // עוצרים ספירה אחרי כל מחיקה
-          }
-        });
-      }
-      return NextResponse.json({ message: `${deletionsCount} trails deleted` }, { status: 200 });
-    } else {
-      return NextResponse.json({ error: 'Users not found' }, { status: 500 });
-    }
-  } catch (error) {
-    return NextResponse.json({ error: "" }, { status: 500 });
-  }
-}
+//             // מבצעים עדכון כדי למחוק את המסלול מההיסטוריה של המשתמש
+//             await User.updateOne(
+//               { _id: user._id },
+//               { $pull: { historyRoutes: { routeId: '6774ede5b28acd5f1cd7eea8' } } }
+//             );
+//             deletionsCount++; // עוצרים ספירה אחרי כל מחיקה
+//           }
+//         });
+//       }
+//       return NextResponse.json({ message: `${deletionsCount} trails deleted` }, { status: 200 });
+//     } else {
+//       return NextResponse.json({ error: 'Users not found' }, { status: 500 });
+//     }
+//   } catch (error) {
+//     return NextResponse.json({ error: "" }, { status: 500 });
+//   }
+// }
